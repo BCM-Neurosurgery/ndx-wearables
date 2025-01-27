@@ -1,0 +1,11 @@
+namespaces:
+- author:
+  - Tomek
+  contact:
+  - tomek.fraczek@bcm.edu
+  doc: Store data from human wearables
+  name: ndx-wearables
+  schema:
+  - namespace: core
+  - source: ndx-wearables.extensions.yaml
+  version: 0.1.0
