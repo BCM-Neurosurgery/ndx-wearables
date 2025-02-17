@@ -1,0 +1,30 @@
+neurodata_type_def: HRVSeries
+neurodata_type_inc: TimeSeries  # Assuming HRVSeries extends TimeSeries
+doc: An extension of TimeSeries to include detailed heart rate variability data.
+attributes:
+  - name: id
+    dtype: int
+    doc: Unique identifier for the HRV record.
+  - name: average_breath
+    dtype: float
+    doc: Average breath rate.
+  - name: average_heart_rate
+    dtype: float
+    doc: Average heart rate.
+  - name: average_hrv
+    dtype: float
+    doc: Average heart rate variability.
+  - name: awake_time
+    dtype: int
+    doc: Total time awake.
+  - name: bedtime_end
+    dtype: text
+    doc: Time when the subject finished sleeping.
+  - name: bedtime_start
+    dtype: text
+    doc: Time when the subject started sleeping.
+  - name: day
+    dtype: text
+    doc: Day of the recording.
+
+  # Continue defining other attributes...
