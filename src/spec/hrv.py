@@ -11,7 +11,7 @@ from pynwb.spec import NWBGroupSpec, NWBDatasetSpec
              NWBDatasetSpec(
                  name='data',
                  dtype='text',
-                 doc='HRV max values'
+                 doc='HRV calculated values'
              )
          ],
          neurodata_type_def='HRVSeries',
