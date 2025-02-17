@@ -6,3 +6,12 @@ groups:
   - name: trode_id
     dtype: int32
     doc: The tetrode ID.
+# Did not want to modify yaml file because it is automatically updated, but here is how I would structure it for HRV:
+ #groups:
+ #- neurodata_type_def: HRVSeries
+   #neurodata_type_inc: TimeSeries
+   #doc: Stores HRV stages as raw strings over time.
+   #attributes:
+   #- name: data
+     #dtype: text
+     #doc: HRV values
