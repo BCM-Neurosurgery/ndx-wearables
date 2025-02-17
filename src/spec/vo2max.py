@@ -11,7 +11,7 @@ def make_vo2max_stage():
             NWBDatasetSpec(
                 name='data',
                 dtype='text',
-                doc='Vo2 max valuess'
+                doc='Vo2 max values'
             )
         ],
         neurodata_type_def='VO2maxSeries',

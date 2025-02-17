@@ -14,5 +14,5 @@ groups:
   #doc: Stores VO2 max stages as raw strings over time.
   #attributes:
   #- name: data
-    #dtype: texr
+    #dtype: text
     #doc: VO2 max values
