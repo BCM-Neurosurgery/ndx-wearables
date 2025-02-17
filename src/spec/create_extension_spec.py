@@ -5,7 +5,7 @@ from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttrib
 
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
-
+import vo2max
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
@@ -29,15 +29,12 @@ def main():
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
-    tetrode_series = NWBGroupSpec(
-        neurodata_type_def="TetrodeSeries",
-        neurodata_type_inc="ElectricalSeries",
-        doc="An extension of ElectricalSeries to include the tetrode ID for each time series.",
-        attributes=[NWBAttributeSpec(name="trode_id", doc="The tetrode ID.", dtype="int32")],
-    )
+    vo2max_series = vo2max.make_vo2max_stage()
+    
+    
 
     # TODO: add all of your new data types to this list
-    new_data_types = [tetrode_series]
+    new_data_types = [vo2max_series]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))

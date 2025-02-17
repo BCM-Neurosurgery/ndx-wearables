@@ -6,3 +6,13 @@ groups:
   - name: trode_id
     dtype: int32
     doc: The tetrode ID.
+
+# Did not want to modify yaml file because it is automatically updated, but here is how I would structure it for Vo2Max:
+#groups:
+#- neurodata_type_def: VO2maxSeries
+  #neurodata_type_inc: TimeSeries
+  #doc: Stores VO2 max stages as raw strings over time.
+  #attributes:
+  #- name: data
+    #dtype: texr
+    #doc: VO2 max values
