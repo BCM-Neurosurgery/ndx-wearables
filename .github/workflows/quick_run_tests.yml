@@ -1,6 +1,6 @@
 name: Quick Run Tests
 on:
-  push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
