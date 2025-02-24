@@ -1,0 +1,39 @@
+name: Quick Run Tests
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  quick-run-tests:
+    name: Quick Run Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # tags are required to determine the version
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip list
+          python -m pip check
+
+      - name: Install run requirements (pinned)
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install .
+
+      - name: Run tests
+        run: |
+          pytest -v
+
+
