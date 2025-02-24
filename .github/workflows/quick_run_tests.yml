@@ -1,6 +1,9 @@
 name: Quick Run Tests
 on:
   pull_request:
+    branches-ignore:  # Don't run on pull requests that also run the big run all tests
+      - main
+      - 'releases/**''
   workflow_dispatch:
 
 jobs:
