@@ -29,5 +29,5 @@ sleep_module = ProcessingModule(
 sleep_module.add(sleep_stage_series)
 nwbfile.add_processing_module(sleep_module)
 
-with NWBHDF5IO('sleep_study.nwb', 'w') as io:
+with NWBHDF5IO('sample_data/sleep_study.nwb', 'w') as io:
     io.write(nwbfile)

@@ -1,9 +1,5 @@
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec
 
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
-
 def make_sleep_stage():
     sleep_stage_series = NWBGroupSpec(
         doc='Stores sleep stages as raw strings over time.',
