@@ -1,17 +1,18 @@
-name: Check Sphinx external links
+name: Quick Run Tests
 on:
-  push:
-    branches:
+  pull_request:
+    branches-ignore:  # Don't run on pull requests that also run the big run all tests
       - main
-      - 'releases/**'
-  schedule:
-    - cron: '0 5 * * 0'  # once every Sunday at midnight ET
+      - 'releases/**''
   workflow_dispatch:
 
 jobs:
-  check-external-links:
-    name: Check for broken Sphinx external links
+  quick-run-tests:
+    name: Quick Run Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,13 +24,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Sphinx dependencies and package
+      - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip list
+          python -m pip check
+
+      - name: Install run requirements (pinned)
+        run: |
           python -m pip install -r requirements-dev.txt
           python -m pip install .
 
-      - name: Check Sphinx external links
+      - name: Run tests
         run: |
-          cd docs  # run_doc_autogen assumes spec is found in ../spec/
-          sphinx-build -b linkcheck ./source ./test_build
+          pytest -v
+
+
