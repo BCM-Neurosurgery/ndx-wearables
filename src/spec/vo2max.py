@@ -10,7 +10,7 @@ def make_vo2max_stage():
         datasets=[
             NWBDatasetSpec(
                 name='data',
-                dtype='text',
+                dtype='float',
                 doc='Vo2 max values'
             )
         ],
