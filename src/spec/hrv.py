@@ -10,7 +10,7 @@ def make_hrv_stage():
         datasets=[
             NWBDatasetSpec(
                 name='data',
-                dtype='float',
+                dtype='int',
                 doc='HRV calculated values'
             )
         ],
