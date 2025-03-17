@@ -5,38 +5,76 @@ from datetime import datetime
 from ndx_wearables import HRVSeries #Assuming HRVSeries is correctly implemented in ndx_wearables/yaml file
 import pytz
 
-timestamps = np.arange(0., 3600, 30)
-# HRV often expressed in milliseconds or as a unitless measure
-heart_rate_values = #TODO: Incorporate BPM values from the wearable 
-timestamps = np.arange(0, len(heart_rate_values), 1)  # Assuming HR data is collected every second
 
-# Compute R-R intervals in milliseconds
-rr_intervals = 60000 / heart_rate_values  # Convert BPM to R-R intervals in ms
+@pytest.fixture
+def nwb_with_hrv_data(tmp_path):
+    '''
+    Creates a NWB file with HRVSeries for testing.
+    Returns the file path.
+    '''
+    nwbfile = NWBFile(
+        session_description='Example HRV study session',
+        identifier='TEST_HRV',
+        session_start_time=datetime.now(pytz.timezone('America/Chicago')),
+    )
 
-nwbfile = NWBFile(
-    session_description='HRV data collected from wearable device',
-    identifier='ID125',
-    session_start_time=datetime.now(pytz.timezone('America/Chicago'))
-)
+    # Generate heart rate data
+    heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
+    timestamps = np.arange(0, len(heart_rate_values), 1)  # Assuming HR data is collected every second
 
-# Creating a time series for HRV from heart rate data
-hrv_series = HRVSeries(
-    name='HRV_RR_Intervals',
-    data=rr_intervals,
-    unit='ms',  # HRV is measured in milliseconds
-    timestamps=timestamps,
-    description='R-R intervals computed from heart rate collected from wearable'
-)
+    # Create HRVSeries object
+    hrv_series = HRVSeries(
+        name='HRV Data',
+        data=heart_rate_values,
+        unit='bpm',  # Beats per minute
+        timestamps=timestamps,
+        description='Example HRV data'
+    )
 
-# Create a processing module for HRV data
-hrv_module = ProcessingModule(
-    name='cardiac_health',
-    description='R-R interval data stored for HRV analysis'
-)
+    # Add to a processing module
+    cardiac_module = ProcessingModule(
+        name='cardiac_health',
+        description='HRV data'
+    )
+    cardiac_module.add(hrv_series)
+    nwbfile.add_processing_module(cardiac_module)
 
-hrv_module.add(hrv_series)
-nwbfile.add_processing_module(hrv_module)
+    # Save NWB file
+    file_path = tmp_path / 'hrv_study.nwb'
+    with NWBHDF5IO(file_path, 'w') as io:
+        io.write(nwbfile)
 
-# Write the data to an NWB file
-with NWBHDF5IO('hrv_study.nwb', 'w') as io:
-    io.write(nwbfile)
+    return file_path
+
+def test_hrv_write_read(nwb_with_hrv_data):
+    '''
+    Test that HRVSeries can be written and read from an NWB file.
+    '''
+    # Regenerate the expected test data
+    expected_heart_rate_values = np.random.randint(60, 100, size=120)
+    expected_timestamps = np.arange(0, len(expected_heart_rate_values), 1)
+
+    # Read the NWB file
+    with NWBHDF5IO(nwb_with_hrv_data, 'r') as io:
+        nwbfile = io.read()
+
+        # Check that the processing module exists
+        assert 'cardiac_health' in nwbfile.processing, 'Cardiac health processing module is missing.'
+
+        # Check that the HRVSeries exists
+        cardiac_data = nwbfile.processing['cardiac_health']
+        assert 'HRV Data' in cardiac_data.data_interfaces, 'HRVSeries is missing.'
+
+        hrv_series = cardiac_data.get('HRV Data')
+
+        # Validate shape
+        assert hrv_series.data.shape == expected_heart_rate_values.shape, "Incorrect HRV data shape."
+        assert hrv_series.timestamps.shape == expected_timestamps.shape, "Incorrect timestamp shape."
+
+        # Validate actual data values (IMPORTANT)
+        np.testing.assert_array_equal(hrv_series.data[:], expected_heart_rate_values, "Mismatch in HRV values.")
+        np.testing.assert_array_equal(hrv_series.timestamps[:], expected_timestamps, "Mismatch in timestamps.")
+
+        # Validate metadata
+        assert hrv_series.description == "Example HRV data", "Incorrect description."
+
