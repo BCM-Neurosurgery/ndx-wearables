@@ -1,18 +1,8 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
-  attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
-
-# Did not want to modify yaml file because it is automatically updated, but here is how I would structure it for Vo2Max:
-#groups:
-#- neurodata_type_def: VO2maxSeries
-  #neurodata_type_inc: TimeSeries
-  #doc: Stores VO2 max stages as raw strings over time.
-  #attributes:
-  #- name: data
-    #dtype: text
-    #doc: VO2 max values
+- neurodata_type_def: VO2maxSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores Vo2 max values as raw strings over time.
+  datasets:
+  - name: data
+    dtype: float
+    doc: Vo2 max values
