@@ -6,6 +6,7 @@ from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttrib
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
 import sleep
+import blood_oxygen as bo
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
@@ -30,9 +31,10 @@ def main():
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
     sleep_stage_series = sleep.make_sleep_stage()
+    blood_oxygen = bo.make_blood_oxygen()
 
     # TODO: add all of your new data types to this list
-    new_data_types = [sleep_stage_series]
+    new_data_types = [sleep_stage_series, blood_oxygen]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))
