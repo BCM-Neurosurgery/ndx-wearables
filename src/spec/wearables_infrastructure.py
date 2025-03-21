@@ -125,7 +125,7 @@ class WearableSeries(TimeSeries):
     @docval(*get_docval(TimeSeries.__init__, 'name'),
             {
                 'name': 'data', 'type': ('array_data', 'data', TimeSeries), # required
-                'shape': ((None,), (None, None)),
+                'shape': ((None, None), (None, None, None)),
                 'doc': ''
             },
             {
@@ -204,7 +204,8 @@ def make_wearables_infrastructure():
         doc="Sensor on wearable device from which data was recorded",
         quantity="*",
         dtype=(float, int, str), #?
-        shape=((None,), (None, None)),
+        shape=((None, None), (None, None, None)),
+        dims=(("measurement_duration", "data"),("measurement_duration", "data", "time")),
         attributes=[
             NWBAttributeSpec(
                 name="sensor", doc="Sensor from which data was collected", dtype=WearableSensor, required=True
