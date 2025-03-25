@@ -23,6 +23,8 @@ load_namespaces(str(__spec_path))
 # below or write a custom class and register it using the class decorator
 # `@register_class("TetrodeSeries", "ndx-wearables")`
 VO2maxSeries = get_class("VO2maxSeries", "ndx-wearables")
+SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
+
 
 # Remove these functions from the package
 del load_namespaces, get_class

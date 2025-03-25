@@ -1,6 +1,12 @@
 name: Run all tests
 on:
   push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - 'releases/**'
   schedule:
     - cron: '0 5 * * 0'  # once every Sunday at midnight ET
   workflow_dispatch:
@@ -129,7 +135,7 @@ jobs:
           fetch-depth: 0  # tags are required to determine the version
 
       - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: BCM-Neurosurgery/setup-miniconda@v3
         with:
           auto-update-conda: true
           auto-activate-base: true

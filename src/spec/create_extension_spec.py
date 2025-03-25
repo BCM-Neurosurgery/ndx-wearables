@@ -5,7 +5,9 @@ from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttrib
 
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
+
 import vo2max
+import sleep
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
@@ -29,12 +31,12 @@ def main():
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
+    
     vo2max_series = vo2max.make_vo2max_stage()
-    
-    
+    sleep_stage_series = sleep.make_sleep_stage()
 
     # TODO: add all of your new data types to this list
-    new_data_types = [vo2max_series]
+    new_data_types = [vo2max_series, sleep_stage_series]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))
