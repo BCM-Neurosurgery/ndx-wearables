@@ -1,4 +1,5 @@
-from pynwb import register_class, NWBContainer, MultiContainerInterface
+from pynwb import register_class, NWBContainer
+from pynwb.core import MultiContainerInterface
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
 from pynwb.base import TimeSeries
 
@@ -57,7 +58,7 @@ def make_physiological_measures_alt():
 
 # when extending NWBContainer, define __nwbfields__
 # tells PyNWB properties of the NWBContainer extension
-@register_class("WearableDevice")
+@register_class("WearableDevice", "ndx-wearables")
 class WearableDevice(NWBContainer):
     '''
     - name
@@ -87,7 +88,7 @@ class WearableDevice(NWBContainer):
         self.manufacturer = manufacturer
         self.location = location
 
-@register_class("Sensor")
+@register_class("Sensor", "ndx-wearables")
 class WearableSensor(NWBContainer):
     '''
     - name
@@ -113,7 +114,7 @@ class WearableSensor(NWBContainer):
         self.description = description
         self.device = device
 
-@register_class("WearableSeries")
+@register_class("WearableSeries", "ndx-wearables")
 class WearableSeries(TimeSeries):
     '''
     - data
@@ -147,7 +148,7 @@ class WearableSeries(TimeSeries):
         # note: is this necessary?
         return self.sensor
 
-@register_class("PhysiologicalMeasure")
+@register_class("PhysiologicalMeasure", "ndx-wearables")
 class PhysiologicalMeasure(MultiContainerInterface):
     '''
     - wearableseries
