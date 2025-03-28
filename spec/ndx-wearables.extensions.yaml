@@ -1,8 +1,57 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
+- neurodata_type_def: WearableDevice
+  neurodata_type_inc: NWBDataInterface
+  doc: Wearable device from which data was recorded
+  quantity: '*'
   attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
+  - name: description
+    dtype: text
+    doc: Description of wearable device
+    required: false
+  - name: manufacturer
+    dtype: text
+    doc: Wearable device manufacturer
+    required: false
+  - name: location
+    dtype: text
+    doc: Location of wearable device on body
+- neurodata_type_def: WearableSensor
+  neurodata_type_inc: NWBDataInterface
+  doc: Sensor on wearable device from which data was recorded
+  quantity: '*'
+  attributes:
+  - name: description
+    dtype: text
+    doc: Description of sensor on wearable device
+    required: false
+  - name: device
+    dtype:
+      target_type: WearableDevice
+      reftype: object
+    doc: Wearable device associated with the sensor
+- neurodata_type_def: WearableTimeSeries
+  neurodata_type_inc: NWBDataInterface
+  doc: Data recorded from wearable sensor/device
+  quantity: '*'
+  attributes:
+  - name: sensor
+    dtype:
+      target_type: WearableSensor
+      reftype: object
+    doc: Sensor from which data was collected
+- neurodata_type_def: PhysiologicalMeasure
+  neurodata_type_inc: NWBDataInterface
+  name: physiological_measure
+  doc: A grouping of wearable series data from various sensors/wearable devices
+  quantity: '?'
+  groups:
+  - neurodata_type_def: WearableTimeSeries
+    neurodata_type_inc: NWBDataInterface
+    doc: Data recorded from wearable sensor/device
+    quantity: '*'
+    attributes:
+    - name: sensor
+      dtype:
+        target_type: WearableSensor
+        reftype: object
+      doc: Sensor from which data was collected

@@ -1,6 +1,6 @@
 from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
+from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec
 from pynwb.base import TimeSeries
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
@@ -56,111 +56,6 @@ def make_physiological_measures_alt():
 
 #TODO: fill out docs
 
-# when extending NWBContainer, define __nwbfields__
-# tells PyNWB properties of the NWBContainer extension
-@register_class("WearableDevice", "ndx-wearables")
-class WearableDevice(NWBContainer):
-    '''
-    - name
-    - description
-    - manufacturer
-    - location (on body)
-    '''
-    __nwbfields__ = ("name", "description", "manufacturer", "location")
-
-    @docval(
-        {"name":"name", "type": str, "doc": "Name of wearable device"},
-        {"name":"description", "type": str, "doc": "Description of wearable device"},
-        {"name":"manufacturer", "type": str, "doc": "Wearable device manufacturer"},
-        {"name":"location", "type": str, "doc": "Location of wearable device on body"},
-    )
-
-    def __init__(self, **kwargs):
-        name = popargs("name", kwargs)
-        description = popargs("description", kwargs)
-        manufacturer = popargs("manufacturer", kwargs)
-        location = popargs("location", kwargs)
-
-        super().__init__(**kwargs)
-
-        self.name = name
-        self.description = description
-        self.manufacturer = manufacturer
-        self.location = location
-
-@register_class("Sensor", "ndx-wearables")
-class WearableSensor(NWBContainer):
-    '''
-    - name
-    - description
-    - device
-    '''
-    __nwbfields__ = ("name", "description", "device")
-
-    @docval(
-        {"name":"name", "type": str, "doc": "Name of sensor on wearable device"},
-        {"name":"description", "type": str, "doc": "Description of sensor on wearable device"},
-        {"name":"device", "type": WearableDevice, "doc": "Wearable device associated with sensor"},
-    )
-
-    def __init__(self, **kwargs):
-        name = popargs("name", kwargs)
-        description = popargs("description", kwargs)
-        device = popargs("device", kwargs)
-
-        super().__init__(**kwargs)
-
-        self.name = name
-        self.description = description
-        self.device = device
-
-@register_class("WearableSeries", "ndx-wearables")
-class WearableSeries(TimeSeries):
-    '''
-    - data
-    - unit (included in timeseries)
-    - sensor
-    '''
-    __nwbfields__ = ({'name': 'sensor', 'doc':'', })
-
-    @docval(*get_docval(TimeSeries.__init__, 'name'),
-            {
-                'name': 'data', 'type': ('array_data', 'data', TimeSeries), # required
-                'shape': ((None, None), (None, None, None)),
-                'doc': ''
-            },
-            {
-                'name': 'sensor', 'type': WearableSensor, # required
-                'doc': ''
-            },
-    )
-
-    def __init__(self, **kwargs):
-        self.sensor = kwargs['sensor']
-        self.data = kwargs['data']
-
-        # TODO: add logic for checking data shape - should we check data shape?
-        data_shape = get_data_shape(kwargs['data'], strict_no_data_load = True)
-
-        super().__init__(**kwargs)
-    
-    def get_sensor(self):
-        # note: is this necessary?
-        return self.sensor
-
-@register_class("PhysiologicalMeasure", "ndx-wearables")
-class PhysiologicalMeasure(MultiContainerInterface):
-    '''
-    - wearableseries
-    '''
-    __clsconf__ = [
-        {
-            'attr': 'wearable_series',
-            'type': WearableSeries,
-            'add': 'add_wearable_series',
-            'get': 'get_wearable_series',
-            'create': 'create_wearable_series'
-        }]
 
 #note: may need to break out into a separate file?
 #pynwb mentions that these are generally done in separate files
@@ -172,13 +67,13 @@ def make_wearables_infrastructure():
         quantity="*",
         attributes=[
             NWBAttributeSpec(
-                name="description", doc="Description of wearable device", dtype=str, required=False
+                name="description", doc="Description of wearable device", dtype="text", required=False
             ),
             NWBAttributeSpec(
-                name="manufacturer", doc="Wearable device manufacturer", dtype=str, required=False
+                name="manufacturer", doc="Wearable device manufacturer", dtype="text", required=False
             ),
             NWBAttributeSpec(
-                name="location", doc="Location of wearable device on body", dtype=str, required=True
+                name="location", doc="Location of wearable device on body", dtype="text", required=True
             ),
         ],
     )
@@ -190,28 +85,26 @@ def make_wearables_infrastructure():
         quantity="*",
         attributes=[
             NWBAttributeSpec(
-                name="description", doc="Description of sensor on wearable device", dtype=str, required=False
+                name="description", doc="Description of sensor on wearable device", dtype="text", required=False
             ),
             NWBAttributeSpec(
-                name="device", doc="Wearable device associated with the sensor", dtype=WearableDevice, required=True
+                name="device", doc="Wearable device associated with the sensor", dtype=RefSpec("WearableDevice", "object"), required=True
             ),
         ],
     )
 
     #TODO: add dims field?
-    wearable_timeseries = NWBDatasetSpec(
-        neurodata_type_def="WearableTimeseries",
-        neurodata_type_inc="NWBDatasetSpec",
-        doc="Sensor on wearable device from which data was recorded",
+    wearable_timeseries = NWBGroupSpec(
+        neurodata_type_def="WearableTimeSeries",
+        neurodata_type_inc="NWBDataInterface",
+        doc="Data recorded from wearable sensor/device",
         quantity="*",
-        dtype=(float, int, str), #?
-        shape=((None, None), (None, None, None)),
-        dims=(("measurement_duration", "data"),("measurement_duration", "data", "time")),
         attributes=[
             NWBAttributeSpec(
-                name="sensor", doc="Sensor from which data was collected", dtype=WearableSensor, required=True
+                name="sensor", doc="Sensor from which data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
             ),
         ],
+
     )
 
     physiological_measure = NWBGroupSpec(

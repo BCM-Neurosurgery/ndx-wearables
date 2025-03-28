@@ -34,7 +34,7 @@ def main():
 
 
     # TODO: add all of your new data types to this list
-    new_data_types = [wearables_infra_datastructures]
+    new_data_types = [*wearables_infra_datastructures]
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))
