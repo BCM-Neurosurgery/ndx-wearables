@@ -9,7 +9,6 @@ from ndx_wearables import WearableDevice, WearableSensor, WearableTimeSeries, Ph
 
 @pytest.fixture
 def nwb_with_wearables_data(tmp_path):
-    print('here')
     nwbfile = NWBFile(
         session_description = "Example wearables study session",
         identifier='TEST_WEARABLES',
@@ -39,13 +38,10 @@ def nwb_with_wearables_data(tmp_path):
     normal_ts = TimeSeries(name="test_timeseries", data=wearable_values, timestamps=timestamps, unit='test')
     ts = WearableTimeSeries(name="test_wearable_timeseries", sensor=sensor, data=normal_ts)#, timestamps=timestamps)
 
-    # create physiological measure
-    pm = PhysiologicalMeasure(wearable_timeseries=ts) # name is automatically physiological_measure
-
     # add wearables objects to processing module
     nwbfile.processing["wearables_module"].add(device)
     nwbfile.processing["wearables_module"].add(sensor)
-    nwbfile.processing["wearables_module"].add(pm)
+    nwbfile.processing["wearables_module"].add(ts)
 
     file_path = tmp_path / "wearables_test.nwb"
     with NWBHDF5IO(file_path, 'w') as io:
@@ -63,13 +59,12 @@ def test_wearables_read(nwb_with_wearables_data):
 
         # ensure processing module is in the file
         assert 'wearables_module' in nwbfile.processing, 'Wearables processing module is missing.'
-        print('here')
         wearables_module = nwbfile.processing["wearables_module"]
         # ensure device is in file
         assert 'test_wearable_device' in wearables_module
         # ensure sensor is in file
-        # ensure physiological measure is in file
-        # ensure wearable timeseries is in physiological measure
+        # ensure wearable timeseries is in file
+        # ensure data is correct
         
 
 

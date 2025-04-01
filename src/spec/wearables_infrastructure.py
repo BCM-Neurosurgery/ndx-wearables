@@ -114,14 +114,5 @@ def make_wearables_infrastructure():
 
     )
 
-    physiological_measure = NWBGroupSpec(
-        neurodata_type_def="PhysiologicalMeasure",
-        neurodata_type_inc="NWBDataInterface",
-        name="physiological_measure",
-        doc="A grouping of wearable series data from various sensors/wearable devices",
-        quantity="?",
-        groups=[wearable_timeseries],
-    )
-
-    return [wearable_device, wearable_sensor, wearable_timeseries, physiological_measure]
+    return [wearable_device, wearable_sensor, wearable_timeseries]
 
