@@ -103,6 +103,13 @@ def make_wearables_infrastructure():
             NWBAttributeSpec(
                 name="sensor", doc="Sensor from which data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
             ),
+            NWBAttributeSpec(
+                name="data", doc="Data which was collected from sensor", dtype=RefSpec("TimeSeries", "object"), required=True
+                # im not sure if the dtype here is correct
+            ),
+            NWBAttributeSpec(
+                name="name", doc="Name of the series", dtype="text", required=True
+            ),
         ],
 
     )

@@ -25,10 +25,11 @@ load_namespaces(str(__spec_path))
 '''
 WearableDevice = get_class("WearableDevice", "ndx-wearables")
 WearableSensor = get_class("WearableSensor", "ndx-wearables")
-WearableSeries = get_class("WearableSeries", "ndx-wearables")'
 '''
 from .wearables_classes import *
 PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
+WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
+
 
 # Remove these functions from the package
 del load_namespaces, get_class

@@ -3,6 +3,7 @@ import numpy as np
 from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
+from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from ndx_wearables import WearableDevice, WearableSensor, WearableTimeSeries, PhysiologicalMeasure
 
@@ -35,10 +36,11 @@ def nwb_with_wearables_data(tmp_path):
     sensor = WearableSensor(name="test_wearable_sensor", description="test", device=device)
 
     # create wearable timeseries
-    ts = WearableTimeSeries(name="test_wearable_timeseries", sensor=sensor, data=wearable_values, timestamps=timestamps)
+    normal_ts = TimeSeries(name="test_timeseries", data=wearable_values, timestamps=timestamps, unit='test')
+    ts = WearableTimeSeries(name="test_wearable_timeseries", sensor=sensor, data=normal_ts)#, timestamps=timestamps)
 
     # create physiological measure
-    pm = PhysiologicalMeasure(name="test_physiological_measure", wearable_timeseries=ts)
+    pm = PhysiologicalMeasure(wearable_timeseries=ts) # name is automatically physiological_measure
 
     # add wearables objects to processing module
     nwbfile.processing["wearables_module"].add(device)

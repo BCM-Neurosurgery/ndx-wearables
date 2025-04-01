@@ -39,6 +39,14 @@ groups:
       target_type: WearableSensor
       reftype: object
     doc: Sensor from which data was collected
+  - name: data
+    dtype:
+      target_type: TimeSeries
+      reftype: object
+    doc: Data which was collected from sensor
+  - name: name
+    dtype: text
+    doc: Name of the series
 - neurodata_type_def: PhysiologicalMeasure
   neurodata_type_inc: NWBDataInterface
   name: physiological_measure
@@ -55,3 +63,11 @@ groups:
         target_type: WearableSensor
         reftype: object
       doc: Sensor from which data was collected
+    - name: data
+      dtype:
+        target_type: TimeSeries
+        reftype: object
+      doc: Data which was collected from sensor
+    - name: name
+      dtype: text
+      doc: Name of the series

@@ -62,15 +62,17 @@ class WearableSensor(NWBContainer):
 
         self.description = description
         self.device = device
-
+'''
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(TimeSeries):
     '''
+'''
     - data
     - unit (included in timeseries)
     - sensor
     '''
-    __nwbfields__ = ({'name': 'sensor', 'doc':'', },)
+'''
+    __nwbfields__ = ("name", "sensor", "timestamps")
 
     @docval(*get_docval(TimeSeries.__init__, 'name'),
             {
@@ -102,17 +104,21 @@ class WearableTimeSeries(TimeSeries):
     def get_sensor(self):
         # note: is this necessary?
         return self.sensor
-
+'''
+'''
 @register_class("PhysiologicalMeasure", "ndx-wearables")
 class PhysiologicalMeasure(MultiContainerInterface):
     '''
+'''
     - wearableseries
     '''
+'''
     __clsconf__ = [
         {
             'attr': 'wearable_series',
-            'type': WearableTimeSeries,
+            'type': 'WearableTimeSeries',
             'add': 'add_wearable_series',
             'get': 'get_wearable_series',
             'create': 'create_wearable_series'
         }]
+    '''
