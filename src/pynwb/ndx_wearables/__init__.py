@@ -27,6 +27,7 @@ WearableDevice = get_class("WearableDevice", "ndx-wearables")
 WearableSensor = get_class("WearableSensor", "ndx-wearables")
 '''
 from .wearables_classes import *
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
 WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
 
 

@@ -96,23 +96,37 @@ def make_wearables_infrastructure():
     #TODO: add dims field?
     wearable_timeseries = NWBGroupSpec(
         neurodata_type_def="WearableTimeSeries",
-        neurodata_type_inc="NWBDataInterface",
+        neurodata_type_inc="TimeSeries",
         doc="Data recorded from wearable sensor/device",
-        quantity="*",
+        datasets=[
+            NWBDatasetSpec(
+                name="data",
+                dtype="float64",
+                doc="Data which was collected from sensor",
+            )
+        ],
         attributes=[
+            NWBAttributeSpec(
+                name="name", doc="Name of the series", dtype="text", required=True
+            ),
             NWBAttributeSpec(
                 name="sensor", doc="Sensor from which data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
             ),
             NWBAttributeSpec(
-                name="data", doc="Data which was collected from sensor", dtype=RefSpec("TimeSeries", "object"), required=True
-                # im not sure if the dtype here is correct
-            ),
-            NWBAttributeSpec(
-                name="name", doc="Name of the series", dtype="text", required=True
+                name="unit", doc="Unit of the data that was collected", dtype="text", required=True
             ),
         ],
 
     )
 
-    return [wearable_device, wearable_sensor, wearable_timeseries]
+    physiological_measure = NWBGroupSpec(
+        neurodata_type_def="PhysiologicalMeasure",
+        neurodata_type_inc="NWBDataInterface",
+        name="physiological_measure",
+        doc="A grouping of wearable series data from various sensors/wearable devices",
+        quantity="?",
+        groups=[wearable_timeseries],
+    )
+
+    return [wearable_device, wearable_sensor, wearable_timeseries, physiological_measure]
 
