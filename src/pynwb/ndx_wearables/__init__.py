@@ -22,8 +22,7 @@ load_namespaces(str(__spec_path))
 # Either have PyNWB generate a class from the spec using `get_class` as shown
 # below or write a custom class and register it using the class decorator
 # `@register_class("TetrodeSeries", "ndx-wearables")`
-
-WearableSensor = get_class("WearableSensor", "ndx-wearables")
+from .wearables_classes import *
 WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
 
 
