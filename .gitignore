@@ -168,3 +168,5 @@ cython_debug/
 
 # Mac finder
 .DS_Store
+
+sample_data/*
