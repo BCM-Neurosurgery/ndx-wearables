@@ -6,7 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from pathlib import Path
-from ndx_wearables import WearableDevice, WearableSensor, WearableTimeSeries
+from ndx_wearables import WearableDevice, WearableTimeSeries
 
 @pytest.fixture
 def tmp_path():
@@ -33,9 +33,6 @@ def nwb_with_wearables_data(tmp_path):
 
     nwbfile.add_processing_module(wearables_module)
 
-
-    # create wearable sensor
-    #sensor = WearableSensor(name="test_wearable_sensor", description="test")
 
     # create wearables device
     device = WearableDevice(name="test_wearable_device", description="test", location="arm", manufacturer="test")

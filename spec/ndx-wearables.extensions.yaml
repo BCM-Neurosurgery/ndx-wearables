@@ -1,4 +1,11 @@
 groups:
+- neurodata_type_def: SleepStageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores sleep stages as raw strings over time.
+  datasets:
+  - name: data
+    dtype: text
+    doc: Sleep stage labels
 - neurodata_type_def: WearableDevice
   neurodata_type_inc: Device
   doc: Wearable device from which data was recorded
@@ -15,15 +22,6 @@ groups:
   - name: location
     dtype: text
     doc: Location of wearable device on body
-- neurodata_type_def: WearableSensor
-  neurodata_type_inc: NWBDataInterface
-  doc: Sensor on wearable device from which data was recorded
-  quantity: '*'
-  attributes:
-  - name: description
-    dtype: text
-    doc: Description of sensor on wearable device
-    required: false
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device

@@ -21,38 +21,17 @@ class WearableDevice(Device):
     - location (on body)
     '''
 
-    __nwbfields__ = ("sensor", "location")
+    __nwbfields__ = ("location",)
 
     @docval(
         *get_docval(Device.__init__)
         + (
-            #{"name":"sensor", "type": WearableSensor, "doc": "Sensor associated with wearable device"},
             {"name":"location", "type": str, "doc": "Location on body of device"},
             )
     )
 
     def __init__(self, **kwargs):
-        #sensor = popargs("sensor", kwargs)
         location = popargs("location", kwargs)
         super().__init__(**kwargs)
 
-        #self.sensor = sensor
         self.location = location
-
-@register_class("WearableTimeSeries", "ndx-wearables")
-class WearableTimeSeries(TimeSeries):
-
-    @docval(
-        *get_docval(TimeSeries.__init__)
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) 
-    
-    __clsconf__ = {
-        "attr": "devices",
-        "type": WearableDevice,
-        "add": "add_wearable_device",
-        "get": "get_wearable_device",
-        "create": "create_wearable_device",
-    }
