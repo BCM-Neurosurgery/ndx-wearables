@@ -1,5 +1,6 @@
 from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
+from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
 from pynwb.base import TimeSeries
 
@@ -12,53 +13,46 @@ import numpy as np
 # when extending NWBContainer, define __nwbfields__
 # tells PyNWB properties of the NWBContainer extension
 @register_class("WearableDevice", "ndx-wearables")
-class WearableDevice(NWBContainer):
+class WearableDevice(Device):
     '''
     - name
     - description
     - manufacturer
     - location (on body)
     '''
-    __nwbfields__ = ("name", "description", "manufacturer", "location")
+
+    __nwbfields__ = ("sensor", "location")
 
     @docval(
-        {"name":"name", "type": str, "doc": "Name of wearable device"},
-        {"name":"description", "type": str, "doc": "Description of wearable device"},
-        {"name":"manufacturer", "type": str, "doc": "Wearable device manufacturer"},
-        {"name":"location", "type": str, "doc": "Location of wearable device on body"},
+        *get_docval(Device.__init__)
+        + (
+            #{"name":"sensor", "type": WearableSensor, "doc": "Sensor associated with wearable device"},
+            {"name":"location", "type": str, "doc": "Location on body of device"},
+            )
     )
 
     def __init__(self, **kwargs):
-        description = popargs("description", kwargs)
-        manufacturer = popargs("manufacturer", kwargs)
+        #sensor = popargs("sensor", kwargs)
         location = popargs("location", kwargs)
-
         super().__init__(**kwargs)
 
-        self.description = description
-        self.manufacturer = manufacturer
+        #self.sensor = sensor
         self.location = location
 
-@register_class("WearableSensor", "ndx-wearables")
-class WearableSensor(NWBContainer):
-    '''
-    - name
-    - description
-    - device
-    '''
-    __nwbfields__ = ("name", "description", "device")
+@register_class("WearableTimeSeries", "ndx-wearables")
+class WearableTimeSeries(TimeSeries):
 
     @docval(
-        {"name":"name", "type": str, "doc": "Name of sensor on wearable device"},
-        {"name":"description", "type": str, "doc": "Description of sensor on wearable device"},
-        {"name":"device", "type": WearableDevice, "doc": "Wearable device associated with sensor"},
+        *get_docval(TimeSeries.__init__)
     )
 
     def __init__(self, **kwargs):
-        description = popargs("description", kwargs)
-        device = popargs("device", kwargs)
-
-        super().__init__(**kwargs)
-
-        self.description = description
-        self.device = device
+        super().__init__(**kwargs) 
+    
+    __clsconf__ = {
+        "attr": "devices",
+        "type": WearableDevice,
+        "add": "add_wearable_device",
+        "get": "get_wearable_device",
+        "create": "create_wearable_device",
+    }

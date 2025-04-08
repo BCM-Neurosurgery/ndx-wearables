@@ -60,9 +60,10 @@ def make_physiological_measures_alt():
 #note: may need to break out into a separate file?
 #pynwb mentions that these are generally done in separate files
 def make_wearables_infrastructure():
+    
     wearable_device = NWBGroupSpec(
         neurodata_type_def="WearableDevice",
-        neurodata_type_inc="NWBDataInterface",
+        neurodata_type_inc="Device",
         doc="Wearable device from which data was recorded",
         quantity="*",
         attributes=[
@@ -74,25 +75,10 @@ def make_wearables_infrastructure():
             ),
             NWBAttributeSpec(
                 name="location", doc="Location of wearable device on body", dtype="text", required=True
-            ),
+            )
         ],
     )
     
-    wearable_sensor = NWBGroupSpec(
-        neurodata_type_def="WearableSensor",
-        neurodata_type_inc="NWBDataInterface",
-        doc="Sensor on wearable device from which data was recorded",
-        quantity="*",
-        attributes=[
-            NWBAttributeSpec(
-                name="description", doc="Description of sensor on wearable device", dtype="text", required=False
-            ),
-            NWBAttributeSpec(
-                name="device", doc="Wearable device associated with the sensor", dtype=RefSpec("WearableDevice", "object"), required=True
-            ),
-        ],
-    )
-
     #TODO: add dims field?
     wearable_timeseries = NWBGroupSpec(
         neurodata_type_def="WearableTimeSeries",
@@ -110,23 +96,14 @@ def make_wearables_infrastructure():
                 name="name", doc="Name of the series", dtype="text", required=True
             ),
             NWBAttributeSpec(
-                name="sensor", doc="Sensor from which data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
-            ),
-            NWBAttributeSpec(
                 name="unit", doc="Unit of the data that was collected", dtype="text", required=True
             ),
         ],
-
+        #quantity="?",
+        #groups = [wearable_device],
     )
 
-    physiological_measure = NWBGroupSpec(
-        neurodata_type_def="PhysiologicalMeasure",
-        neurodata_type_inc="NWBDataInterface",
-        name="physiological_measure",
-        doc="A grouping of wearable series data from various sensors/wearable devices",
-        quantity="?",
-        groups=[wearable_timeseries],
-    )
+    
 
-    return [wearable_device, wearable_sensor, wearable_timeseries, physiological_measure]
+    return [wearable_device, wearable_timeseries]
 

@@ -1,6 +1,6 @@
 groups:
 - neurodata_type_def: WearableDevice
-  neurodata_type_inc: NWBDataInterface
+  neurodata_type_inc: Device
   doc: Wearable device from which data was recorded
   quantity: '*'
   attributes:
@@ -24,11 +24,6 @@ groups:
     dtype: text
     doc: Description of sensor on wearable device
     required: false
-  - name: device
-    dtype:
-      target_type: WearableDevice
-      reftype: object
-    doc: Wearable device associated with the sensor
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device
@@ -36,11 +31,6 @@ groups:
   - name: name
     dtype: text
     doc: Name of the series
-  - name: sensor
-    dtype:
-      target_type: WearableSensor
-      reftype: object
-    doc: Sensor from which data was collected
   - name: unit
     dtype: text
     doc: Unit of the data that was collected
@@ -48,28 +38,3 @@ groups:
   - name: data
     dtype: float64
     doc: Data which was collected from sensor
-- neurodata_type_def: PhysiologicalMeasure
-  neurodata_type_inc: NWBDataInterface
-  name: physiological_measure
-  doc: A grouping of wearable series data from various sensors/wearable devices
-  quantity: '?'
-  groups:
-  - neurodata_type_def: WearableTimeSeries
-    neurodata_type_inc: TimeSeries
-    doc: Data recorded from wearable sensor/device
-    attributes:
-    - name: name
-      dtype: text
-      doc: Name of the series
-    - name: sensor
-      dtype:
-        target_type: WearableSensor
-        reftype: object
-      doc: Sensor from which data was collected
-    - name: unit
-      dtype: text
-      doc: Unit of the data that was collected
-    datasets:
-    - name: data
-      dtype: float64
-      doc: Data which was collected from sensor

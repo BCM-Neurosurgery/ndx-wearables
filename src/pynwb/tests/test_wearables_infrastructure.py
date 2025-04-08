@@ -6,7 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from pathlib import Path
-from ndx_wearables import WearableDevice, WearableSensor, WearableTimeSeries, PhysiologicalMeasure
+from ndx_wearables import WearableDevice, WearableSensor, WearableTimeSeries
 
 @pytest.fixture
 def tmp_path():
@@ -33,17 +33,20 @@ def nwb_with_wearables_data(tmp_path):
 
     nwbfile.add_processing_module(wearables_module)
 
+
+    # create wearable sensor
+    #sensor = WearableSensor(name="test_wearable_sensor", description="test")
+
     # create wearables device
     device = WearableDevice(name="test_wearable_device", description="test", location="arm", manufacturer="test")
 
-    # create wearable sensor
-    sensor = WearableSensor(name="test_wearable_sensor", description="test", device=device)
-
     # create wearable timeseries
-    ts = WearableTimeSeries(name="test_wearable_timeseries", sensor=sensor, data=wearable_values, timestamps=timestamps, unit='test')
+    ts = WearableTimeSeries(name="test_wearable_timeseries", data=wearable_values, timestamps=timestamps, unit='test')
+    #ts.add_wearable_device(device)
 
     # add wearables objects to processing module
     nwbfile.processing["wearables_module"].add_container(ts)
+    nwbfile.add_device(device)
 
     file_path = tmp_path / "wearables_test.nwb"
     with NWBHDF5IO(file_path, 'w') as io:
@@ -69,17 +72,13 @@ def test_wearables_read(nwb_with_wearables_data):
         wearable_timeseries = wearables_module.get('test_wearable_timeseries')
         # validate shape
         assert wearable_timeseries.data.shape == expected_wearable_values.shape, "Incorrect wearables timeseries data shape"
-        assert wearable_timeseries.timestamps.shape == expected_wearable_values.shape, "Incorrect timestamp shape"
+        assert wearable_timeseries.timestamps.shape == expected_timestamps.shape, "Incorrect timestamp shape"
         # validate data values
         np.testing.assert_array_equal(wearable_timeseries.data[:], expected_wearable_values, "Mismatch in wearable timeseries values")
         np.testing.assert_array_equal(wearable_timeseries.timestamps[:], expected_timestamps, "Mismatch in timestamps")
         
         # validate metadata
-        assert wearable_timeseries.sensor.name == "test_wearable_sensor", "Sensor not referenced in wearable timeseries"
-        assert wearable_timeseries.sensor.device.name == "test_wearable_device", "Device not referenced in wearable sensor"
-        assert wearable_timeseries.sensor.device.location == "arm", "Device location incorrect"
-        assert wearable_timeseries.sensor.device.manufacturer == "test", "Device manufacturer incorrect"
-
+        assert 'test_wearable_device' in nwbfile.devices, "Wearable device is missing"
         
 
 
