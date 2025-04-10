@@ -11,27 +11,12 @@ groups:
   doc: Wearable device from which data was recorded
   quantity: '*'
   attributes:
-  - name: description
-    dtype: text
-    doc: Description of wearable device
-    required: false
-  - name: manufacturer
-    dtype: text
-    doc: Wearable device manufacturer
-    required: false
   - name: location
     dtype: text
     doc: Location of wearable device on body
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device
-  attributes:
-  - name: name
-    dtype: text
-    doc: Name of the series
-  - name: unit
-    dtype: text
-    doc: Unit of the data that was collected
   datasets:
   - name: data
     dtype: float64
