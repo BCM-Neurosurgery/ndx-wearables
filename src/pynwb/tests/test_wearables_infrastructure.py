@@ -10,7 +10,7 @@ from ndx_wearables import WearableDevice, WearableTimeSeries
 
 @pytest.fixture
 def tmp_path():
-    return Path('../../../')
+    return Path('./src/pynwb/tests')
 
 @pytest.fixture
 def nwb_with_wearables_data(tmp_path):
