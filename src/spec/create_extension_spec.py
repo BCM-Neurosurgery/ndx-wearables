@@ -2,6 +2,7 @@
 import os.path
 
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttributeSpec
+from wearables_infrastructure import make_wearables_infrastructure
 
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
@@ -29,10 +30,13 @@ def main():
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
+
+    wearables_infra_datastructures = make_wearables_infrastructure()
     sleep_stage_series = sleep.make_sleep_stage()
 
     # TODO: add all of your new data types to this list
-    new_data_types = [sleep_stage_series]
+    new_data_types = [sleep_stage_series, *wearables_infra_datastructures]
+
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))

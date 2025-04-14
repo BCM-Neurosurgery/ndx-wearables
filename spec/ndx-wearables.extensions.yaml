@@ -1,8 +1,23 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
+- neurodata_type_def: SleepStageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores sleep stages as raw strings over time.
+  datasets:
+  - name: data
+    dtype: text
+    doc: Sleep stage labels
+- neurodata_type_def: WearableDevice
+  neurodata_type_inc: Device
+  doc: Wearable device from which data was recorded
+  quantity: '*'
   attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
+  - name: location
+    dtype: text
+    doc: Location of wearable device on body
+- neurodata_type_def: WearableTimeSeries
+  neurodata_type_inc: TimeSeries
+  doc: Data recorded from wearable sensor/device
+  datasets:
+  - name: data
+    dtype: float64
+    doc: Data which was collected from sensor
