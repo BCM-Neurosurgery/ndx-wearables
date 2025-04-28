@@ -22,7 +22,6 @@ class WearableDevice(Device):
     - manufacturer
     - location (on body)
     '''
-
     __nwbfields__ = ("location",)
 
     @docval(
@@ -43,10 +42,10 @@ class WearableDevice(Device):
 # WearableEvents inherits from EventsRecord (from ndx-events-record) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(EventsRecord):
-    __nwbfields__ = ("name", "sensor")
+    __nwbfields__ = ("sensor")
 
     @docval(
-        {"name": "name", "type": str, "doc": "Name of the event"},
+        *get_docval(EventsRecord.__init__),
         {"name": "sensor", "type": 'WearableSensor', "doc": "Sensor associated with the event"},
         # Include other required fields like timestamps/description if needed
     )
