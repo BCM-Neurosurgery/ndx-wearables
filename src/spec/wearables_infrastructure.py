@@ -39,7 +39,7 @@ def make_wearables_infrastructure():
 
     wearable_events = NWBGroupSpec(
         neurodata_type_def="WearableEvents",
-        neurodata_type_inc="Events",
+        neurodata_type_inc="EventsRecord",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
         attributes=[
