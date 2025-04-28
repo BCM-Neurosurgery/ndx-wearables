@@ -2,7 +2,9 @@ from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
 from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
-from pynwb.base import TimeSeries, Events
+from pynwb.base import TimeSeries
+from ndx_events_record import EventsRecord
+
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 
@@ -37,9 +39,10 @@ class WearableDevice(Device):
 
         self.location = location
 
-# Adding events:
+# Adding events to inherit from ndx-wearables:
+# WearableEvents inherits from EventsRecord (from ndx-events-record) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
-class WearableEvents(Events):
+class WearableEvents(EventsRecord):
     __nwbfields__ = ("name", "sensor")
 
     @docval(
