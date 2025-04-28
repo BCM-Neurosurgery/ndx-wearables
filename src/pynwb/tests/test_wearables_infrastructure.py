@@ -81,6 +81,7 @@ def test_wearables_read(nwb_with_wearables_data):
         # ensure wearabletimeseries has link to wearabledevice
         assert wearable_timeseries.wearable_device is nwbfile.devices['test_wearable_device']
         
+    # Testing WearableEvents based on EventsRecord inheritance
     def test_wearable_events(nwb_with_wearables_data):
         with NWBHDF5IO(nwb_with_wearables_data, 'r+') as io:
             nwbfile = io.read()
