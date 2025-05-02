@@ -1,6 +1,6 @@
 from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec
+from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 from pynwb.base import TimeSeries
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
@@ -35,6 +35,13 @@ def make_wearables_infrastructure():
                 doc="Data which was collected from sensor",
             )
         ],
+        links=[
+            LinkSpec(
+                name= 'wearable_device',
+                target_type='WearableDevice',
+                doc= 'Link to WearableDevice used to record WearableTimeSeries'
+            )
+        ]
     )
 
     

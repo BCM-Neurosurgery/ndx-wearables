@@ -38,10 +38,11 @@ def nwb_with_wearables_data(tmp_path):
     device = WearableDevice(name="test_wearable_device", description="test", location="arm", manufacturer="test")
 
     # create wearable timeseries
-    ts = WearableTimeSeries(name="test_wearable_timeseries", data=wearable_values, timestamps=timestamps, unit='test')
+    ts = WearableTimeSeries(name="test_wearable_timeseries", data=wearable_values, timestamps=timestamps, unit='test', wearable_device=device)
     #ts.add_wearable_device(device)
 
     # add wearables objects to processing module
+
     nwbfile.processing["wearables_module"].add_container(ts)
     nwbfile.add_device(device)
 
@@ -76,6 +77,9 @@ def test_wearables_read(nwb_with_wearables_data):
         
         # validate metadata
         assert 'test_wearable_device' in nwbfile.devices, "Wearable device is missing"
+
+        # ensure wearabletimeseries has link to wearabledevice
+        assert wearable_timeseries.wearable_device is nwbfile.devices['test_wearable_device']
         
 
 

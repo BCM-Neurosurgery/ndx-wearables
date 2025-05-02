@@ -21,3 +21,7 @@ groups:
   - name: data
     dtype: float64
     doc: Data which was collected from sensor
+  links:
+  - name: wearable_device
+    target_type: WearableDevice
+    doc: Link to WearableDevice used to record WearableTimeSeries
