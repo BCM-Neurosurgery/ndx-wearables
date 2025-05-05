@@ -37,7 +37,20 @@ def make_wearables_infrastructure():
         ],
     )
 
-    
+    wearable_events = NWBGroupSpec(
+        neurodata_type_def="WearableEvents",
+        neurodata_type_inc="EventsRecord",
+        doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
+        quantity="*",
+        attributes=[
+            NWBAttributeSpec(
+                name="sensor", doc="Sensor from which event-based data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
+            ),
+            NWBAttributeSpec(
+                name="name", doc="Name of the event", dtype="text", required=True
+            ),
+        ],
+    )
 
     return [wearable_device, wearable_timeseries]
 

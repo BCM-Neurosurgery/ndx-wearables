@@ -3,6 +3,8 @@ from pynwb.core import MultiContainerInterface
 from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
 from pynwb.base import TimeSeries
+from ndx_events_record import EventsRecord
+
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 
@@ -20,7 +22,6 @@ class WearableDevice(Device):
     - manufacturer
     - location (on body)
     '''
-
     __nwbfields__ = ("location",)
 
     @docval(
@@ -30,8 +31,25 @@ class WearableDevice(Device):
             )
     )
 
+
     def __init__(self, **kwargs):
         location = popargs("location", kwargs)
         super().__init__(**kwargs)
 
         self.location = location
+
+# Adding events to inherit from ndx-wearables:
+# WearableEvents inherits from EventsRecord (from ndx-events-record) to store timestamped discrete events from wearables
+@register_class("WearableEvents", "ndx-wearables")
+class WearableEvents(EventsRecord):
+    __nwbfields__ = ("sensor")
+
+    @docval(
+        *get_docval(EventsRecord.__init__),
+        {"name": "sensor", "type": 'WearableSensor', "doc": "Sensor associated with the event"},
+        # Include other required fields like timestamps/description if needed
+    )
+    def __init__(self, **kwargs):
+        sensor = popargs("sensor", kwargs)
+        super().__init__(**kwargs)
+        self.sensor = sensor

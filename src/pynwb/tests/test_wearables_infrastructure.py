@@ -6,7 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from pathlib import Path
-from ndx_wearables import WearableDevice, WearableTimeSeries
+from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
 
 @pytest.fixture
 def tmp_path():
@@ -77,5 +77,45 @@ def test_wearables_read(nwb_with_wearables_data):
         # validate metadata
         assert 'test_wearable_device' in nwbfile.devices, "Wearable device is missing"
         
+    # Testing WearableEvents based on EventsRecord inheritance
+    def test_wearable_events(nwb_with_wearables_data):
+        with NWBHDF5IO(nwb_with_wearables_data, 'r+') as io:
+            nwbfile = io.read()
+            wearables_module = nwbfile.processing["wearables_module"]
 
+            # Add a fake sensor to the file
+            sensor = WearableSensor(name="sensor1", description="heart rate sensor")
+            nwbfile.add_device(sensor)
+
+            # Create events
+            timestamps = np.array([0.0, 60.0, 120.0])  # example workout start times
+            event = WearableEvents(
+                name="workout_event",
+                sensor=sensor,
+                timestamps=timestamps,
+                description="Workout start times"
+            )
+
+            # Create a new processing module 
+            if "event_module" not in nwbfile.processing:
+                event_module = ProcessingModule(name="event_module", description="Events data")
+                nwbfile.add_processing_module(event_module)
+            else:
+                event_module = nwbfile.processing["event_module"]
+
+            event_module.add(event)
+
+            # Reopen and validate
+            io.write(nwbfile)
+
+        with NWBHDF5IO(nwb_with_wearables_data, 'r') as io:
+            nwbfile = io.read()
+            assert 'event_module' in nwbfile.processing, "Events processing module is missing"
+
+            event_module = nwbfile.processing["event_module"]
+            assert 'workout_event' in event_module.data_interfaces, "Workout event not present in event module"
+
+            workout_event = event_module.get('workout_event')
+            np.testing.assert_array_equal(workout_event.timestamps[:], [0.0, 60.0, 120.0])
+            assert workout_event.sensor.name == "sensor1"
 
