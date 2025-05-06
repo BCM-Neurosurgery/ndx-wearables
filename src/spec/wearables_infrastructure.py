@@ -2,6 +2,7 @@ from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 from pynwb.base import TimeSeries
+from ndx_events import EventsRecord
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 
@@ -51,13 +52,17 @@ def make_wearables_infrastructure():
         quantity="*",
         attributes=[
             NWBAttributeSpec(
-                name="sensor", doc="Sensor from which event-based data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
-            ),
-            NWBAttributeSpec(
                 name="name", doc="Name of the event", dtype="text", required=True
             ),
         ],
+        links=[
+            LinkSpec(
+                name= 'wearable_device',
+                target_type='WearableDevice',
+                doc= 'Link to WearableDevice used to record WearableEvents'
+            )
+        ]
     )
 
-    return [wearable_device, wearable_timeseries]
+    return [wearable_device, wearable_timeseries, wearable_events]
 
