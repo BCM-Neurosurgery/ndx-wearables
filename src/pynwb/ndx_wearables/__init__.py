@@ -19,15 +19,30 @@ if not os.path.exists(__spec_path):
 load_namespaces(str(__spec_path))
 
 # TODO: Define your classes here to make them accessible at the package level.
+# Safe fallback if the namespace was not found in original logic
+import pathlib
+if not os.path.exists(__spec_path):
+    print("Namespace not found in the default paths, trying fallback...")
+    
+    # Get the location of this file
+    fallback_path = pathlib.Path(__file__).parent / "ndx-wearables.namespace.yaml"
+
+    # Try to load from the fallback path
+    if os.path.exists(fallback_path):
+        print(f"Namespace found in fallback path: {fallback_path}")
+        load_namespaces(str(fallback_path))
+    else:
+        print(f"Namespace not found in fallback path: {fallback_path}")
+
 # Either have PyNWB generate a class from the spec using `get_class` as shown
 # below or write a custom class and register it using the class decorator
 # `@register_class("TetrodeSeries", "ndx-wearables")`
 from .wearables_classes import *
 WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
 
-
 SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
 
+WearableEvents = get_class("WearableEvents", "ndx-wearables")
 
 # Remove these functions from the package
 del load_namespaces, get_class

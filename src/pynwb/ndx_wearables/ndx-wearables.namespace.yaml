@@ -1,0 +1,5 @@
+namespaces:
+  - name: ndx-wearables
+    schema:
+      - source: ndx-wearables.extensions.yaml
+    version: "0.1"

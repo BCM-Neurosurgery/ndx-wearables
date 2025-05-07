@@ -21,3 +21,17 @@ groups:
   - name: data
     dtype: float64
     doc: Data which was collected from sensor
+- neurodata_type_def: WearableEvents
+  neurodata_type_inc: NWBDataInterface
+  doc: Stores events recorded from a wearable device.
+  datasets:
+  - name: timestamps
+    dtype: float64
+    doc: Timestamps of each event
+  - name: event_labels
+    dtype: text
+    doc: Labels of each event
+  attributes:
+  - name: description
+    dtype: text
+    doc: Description of the event series
