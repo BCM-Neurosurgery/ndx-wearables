@@ -80,41 +80,41 @@ def test_wearables_read(nwb_with_wearables_data):
         # ensure wearabletimeseries has link to wearabledevice
         assert wearable_timeseries.wearable_device is nwbfile.devices['test_wearable_device']
 
-    # Testing WearableEvents based on EventsRecord inheritance
-    def test_wearable_events(nwb_with_wearables_data):
-        with NWBHDF5IO(nwb_with_wearables_data, 'r+') as io:
-            nwbfile = io.read()
-            wearables_module = nwbfile.processing["wearables_module"]
+# Testing WearableEvents based on EventsRecord inheritance
+def test_wearable_events(nwb_with_wearables_data):
+    with NWBHDF5IO(nwb_with_wearables_data, 'r+') as io:
+        nwbfile = io.read()
+        wearables_module = nwbfile.processing["wearables_module"]
 
-            # Create events
-            timestamps = np.array([0.0, 60.0, 120.0])  # example workout start times
-            event = WearableEvents(
-                name="workout_event",
-                wearable_device=nwbfile.devices['test_wearable_device'],
-                timestamps=timestamps,
-                description="Workout start times"
-            )
+        # Create events
+        timestamps = np.array([0.0, 60.0, 120.0])  # example workout start times
+        event = WearableEvents(
+            name="workout_event",
+            wearable_device=nwbfile.devices['test_wearable_device'],
+            timestamps=timestamps,
+            description="Workout start times"
+        )
 
-            # Create a new processing module
-            if "event_module" not in nwbfile.processing:
-                event_module = ProcessingModule(name="event_module", description="Events data")
-                nwbfile.add_processing_module(event_module)
-            else:
-                event_module = nwbfile.processing["event_module"]
-
-            event_module.add(event)
-
-            # Reopen and validate
-            io.write(nwbfile)
-
-        with NWBHDF5IO(nwb_with_wearables_data, 'r') as io:
-            nwbfile = io.read()
-            assert 'event_module' in nwbfile.processing, "Events processing module is missing"
-
+        # Create a new processing module
+        if "event_module" not in nwbfile.processing:
+            event_module = ProcessingModule(name="event_module", description="Events data")
+            nwbfile.add_processing_module(event_module)
+        else:
             event_module = nwbfile.processing["event_module"]
-            assert 'workout_event' in event_module.data_interfaces, "Workout event not present in event module"
 
-            workout_event = event_module.get('workout_event')
-            np.testing.assert_array_equal(workout_event.timestamps[:], [0.0, 60.0, 120.0])
-            assert workout_event.device.name == "test_wearable_device"
+        event_module.add(event)
+
+        # Reopen and validate
+        io.write(nwbfile)
+
+    with NWBHDF5IO(nwb_with_wearables_data, 'r') as io:
+        nwbfile = io.read()
+        assert 'event_module' in nwbfile.processing, "Events processing module is missing"
+
+        event_module = nwbfile.processing["event_module"]
+        assert 'workout_event' in event_module.data_interfaces, "Workout event not present in event module"
+
+        workout_event = event_module.get('workout_event')
+        np.testing.assert_array_equal(workout_event.timestamps[:], [0.0, 60.0, 120.0])
+        assert workout_event.device.name == "test_wearable_device"
 
