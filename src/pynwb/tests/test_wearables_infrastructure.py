@@ -38,7 +38,7 @@ def nwb_with_wearables_data(tmp_path):
     device = WearableDevice(name="test_wearable_device", description="test", location="arm", manufacturer="test")
 
     # create wearable timeseries
-    ts = WearableTimeSeries(name="test_wearable_timeseries", data=wearable_values, timestamps=timestamps, unit='test')
+    ts = WearableTimeSeries(name="test_wearable_timeseries", data=wearable_values, timestamps=timestamps, unit='test', wearable_device=device)
     #ts.add_wearable_device(device)
 
     # add wearables objects to processing module
@@ -76,27 +76,26 @@ def test_wearables_read(nwb_with_wearables_data):
         
         # validate metadata
         assert 'test_wearable_device' in nwbfile.devices, "Wearable device is missing"
-        
+
+        # ensure wearabletimeseries has link to wearabledevice
+        assert wearable_timeseries.wearable_device is nwbfile.devices['test_wearable_device']
+
     # Testing WearableEvents based on EventsRecord inheritance
     def test_wearable_events(nwb_with_wearables_data):
         with NWBHDF5IO(nwb_with_wearables_data, 'r+') as io:
             nwbfile = io.read()
             wearables_module = nwbfile.processing["wearables_module"]
 
-            # Add a fake sensor to the file
-            sensor = WearableSensor(name="sensor1", description="heart rate sensor")
-            nwbfile.add_device(sensor)
-
             # Create events
             timestamps = np.array([0.0, 60.0, 120.0])  # example workout start times
             event = WearableEvents(
                 name="workout_event",
-                sensor=sensor,
+                wearable_device=nwbfile.devices['test_wearable_device'],
                 timestamps=timestamps,
                 description="Workout start times"
             )
 
-            # Create a new processing module 
+            # Create a new processing module
             if "event_module" not in nwbfile.processing:
                 event_module = ProcessingModule(name="event_module", description="Events data")
                 nwbfile.add_processing_module(event_module)
@@ -117,5 +116,5 @@ def test_wearables_read(nwb_with_wearables_data):
 
             workout_event = event_module.get('workout_event')
             np.testing.assert_array_equal(workout_event.timestamps[:], [0.0, 60.0, 120.0])
-            assert workout_event.sensor.name == "sensor1"
+            assert workout_event.device.name == "test_wearable_device"
 

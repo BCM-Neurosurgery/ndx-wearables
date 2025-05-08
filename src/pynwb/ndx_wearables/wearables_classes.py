@@ -31,21 +31,31 @@ class WearableDevice(Device):
             )
     )
 
-
     def __init__(self, **kwargs):
         location = popargs("location", kwargs)
         super().__init__(**kwargs)
 
         self.location = location
 
+class WearableBase(NWBContainer):
+    @docval([
+            {'name': 'wearable_device', 'type': 'WearableDevice', 'doc': 'Link to the WearableDevice used to record the data'}
+        ])
+
+    def __init__(self, **kwargs):
+        wearable_device = popargs('wearable_device', kwargs)
+        super().__init__(**kwargs)
+        self.wearable_device = wearable_device
+
+
 # Adding events to inherit from ndx-wearables:
 # WearableEvents inherits from EventsRecord (from ndx-events-record) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
-class WearableEvents(EventsRecord):
+class WearableEvents(WearableBase, EventsRecord):
     __nwbfields__ = ("sensor")
 
     @docval(
-        *get_docval(EventsRecord.__init__),
+        * (get_docval(EventsRecord.__init__) + get_docval(WearableBase.__init__)),
         {"name": "sensor", "type": 'WearableSensor', "doc": "Sensor associated with the event"},
         # Include other required fields like timestamps/description if needed
     )
@@ -53,3 +63,10 @@ class WearableEvents(EventsRecord):
         sensor = popargs("sensor", kwargs)
         super().__init__(**kwargs)
         self.sensor = sensor
+
+@register_class("WearableTimeSeries", "ndx-wearables")
+class WearableTimeSeries(WearableBase, TimeSeries):
+    @docval(* (get_docval(TimeSeries.__init__) + get_docval(WearableBase.__init__)))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
