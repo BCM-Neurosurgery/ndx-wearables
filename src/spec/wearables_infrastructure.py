@@ -2,7 +2,7 @@ from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 from pynwb.base import TimeSeries
-from ndx_events import EventsRecord
+from ndx_events import EventsTable
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 
@@ -47,7 +47,7 @@ def make_wearables_infrastructure():
 
     wearable_events = NWBGroupSpec(
         neurodata_type_def="WearableEvents",
-        neurodata_type_inc="EventsRecord",
+        neurodata_type_inc="EventsTable",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
         attributes=[
