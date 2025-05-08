@@ -52,11 +52,9 @@ class WearableBase(NWBContainer):
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
-    __nwbfields__ = ("sensor",)
 
     @docval(
         * (get_docval(EventsTable.__init__) + get_docval(WearableBase.__init__)),
-        {"name": "sensor", "type": 'WearableSensor', "doc": "Sensor associated with the event"},
         # Include other required fields like timestamps/description if needed
     )
     def __init__(self, **kwargs):
