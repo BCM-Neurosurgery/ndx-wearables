@@ -52,9 +52,6 @@ def make_wearables_infrastructure():
         quantity="*",
         attributes=[
             NWBAttributeSpec(
-                name="sensor", doc="Sensor from which event-based data was collected", dtype=RefSpec("WearableSensor", "object"), required=True
-            ),
-            NWBAttributeSpec(
                 name="name", doc="Name of the event", dtype="text", required=True
             ),
         ],
