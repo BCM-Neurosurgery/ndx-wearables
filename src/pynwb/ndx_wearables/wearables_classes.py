@@ -58,30 +58,30 @@ class WearableBase(NWBContainer):
         )
 
     def wearables_init_helper(self, **kwargs):
-        print('In WearableBase init')
         wearable_device = popargs('wearable_device', kwargs)
         self.wearable_device = wearable_device
         return kwargs
 
-
-# # Adding events to inherit from ndx-wearables:
-# # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
-# @register_class("WearableEvents", "ndx-wearables")
-# class WearableEvents(WearableBase, CategoricalVectorData):
-#
-#     @docval(
-#         *(
-#                 get_docval(CategoricalVectorData.__init__) + get_docval(WearableBase.__init__)
-#         )
-#     )
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
 
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
 
     @docval(*(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval()))
     def __init__(self, **kwargs):
-        print('In WearableTimeSeries init')
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
+
+
+# Adding events to inherit from ndx-wearables:
+# WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
+@register_class("WearableEvents", "ndx-wearables")
+class WearableEvents(WearableBase, CategoricalVectorData):
+
+    @docval(
+        *(
+                get_docval(CategoricalVectorData.__init__) + get_docval(WearableBase.__init__)
+        )
+    )
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
