@@ -6,7 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from pathlib import Path
-from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
+from ndx_wearables import WearableDevice, WearableTimeSeries # , WearableEvents
 
 @pytest.fixture
 def tmp_path():
