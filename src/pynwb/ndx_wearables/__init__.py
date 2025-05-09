@@ -1,11 +1,20 @@
 import os
-from pynwb import load_namespaces, get_class
+from pynwb import load_namespaces, get_class, available_namespaces
 
 try:
     from importlib.resources import files
 except ImportError:
     # TODO: Remove when python 3.9 becomes the new minimum
     from importlib_resources import files
+
+print(f'Initial namespaces: {available_namespaces()}')
+
+# Load the spec for NDX-Events first
+import ndx_events
+__events_spec = ndx_events.__spec_path
+events_ns = load_namespaces(str(__events_spec))
+
+print(f'After events: {available_namespaces()}')
 
 # Get path to the namespace.yaml file with the expected location when installed not in editable mode
 __location_of_this_file = files(__name__)
@@ -34,15 +43,13 @@ if not os.path.exists(__spec_path):
     else:
         print(f"Namespace not found in fallback path: {fallback_path}")
 
-# Either have PyNWB generate a class from the spec using `get_class` as shown
-# below or write a custom class and register it using the class decorator
-# `@register_class("TetrodeSeries", "ndx-wearables")`
+# Import the base classes
 from .wearables_classes import *
-WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
 
+# Generate classes for individual modalities on the fly
 SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
 
-WearableEvents = get_class("WearableEvents", "ndx-wearables")
+print(f'Final: {available_namespaces()}')
 
 # Remove these functions from the package
 del load_namespaces, get_class

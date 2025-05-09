@@ -75,13 +75,14 @@ class WearableTimeSeries(WearableBase, TimeSeries):
 # Adding events to inherit from ndx-wearables:
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
-class WearableEvents(WearableBase, CategoricalVectorData):
+class WearableEvents(WearableBase, EventsTable):
 
     @docval(
         *(
-                get_docval(CategoricalVectorData.__init__) + get_docval(WearableBase.__init__)
+                get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval()
         )
     )
     def __init__(self, **kwargs):
+        kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
