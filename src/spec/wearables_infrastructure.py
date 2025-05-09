@@ -2,7 +2,7 @@ from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 from pynwb.base import TimeSeries
-from ndx_events import EventsRecord
+from ndx_events import EventsTable
 
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 
@@ -24,7 +24,7 @@ def make_wearables_infrastructure():
             )
         ],
     )
-    
+
     wearable_timeseries = NWBGroupSpec(
         neurodata_type_def="WearableTimeSeries",
         neurodata_type_inc="TimeSeries",
@@ -45,24 +45,24 @@ def make_wearables_infrastructure():
         ]
     )
 
-    wearable_events = NWBGroupSpec(
-        neurodata_type_def="WearableEvents",
-        neurodata_type_inc="EventsRecord",
-        doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
-        quantity="*",
-        attributes=[
-            NWBAttributeSpec(
-                name="name", doc="Name of the event", dtype="text", required=True
-            ),
-        ],
-        links=[
-            LinkSpec(
-                name= 'wearable_device',
-                target_type='WearableDevice',
-                doc= 'Link to WearableDevice used to record WearableEvents'
-            )
-        ]
-    )
+    # wearable_events = NWBGroupSpec(
+    #     neurodata_type_def="WearableEvents",
+    #     neurodata_type_inc="EventsTable",
+    #     doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
+    #     quantity="*",
+    #     attributes=[
+    #         NWBAttributeSpec(
+    #             name="name", doc="Name of the event", dtype="text", required=True
+    #         ),
+    #     ],
+    #     links=[
+    #         LinkSpec(
+    #             name= 'wearable_device',
+    #             target_type='WearableDevice',
+    #             doc= 'Link to WearableDevice used to record WearableEvents'
+    #         )
+    #     ]
+    # )
 
-    return [wearable_device, wearable_timeseries, wearable_events]
+    return [wearable_device, wearable_timeseries]  # , wearable_events]
 

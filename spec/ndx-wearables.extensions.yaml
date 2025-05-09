@@ -25,15 +25,3 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableTimeSeries
-- neurodata_type_def: WearableEvents
-  neurodata_type_inc: EventsRecord
-  doc: Interval-style data (e.g., workouts) from wearable sensors/devices
-  quantity: '*'
-  attributes:
-  - name: name
-    dtype: text
-    doc: Name of the event
-  links:
-  - name: wearable_device
-    target_type: WearableDevice
-    doc: Link to WearableDevice used to record WearableEvents
