@@ -66,7 +66,9 @@ class WearableBase(NWBContainer):
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
 
-    @docval(*(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval()))
+    @docval(
+        *(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval())
+    )
     def __init__(self, **kwargs):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
@@ -78,9 +80,7 @@ class WearableTimeSeries(WearableBase, TimeSeries):
 class WearableEvents(WearableBase, EventsTable):
 
     @docval(
-        *(
-                get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval()
-        )
+        *(get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval())
     )
     def __init__(self, **kwargs):
         kwargs = self.wearables_init_helper(**kwargs)
