@@ -48,6 +48,8 @@ from .wearables_classes import *
 
 # Generate classes for individual modalities on the fly
 SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
+HRVSeries = get_class("HRVSeries", "ndx-wearables")
+VO2maxSeries = get_class("VO2maxSeries", "ndx-wearables")
 
 print(f'Final: {available_namespaces()}')
 
