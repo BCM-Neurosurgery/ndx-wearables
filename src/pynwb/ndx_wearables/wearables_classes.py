@@ -37,7 +37,7 @@ class WearableDevice(Device):
 
         self.location = location
 
-class WearableBase(NWBContainer):
+class WearableBase(object):
     """
     HDMF and by extension NWB does not really support multiple inheritance.
     As a result, this class is "invisibly" inherited as a mixin
