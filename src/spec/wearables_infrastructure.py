@@ -50,11 +50,6 @@ def make_wearables_infrastructure():
         neurodata_type_inc="EventsTable",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
-        attributes=[
-            NWBAttributeSpec(
-                name="name", doc="Name of the event", dtype="text", required=True
-            ),
-        ],
         links=[
             LinkSpec(
                 name= 'wearable_device',

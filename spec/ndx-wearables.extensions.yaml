@@ -29,10 +29,6 @@ groups:
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices
   quantity: '*'
-  attributes:
-  - name: name
-    dtype: text
-    doc: Name of the event
   links:
   - name: wearable_device
     target_type: WearableDevice
