@@ -16,14 +16,12 @@ from ndx_events import NdxEventsNWBFile, MeaningsTable, CategoricalVectorData
 from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
 from tests import tmp_path, wearables_nwbfile, wearables_nwbfile_device
 
-@pytest.fixture
-def nwb_with_wearable_ts(wearables_nwbfile_device):
-    nwbfile, device = wearables_nwbfile_device
 
+def add_wearable_timeseries(nwbfile, device):
     # generate fake wearables data
     timestamps = np.arange(0, 3600, 30)
     np.random.seed(0)
-    wearable_values = np.random.random(size=(120,2))
+    wearable_values = np.random.random(size=(120, 2))
 
     # create wearable timeseries
     ts = WearableTimeSeries(
@@ -36,21 +34,9 @@ def nwb_with_wearable_ts(wearables_nwbfile_device):
 
     # add wearables objects to processing module
     nwbfile.processing["wearables"].add_container(ts)
-
     return nwbfile
 
-@pytest.fixture
-def write_nwb_with_wearable_timeseries(tmp_path, nwb_with_wearable_ts):
-    file_path = tmp_path / "test_wearables.nwb"
-    with NWBHDF5IO(file_path, 'w') as io:
-        io.write(nwb_with_wearable_ts)
-
-    return file_path
-
-@pytest.fixture
-def nwb_with_wearable_events(wearables_nwbfile_device):
-    nwbfile, device = wearables_nwbfile_device
-
+def add_wearable_events(nwbfile, device):
     # Build out a meanings table to use in the events file
     test_meanings = MeaningsTable(name="test_meanings", description="test")
     test_meanings.add_row(value='a', meaning="first value entered")
@@ -74,7 +60,26 @@ def nwb_with_wearable_events(wearables_nwbfile_device):
     events.add_row(timestamp=120.0, cat_column="a", text_column="third row text")
 
     nwbfile.processing["wearables"].add_container(events)
+    return nwbfile
 
+@pytest.fixture
+def nwb_with_wearable_ts(wearables_nwbfile_device):
+    nwbfile, device = wearables_nwbfile_device
+    nwbfile = add_wearable_timeseries(nwbfile, device)
+    return nwbfile
+
+@pytest.fixture
+def write_nwb_with_wearable_timeseries(tmp_path, nwb_with_wearable_ts):
+    file_path = tmp_path / "test_wearables.nwb"
+    with NWBHDF5IO(file_path, 'w') as io:
+        io.write(nwb_with_wearable_ts)
+
+    return file_path
+
+@pytest.fixture
+def nwb_with_wearable_events(wearables_nwbfile_device):
+    nwbfile, device = wearables_nwbfile_device
+    nwbfile = add_wearable_events(nwbfile, device)
     return nwbfile
 
 
