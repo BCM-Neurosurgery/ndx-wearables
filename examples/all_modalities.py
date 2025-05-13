@@ -5,7 +5,6 @@ from tests.test_wearables_infrastructure import add_wearable_events, add_wearabl
 from tests.test_hrv_extension import add_hrv_data
 from tests.test_vo2max_extension import add_vo2max_data
 
-
 # List of all modality specific build functions. Add your mode functions here to register them in the full demo NWB
 # Each of these functions should take a pre-built NWB file, and add some synthetic data for the modality in question
 MODALITY_BUILDERS = [
