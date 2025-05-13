@@ -14,8 +14,6 @@ from pathlib import Path
 from hdmf.common.table import VectorData
 from ndx_events import NdxEventsNWBFile, MeaningsTable, CategoricalVectorData
 from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
-from tests import tmp_path, wearables_nwbfile, wearables_nwbfile_device
-
 
 def add_wearable_timeseries(nwbfile, device):
     # generate fake wearables data
