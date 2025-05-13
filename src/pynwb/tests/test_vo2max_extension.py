@@ -6,18 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
 from ndx_wearables import VO2maxSeries #Assuming VO2maxSeries is correctly implemented in ndx_wearables/yaml file
 
-@pytest.fixture
-def nwb_with_vo2max_data(tmp_path):
-    '''
-    Creates an NWB file with VO2MaxSeries for testing.
-    Returns the file path.
-    '''
-    nwbfile = NWBFile(
-        session_description='Example VO2 max study session',
-        identifier='TEST_VO2MAX',
-        session_start_time=datetime.now(pytz.timezone('America/Chicago')),
-    )
-
+def add_vo2max_data(nwbfile, device):
     # Generate VO2 max data
     timestamps = np.arange(0., 3600, 30)  # Every 30 seconds for 1 hour
     np.random.seed(42)
@@ -32,19 +21,24 @@ def nwb_with_vo2max_data(tmp_path):
         description='Example VO2 max data'
     )
 
-    # Add to a processing module
-    fitness_module = ProcessingModule(
-        name='fitness_data',
-        description='VO2 max data'
-    )
+    # add heart rate data to the wearables processing module
+    nwbfile.processing["wearables_module"].add_container(vo2max_series)
 
-    fitness_module.add(vo2max_series)
-    nwbfile.add_processing_module(fitness_module)
+    return nwbfile
+
+@pytest.fixture
+def nwb_with_vo2max_data(wearables_nwbfile_device):
+    nwbfile, device = wearables_nwbfile_device
+    nwbfile = nwb_with_vo2max_data(nwbfile, device)
+    return nwbfile
+
+@pytest.fixture
+def write_nwb_with_vo2max_data(tmp_path, nwb_with_vo2max_data):
 
     # Save NWB file
     file_path = tmp_path / 'vo2max_study.nwb'
     with NWBHDF5IO(file_path, 'w') as io:
-        io.write(nwbfile)
+        io.write(nwb_with_vo2max_data)
 
     return file_path
 
