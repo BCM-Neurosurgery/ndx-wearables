@@ -6,20 +6,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
 from ndx_wearables import HRVSeries #Assuming HRVSeries is correctly implemented in ndx_wearables/yaml file
 
-
-
-@pytest.fixture
-def nwb_with_hrv_data(tmp_path):
-    '''
-    Creates a NWB file with HRVSeries for testing.
-    Returns the file path.
-    '''
-    nwbfile = NWBFile(
-        session_description='Example HRV study session',
-        identifier='TEST_HRV',
-        session_start_time=datetime.now(pytz.timezone('America/Chicago')),
-    )
-
+def add_hrv_data(nwbfile, device):
     # Generate heart rate data
     timestamps = np.arange(0., 3600, 30)  # Every 30 seconds for 1 hour
     np.random.seed(42)
@@ -34,21 +21,29 @@ def nwb_with_hrv_data(tmp_path):
         description='Example HRV data'
     )
 
-    # Add to a processing module
-    cardiac_module = ProcessingModule(
-        name='cardiac_health',
-        description='HRV data'
-    )
-    
-    cardiac_module.add(hrv_series)
-    nwbfile.add_processing_module(cardiac_module)
+    # add heart rate data to the wearables processing module
+    nwbfile.processing["wearables_module"].add_container(hrv_series)
+
+    return nwbfile
+
+
+@pytest.fixture
+def nwb_with_hrv_data(wearables_nwbfile_device):
+    nwbfile, device = wearables_nwbfile_device
+    nwbfile = add_hrv_data(nwbfile, device)
+    return nwbfile
+
+
+@pytest.fixture
+def write_nwb_with_hrv_data(tmp_path, nwb_with_hrv_data):
 
     # Save NWB file
     file_path = tmp_path / 'hrv_study.nwb'
     with NWBHDF5IO(file_path, 'w') as io:
-        io.write(nwbfile)
+        io.write(nwb_with_hrv_data)
 
     return file_path
+
 
 def test_hrv_write_read(nwb_with_hrv_data):
     '''
