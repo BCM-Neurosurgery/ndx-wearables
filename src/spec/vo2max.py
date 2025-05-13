@@ -6,13 +6,6 @@ import numpy as np
 def make_vo2max_stage():
     vo2max_series = NWBGroupSpec(
         doc='Stores Vo2 max values as raw strings over time.',
-        datasets=[
-            NWBDatasetSpec(
-                name='data',
-                dtype='float',
-                doc='Vo2 max values'
-            )
-        ],
         neurodata_type_def='VO2maxSeries',
         neurodata_type_inc='WearableTimeSeries',
     )
