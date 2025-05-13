@@ -14,7 +14,7 @@ def make_vo2max_stage():
             )
         ],
         neurodata_type_def='VO2maxSeries',
-        neurodata_type_inc='TimeSeries',
+        neurodata_type_inc='WearableTimeSeries',
     )
         
     return vo2max_series
