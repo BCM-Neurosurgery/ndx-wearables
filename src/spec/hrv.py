@@ -14,7 +14,7 @@ def make_hrv_stage():
             )
         ],
         neurodata_type_def='HRVSeries',
-        neurodata_type_inc='TimeSeries',
+        neurodata_type_inc='WearableTimeSeries',
     )
 
     return hrv_series 
