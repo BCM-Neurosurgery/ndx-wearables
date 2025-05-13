@@ -22,6 +22,7 @@ def main():
         ],
     )
     ns_builder.include_namespace("core")
+    ns_builder.include_namespace("ndx-events")
     
     # TODO: if your extension builds on another extension, include the namespace
     # of the other extension below

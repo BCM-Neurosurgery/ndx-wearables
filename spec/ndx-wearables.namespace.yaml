@@ -7,5 +7,6 @@ namespaces:
   name: ndx-wearables
   schema:
   - namespace: core
+  - namespace: ndx-events
   - source: ndx-wearables.extensions.yaml
   version: 0.1.0
