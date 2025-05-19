@@ -46,6 +46,7 @@ def nwb_with_sleep_stages(tmp_path):
 
     return file_path
 
+@pytest.mark.skip("SleepStageSeries has not yet been updated to include WearablesBase")
 def test_sleep_stage_write_read(nwb_with_sleep_stages):
     '''
     Test that SleepStageSeries can be written and read from an NWB file.

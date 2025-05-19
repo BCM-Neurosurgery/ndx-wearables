@@ -68,11 +68,10 @@ def nwb_with_wearable_ts(wearables_nwbfile_device):
 
 @pytest.fixture
 def write_nwb_with_wearable_timeseries(tmp_path, nwb_with_wearable_ts):
-    file_path = tmp_path / "test_wearables.nwb"
-    with NWBHDF5IO(file_path, 'w') as io:
+    with NWBHDF5IO(tmp_path, 'w') as io:
         io.write(nwb_with_wearable_ts)
 
-    return file_path
+    return tmp_path
 
 @pytest.fixture
 def nwb_with_wearable_events(wearables_nwbfile_device):
@@ -83,11 +82,10 @@ def nwb_with_wearable_events(wearables_nwbfile_device):
 
 @pytest.fixture
 def write_nwb_with_wearable_events(tmp_path, nwb_with_wearable_events):
-    file_path = tmp_path / "test_wearables.nwb"
-    with NWBHDF5IO(file_path, 'w') as io:
+    with NWBHDF5IO(tmp_path, 'w') as io:
         io.write(nwb_with_wearable_events)
 
-    return file_path
+    return tmp_path
 
 
 def test_wearables_timeseries(write_nwb_with_wearable_timeseries):

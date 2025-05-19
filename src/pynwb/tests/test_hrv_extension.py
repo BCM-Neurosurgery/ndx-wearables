@@ -36,16 +36,14 @@ def nwb_with_hrv_data(wearables_nwbfile_device):
 
 @pytest.fixture
 def write_nwb_with_hrv_data(tmp_path, nwb_with_hrv_data):
-
     # Save NWB file
-    file_path = tmp_path / 'hrv_study.nwb'
-    with NWBHDF5IO(file_path, 'w') as io:
+    with NWBHDF5IO(tmp_path, 'w') as io:
         io.write(nwb_with_hrv_data)
 
-    return file_path
+    return tmp_path
 
 
-def test_hrv_write_read(nwb_with_hrv_data):
+def test_hrv_write_read(write_nwb_with_hrv_data):
     '''
     Test that HRVSeries can be written and read from an NWB file.
     '''
@@ -55,7 +53,7 @@ def test_hrv_write_read(nwb_with_hrv_data):
     expected_timestamps = np.arange(0., 3600, 30)  # Correct to match the 30-second interval
 
     # Read the NWB file
-    with NWBHDF5IO(nwb_with_hrv_data, 'r') as io:
+    with NWBHDF5IO(write_nwb_with_hrv_data, 'r') as io:
         nwbfile = io.read()
 
         # Ensure the cardiac health processing module is present
