@@ -22,7 +22,7 @@ def add_hrv_data(nwbfile, device):
     )
 
     # add heart rate data to the wearables processing module
-    nwbfile.processing["wearables_module"].add_container(hrv_series)
+    nwbfile.processing["wearables"].add_container(hrv_series)
 
     return nwbfile
 
@@ -59,10 +59,10 @@ def test_hrv_write_read(nwb_with_hrv_data):
         nwbfile = io.read()
 
         # Ensure the cardiac health processing module is present
-        assert 'cardiac_health' in nwbfile.processing, 'Cardiac health processing module is missing.'
+        assert 'wearables' in nwbfile.processing, 'Wearables processing module is missing.'
 
         # Ensure the HRVSeries data interface is present
-        cardiac_data = nwbfile.processing['cardiac_health']
+        cardiac_data = nwbfile.processing['wearables']
         assert 'HRV Data' in cardiac_data.data_interfaces, 'HRVSeries is missing.'
 
         hrv_series = cardiac_data.get('HRV Data')

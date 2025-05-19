@@ -56,7 +56,7 @@ def test_vo2max_write_read(nwb_with_vo2max_data):
         nwbfile = io.read()
 
         # Ensure the fitness data processing module is present
-        assert 'fitness_data' in nwbfile.processing, 'Fitness data processing module is missing.'
+        assert 'wearables' in nwbfile.processing, 'Fitness data processing module is missing.'
 
         # Ensure the VO2MaxSeries data interface is present
         fitness_data = nwbfile.processing['fitness_data']
