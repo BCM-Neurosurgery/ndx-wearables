@@ -33,3 +33,17 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
+- neurodata_type_def: HRVSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores HRV values as strings over time.
+  datasets:
+  - name: data
+    dtype: int
+    doc: HRV calculated values
+- neurodata_type_def: VO2maxSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores Vo2 max values as raw strings over time.
+  datasets:
+  - name: data
+    dtype: float
+    doc: Vo2 max values
