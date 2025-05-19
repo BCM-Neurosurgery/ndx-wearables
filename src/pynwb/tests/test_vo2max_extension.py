@@ -29,7 +29,7 @@ def add_vo2max_data(nwbfile, device):
 @pytest.fixture
 def nwb_with_vo2max_data(wearables_nwbfile_device):
     nwbfile, device = wearables_nwbfile_device
-    nwbfile = nwb_with_vo2max_data(nwbfile, device)
+    nwbfile = add_vo2max_data(nwbfile, device)
     return nwbfile
 
 @pytest.fixture
