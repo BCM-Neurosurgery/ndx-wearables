@@ -7,6 +7,8 @@ from wearables_infrastructure import make_wearables_infrastructure
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
 import sleep
+import hrv
+import vo2max
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
@@ -22,6 +24,7 @@ def main():
         ],
     )
     ns_builder.include_namespace("core")
+    ns_builder.include_namespace("ndx-events")
     
     # TODO: if your extension builds on another extension, include the namespace
     # of the other extension below
@@ -33,9 +36,13 @@ def main():
 
     wearables_infra_datastructures = make_wearables_infrastructure()
     sleep_stage_series = sleep.make_sleep_stage()
+    hrv_series = hrv.make_hrv_stage()
+    vo2max_series = vo2max.make_vo2max_stage()
 
     # TODO: add all of your new data types to this list
     new_data_types = [sleep_stage_series, *wearables_infra_datastructures]
+    new_data_types = [hrv_series]
+    new_data_types = [vo2max_series, sleep_stage_series]
 
 
     # export the spec to yaml files in the spec folder
