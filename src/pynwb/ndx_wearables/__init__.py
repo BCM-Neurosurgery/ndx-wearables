@@ -1,5 +1,9 @@
 import os
 from pynwb import load_namespaces, get_class, available_namespaces
+from .hrv import HRVSeries
+from .vo2max import VO2maxSeries
+
+
 
 try:
     from importlib.resources import files
