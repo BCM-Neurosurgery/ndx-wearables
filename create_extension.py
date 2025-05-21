@@ -1,2 +1,5 @@
-# create_extension.py
-print("✅ create_extension.py was called successfully!")
+import sys
+sys.path.append("src/spec")
+
+import create_extension_spec
+create_extension_spec.main()
