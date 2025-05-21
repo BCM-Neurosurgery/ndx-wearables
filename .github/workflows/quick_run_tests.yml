@@ -35,6 +35,14 @@ jobs:
           python -m pip install -r requirements-dev.txt
           python -m pip install .
 
+      - name: Build extension YAML (if needed)
+        run: |
+          if [ -f create_extension.py ]; then
+            python create_extension.py
+          else
+            echo "No create_extension.py found, skipping manual build step"
+          fi
+
       - name: Run tests
         run: |
           pytest -v
