@@ -40,9 +40,12 @@ def main():
     vo2max_series = vo2max.make_vo2max_stage()
 
     # TODO: add all of your new data types to this list
-    new_data_types = [sleep_stage_series, *wearables_infra_datastructures]
-    new_data_types = [hrv_series]
-    new_data_types = [vo2max_series, sleep_stage_series]
+    new_data_types = [*wearables_infra_datastructures]
+    new_data_types.extend([
+        hrv_series,
+        vo2max_series,
+        sleep_stage_series
+    ])
 
 
     # export the spec to yaml files in the spec folder
