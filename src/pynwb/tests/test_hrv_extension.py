@@ -18,7 +18,8 @@ def add_hrv_data(nwbfile, device):
         data=heart_rate_values,
         unit='bpm',  # Beats per minute
         timestamps=timestamps,
-        description='Example HRV data'
+        description='Example HRV data',
+        wearable_device=device
     )
 
     # add heart rate data to the wearables processing module
