@@ -10,8 +10,7 @@ def add_activityclass_data(nwbfile, device):
     # Generate activity class labels
     timestamps = np.arange(0., 3600, 30)  # Every 30 seconds for 1 hour
     np.random.seed(42)
-    labels = np.array(['sitting', 'walking', 'running'])
-    activityclass_values = np.tile(labels, 40)[:120]
+    activityclass_values = np.tile([0, 1, 2], 40)[:120]  # or use np.random.choice([0, 1, 2], size=120)
 
     # Create ActivityClassSeries object
     activityclass_series = ActivityClassSeries(
