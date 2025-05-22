@@ -1,11 +1,4 @@
 groups:
-- neurodata_type_def: SleepStageSeries
-  neurodata_type_inc: TimeSeries
-  doc: Stores sleep stages as raw strings over time.
-  datasets:
-  - name: data
-    dtype: text
-    doc: Sleep stage labels
 - neurodata_type_def: WearableDevice
   neurodata_type_inc: Device
   doc: Wearable device from which data was recorded
@@ -34,16 +27,15 @@ groups:
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
 - neurodata_type_def: HRVSeries
-  neurodata_type_inc: TimeSeries
+  neurodata_type_inc: WearableTimeSeries
   doc: Stores HRV values as strings over time.
-  datasets:
-  - name: data
-    dtype: int
-    doc: HRV calculated values
 - neurodata_type_def: VO2maxSeries
-  neurodata_type_inc: TimeSeries
+  neurodata_type_inc: WearableTimeSeries
   doc: Stores Vo2 max values as raw strings over time.
+- neurodata_type_def: SleepStageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores sleep stages as raw strings over time.
   datasets:
   - name: data
-    dtype: float
-    doc: Vo2 max values
+    dtype: text
+    doc: Sleep stage labels

@@ -1,7 +1,6 @@
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
+from pynwb.spec import NWBGroupSpec
+
+
 
 def make_vo2max_stage():
     vo2max_series = NWBGroupSpec(

@@ -18,7 +18,8 @@ def add_vo2max_data(nwbfile, device):
         data=vo2_max_values,
         unit='mL/kg/min',  # VO2 max units
         timestamps=timestamps,
-        description='Example VO2 max data'
+        description='Example VO2 max data',
+        wearable_device=device
     )
 
     # add heart rate data to the wearables processing module

@@ -1,7 +1,5 @@
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
+
 
 def make_hrv_stage():
     hrv_series = NWBGroupSpec(
@@ -11,3 +9,5 @@ def make_hrv_stage():
     )
 
     return hrv_series 
+
+
