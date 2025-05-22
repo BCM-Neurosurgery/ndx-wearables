@@ -2,7 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import EnumTimeSeries
 
-@register_class('ActivityClassSeries', 'ndx-wearables')
 class ActivityClassSeries(EnumTimeSeries):
     """Activity classification labels stored as a wearable time series"""
     pass

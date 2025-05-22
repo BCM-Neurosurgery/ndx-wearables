@@ -2,7 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries
 
-@register_class('StepCountSeries', 'ndx-wearables')
 class StepCountSeries(WearableTimeSeries):
     """Step count data stored as a wearable time series"""
     pass

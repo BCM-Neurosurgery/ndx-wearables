@@ -2,7 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries
 
-@register_class('BloodOxygenSeries', 'ndx-wearables')
 class BloodOxygenSeries(WearableTimeSeries):
     """Blood oxygen data stored as a wearable time series"""
     pass

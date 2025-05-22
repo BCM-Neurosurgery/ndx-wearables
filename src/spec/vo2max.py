@@ -5,7 +5,6 @@ import numpy as np
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries  
 
-@register_class('VO2maxSeries', 'ndx-wearables')
 class VO2maxSeries(WearableTimeSeries):
     """VO2 max data stored as a wearable time series"""
     pass

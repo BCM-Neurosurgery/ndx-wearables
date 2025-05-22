@@ -2,7 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries
 
-@register_class('MetSeries', 'ndx-wearables')
 class MetSeries(WearableTimeSeries):
     """Metabolic equivalent (MET) values stored as a wearable time series"""
     pass

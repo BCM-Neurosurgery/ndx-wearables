@@ -5,7 +5,6 @@ import numpy as np
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries
 
-@register_class('HRVSeries', 'ndx-wearables')
 class HRVSeries(WearableTimeSeries):
     """HRV data stored as a wearable time series"""
     pass
