@@ -63,6 +63,13 @@ def make_wearables_infrastructure():
         neurodata_type_def="EnumTimeSeries",
         neurodata_type_inc="WearableTimeSeries",
         doc="A wearable time series intended for storing enumerated string labels",
+        datasets=[
+            NWBDatasetSpec(
+                name="data",
+                dtype="text",
+                doc="String labels representing enumerated classes (e.g., 'walking', 'sitting')"
+            )
+        ],
         links=[
             LinkSpec(
                 name='wearable_device',
@@ -71,6 +78,7 @@ def make_wearables_infrastructure():
             )
         ]
     )
+
 
 
     return [wearable_device, wearable_timeseries, wearable_events, enum_timeseries]
