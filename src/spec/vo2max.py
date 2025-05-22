@@ -1,13 +1,4 @@
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
-from pynwb import register_class
-from ndx_wearables import WearableTimeSeries  
-
-class VO2maxSeries(WearableTimeSeries):
-    """VO2 max data stored as a wearable time series"""
-    pass
+from pynwb.spec import NWBGroupSpec
 
 def make_vo2max_stage():
     vo2max_series = NWBGroupSpec(
