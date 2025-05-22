@@ -2,10 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import EnumTimeSeries
 
-class SleepPhaseSeries(EnumTimeSeries):
-    """Sleep phase classification stored as a wearable time series"""
-    pass
-
 def make_sleep_phase_stage():
     sleep_phase_series = NWBGroupSpec(
         doc='Stores sleep phase categories (e.g., REM, deep) over time.',

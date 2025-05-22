@@ -2,9 +2,6 @@ from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
 from ndx_wearables import WearableTimeSeries
 
-class SleepMovementSeries(WearableTimeSeries):
-    """Movement intensity or frequency during sleep stored as a wearable time series"""
-    pass
 
 def make_sleep_movement_stage():
     sleep_movement_series = NWBGroupSpec(
