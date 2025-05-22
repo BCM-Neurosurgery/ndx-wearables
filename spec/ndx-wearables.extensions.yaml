@@ -34,12 +34,12 @@ groups:
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
 - neurodata_type_def: EnumTimeSeries
-  neurodata_type_inc: TimeSeries
-  doc: TimeSeries subclass for storing enumerated string labels
-  datasets:
-  - name: data
-    dtype: text
-    doc: Categorical label (e.g., "REM", "active", "walking")
+  neurodata_type_inc: WearableTimeSeries
+  doc: A wearable time series intended for storing enumerated string labels
+  links:
+    - name: wearable_device
+      target_type: WearableDevice
+      doc: Link to WearableDevice used to record this data
 - neurodata_type_def: HRVSeries
   neurodata_type_inc: WearableTimeSeries
   doc: Stores HRV values as strings over time.
@@ -96,6 +96,8 @@ groups:
   - name: data
     dtype: text
     doc: Sleep phase classification
+
+
 - neurodata_type_def: ActivityClassSeries
   neurodata_type_inc: EnumTimeSeries
   doc: Stores categorical labels for physical activity class over time.
