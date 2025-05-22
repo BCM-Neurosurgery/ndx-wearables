@@ -7,7 +7,7 @@ class SleepPhaseSeries(WearableTimeSeries):
     """Sleep phase classification stored as a wearable time series"""
     pass
 
-def make_sleep_phase_series():
+def make_sleep_phase_stage():
     sleep_phase_series = NWBGroupSpec(
         doc='Stores sleep phase categories (e.g., REM, deep) over time.',
         neurodata_type_def='SleepPhaseSeries',

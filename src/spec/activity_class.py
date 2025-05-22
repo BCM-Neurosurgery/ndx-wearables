@@ -7,7 +7,7 @@ class ActivityClassSeries(WearableTimeSeries):
     """Activity classification labels stored as a wearable time series"""
     pass
 
-def make_activity_class_series():
+def make_activity_class_stage():
     activity_class_series = NWBGroupSpec(
         doc='Stores categorical labels for physical activity class over time.',
         neurodata_type_def='ActivityClassSeries',

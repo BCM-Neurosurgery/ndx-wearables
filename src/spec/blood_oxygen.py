@@ -7,7 +7,7 @@ class BloodOxygenSeries(WearableTimeSeries):
     """Blood oxygen data stored as a wearable time series"""
     pass
 
-def make_blood_oxygen_series():
+def make_blood_oxygen_stage():
     blood_oxygen_series = NWBGroupSpec(
         doc='Stores blood oxygen saturation levels over time.',
         neurodata_type_def='BloodOxygenSeries',

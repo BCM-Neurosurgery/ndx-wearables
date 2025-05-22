@@ -7,7 +7,7 @@ class MetSeries(WearableTimeSeries):
     """Metabolic equivalent (MET) values stored as a wearable time series"""
     pass
 
-def make_met_series():
+def make_met_stage():
     met_series = NWBGroupSpec(
         doc='Stores metabolic equivalent (MET) values over time.',
         neurodata_type_def='MetSeries',
