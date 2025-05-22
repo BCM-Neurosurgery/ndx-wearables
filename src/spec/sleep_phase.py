@@ -1,6 +1,6 @@
 from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from ndx_wearables import WearableTimeSeries
+from ndx_wearables import EnumTimeSeries
 
 @register_class('SleepPhaseSeries', 'ndx-wearables')
 class SleepPhaseSeries(EnumTimeSeries):
