@@ -1,9 +1,16 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableTimeSeries
+from ndx_wearables import WearableTimeSeries
 
-@register_class("BloodOxygenSeries", "ndx-wearables")
+@register_class('BloodOxygenSeries', 'ndx-wearables')
 class BloodOxygenSeries(WearableTimeSeries):
-    @docval(*get_docval(WearableTimeSeries.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    """Blood oxygen data stored as a wearable time series"""
+    pass
+
+def make_blood_oxygen_series():
+    blood_oxygen_series = NWBGroupSpec(
+        doc='Stores blood oxygen saturation levels over time.',
+        neurodata_type_def='BloodOxygenSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return blood_oxygen_series

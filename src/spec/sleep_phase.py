@@ -1,9 +1,16 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableEvents
+from ndx_wearables import WearableTimeSeries
 
-@register_class("SleepPhaseSeries", "ndx-wearables")
-class SleepPhaseSeries(WearableEvents):
-    @docval(*get_docval(WearableEvents.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+@register_class('SleepPhaseSeries', 'ndx-wearables')
+class SleepPhaseSeries(WearableTimeSeries):
+    """Sleep phase classification stored as a wearable time series"""
+    pass
+
+def make_sleep_phase_series():
+    sleep_phase_series = NWBGroupSpec(
+        doc='Stores sleep phase categories (e.g., REM, deep) over time.',
+        neurodata_type_def='SleepPhaseSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return sleep_phase_series

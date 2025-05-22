@@ -1,9 +1,16 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableTimeSeries
+from ndx_wearables import WearableTimeSeries
 
-@register_class("SleepMovementSeries", "ndx-wearables")
+@register_class('SleepMovementSeries', 'ndx-wearables')
 class SleepMovementSeries(WearableTimeSeries):
-    @docval(*get_docval(WearableTimeSeries.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    """Movement intensity or frequency during sleep stored as a wearable time series"""
+    pass
+
+def make_sleep_movement_series():
+    sleep_movement_series = NWBGroupSpec(
+        doc='Captures movement intensity or frequency during sleep.',
+        neurodata_type_def='SleepMovementSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return sleep_movement_series

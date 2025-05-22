@@ -1,9 +1,16 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableTimeSeries
+from ndx_wearables import WearableTimeSeries
 
-@register_class("MetSeries", "ndx-wearables")
+@register_class('MetSeries', 'ndx-wearables')
 class MetSeries(WearableTimeSeries):
-    @docval(*get_docval(WearableTimeSeries.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    """Metabolic equivalent (MET) values stored as a wearable time series"""
+    pass
+
+def make_met_series():
+    met_series = NWBGroupSpec(
+        doc='Stores metabolic equivalent (MET) values over time.',
+        neurodata_type_def='MetSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return met_series

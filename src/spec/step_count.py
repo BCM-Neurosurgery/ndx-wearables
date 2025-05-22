@@ -1,9 +1,16 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableTimeSeries
+from ndx_wearables import WearableTimeSeries
 
-@register_class("StepCountSeries", "ndx-wearables")
+@register_class('StepCountSeries', 'ndx-wearables')
 class StepCountSeries(WearableTimeSeries):
-    @docval(*get_docval(WearableTimeSeries.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    """Step count data stored as a wearable time series"""
+    pass
+
+def make_step_count_series():
+    step_count_series = NWBGroupSpec(
+        doc='Stores number of steps recorded by wearable device.',
+        neurodata_type_def='StepCountSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return step_count_series

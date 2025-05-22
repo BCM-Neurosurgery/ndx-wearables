@@ -1,10 +1,16 @@
-#Assumes WearableEvents is the base for enum-style data — update to EnumTimeSeries if needed
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from hdmf.utils import docval, get_docval
-from ndx_wearables.wearables_classes import WearableEvents
+from ndx_wearables import WearableTimeSeries
 
-@register_class("ActivityClassSeries", "ndx-wearables")
-class ActivityClassSeries(WearableEvents):
-    @docval(*get_docval(WearableEvents.__init__))
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+@register_class('ActivityClassSeries', 'ndx-wearables')
+class ActivityClassSeries(WearableTimeSeries):
+    """Activity classification labels stored as a wearable time series"""
+    pass
+
+def make_activity_class_series():
+    activity_class_series = NWBGroupSpec(
+        doc='Stores categorical labels for physical activity class over time.',
+        neurodata_type_def='ActivityClassSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return activity_class_series
