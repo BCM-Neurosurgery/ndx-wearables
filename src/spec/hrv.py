@@ -19,6 +19,4 @@ def make_hrv_stage():
 
     return hrv_series 
 
-from ndx_wearables import WearableTimeSeries
-from pynwb import register_class
 

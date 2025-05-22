@@ -34,16 +34,65 @@ groups:
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
 - neurodata_type_def: HRVSeries
-  neurodata_type_inc: TimeSeries
+  neurodata_type_inc: WearableTimeSeries
   doc: Stores HRV values as strings over time.
   datasets:
   - name: data
     dtype: int
     doc: HRV calculated values
 - neurodata_type_def: VO2maxSeries
-  neurodata_type_inc: TimeSeries
+  neurodata_type_inc: WearableTimeSeries
   doc: Stores Vo2 max values as raw strings over time.
   datasets:
   - name: data
     dtype: float
     doc: Vo2 max values
+- neurodata_type_def: HeartRateSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores heart rate values as raw numerical data over time.
+  datasets:
+  - name: data
+    dtype: int
+    doc: Heart rate values in beats per minute
+- neurodata_type_def: BloodOxygenSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores blood oxygen saturation levels over time.
+  datasets:
+  - name: data
+    dtype: int
+    doc: Blood oxygen values as percentage (e.g., 98%)
+- neurodata_type_def: StepCountSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores number of steps recorded by wearable device.
+  datasets:
+  - name: data
+    dtype: int
+    doc: Number of steps
+- neurodata_type_def: MetSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores metabolic equivalent (MET) values over time.
+  datasets:
+  - name: data
+    dtype: float
+    doc: MET values (e.g., 1.0 for rest, 3.0+ for activity)
+- neurodata_type_def: SleepMovementSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Captures movement intensity or frequency during sleep.
+  datasets:
+  - name: data
+    dtype: float
+    doc: Movement level (arbitrary units)
+- neurodata_type_def: ActivityClassSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores categorical labels for physical activity class over time.
+  datasets:
+  - name: data
+    dtype: text
+    doc: Activity classification label (e.g., sitting, walking, running)
+- neurodata_type_def: SleepPhaseSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores sleep phase categories (e.g., REM, deep) over time.
+  datasets:
+  - name: data
+    dtype: text
+    doc: Sleep phase classification

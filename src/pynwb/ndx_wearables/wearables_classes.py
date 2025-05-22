@@ -4,10 +4,7 @@ from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
 from pynwb.base import TimeSeries
 from ndx_events import EventsTable, CategoricalVectorData
-
-
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
-
 from datetime import datetime
 from dateutil.tz import tzlocal
 import numpy as np

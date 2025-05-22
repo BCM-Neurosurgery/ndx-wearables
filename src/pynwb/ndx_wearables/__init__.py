@@ -50,6 +50,13 @@ from .wearables_classes import *
 SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
 HRVSeries = get_class("HRVSeries", "ndx-wearables")
 VO2maxSeries = get_class("VO2maxSeries", "ndx-wearables")
+HeartRateSeries = get_class("HeartRateSeries", "ndx-wearables")
+BloodOxygenSeries = get_class("BloodOxygenSeries", "ndx-wearables")
+StepCountSeries = get_class("StepCountSeries", "ndx-wearables")
+MetSeries = get_class("MetSeries", "ndx-wearables")
+SleepMovementSeries = get_class("SleepMovementSeries", "ndx-wearables")
+ActivityClassSeries = get_class("ActivityClassSeries", "ndx-wearables")
+SleepPhaseSeries = get_class("SleepPhaseSeries", "ndx-wearables")
 
 print(f'Final: {available_namespaces()}')
 

@@ -40,7 +40,6 @@ def write_nwb_with_hrv_data(tmp_path, nwb_with_hrv_data):
     # Save NWB file
     with NWBHDF5IO(tmp_path, 'w') as io:
         io.write(nwb_with_hrv_data)
-
     return tmp_path
 
 
