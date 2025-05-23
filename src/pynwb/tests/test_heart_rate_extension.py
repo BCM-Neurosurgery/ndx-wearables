@@ -50,7 +50,7 @@ def test_heart_rate_write_read(write_nwb_with_heart_rate_data):
     '''
     # Expected test data
     np.random.seed(42)
-    expected_heart_rate_values = np.random.randint(60, 100, size=721)
+    expected_heart_rate_values = np.random.randint(60, 100, size=720)
     expected_timestamps = np.arange(0., 3600, 5)
 
     # Read the NWB file
