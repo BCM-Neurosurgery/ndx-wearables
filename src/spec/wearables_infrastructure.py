@@ -33,6 +33,8 @@ def make_wearables_infrastructure():
             NWBDatasetSpec(
                 name="data",
                 dtype="float64",
+                shape=((None, None)),
+                dims=(("measurement_duration", "data")),
                 doc="Data which was collected from sensor",
             )
         ],

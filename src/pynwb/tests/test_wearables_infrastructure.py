@@ -28,6 +28,7 @@ def add_wearable_timeseries(nwbfile, device):
         timestamps=timestamps,
         unit='tests/s',
         wearable_device=device
+        #TODO: add algorithm 
     )
 
     # add wearables objects to processing module

@@ -55,6 +55,11 @@ class WearableBase(object):
                 'type': 'WearableDevice',
                 'doc': 'Link to the WearableDevice used to record the data'
             },
+            {
+                'name': 'algorithm',
+                'type': str,
+                'doc': 'Algorithm used to extract data from raw sensor readings'
+            }
         )
 
     def wearables_init_helper(self, **kwargs):
