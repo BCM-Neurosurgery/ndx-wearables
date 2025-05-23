@@ -38,6 +38,11 @@ def make_wearables_infrastructure():
                 doc="Data which was collected from sensor",
             )
         ],
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
+            )
+        ],
         links=[
             LinkSpec(
                 name= 'wearable_device',
@@ -52,6 +57,11 @@ def make_wearables_infrastructure():
         neurodata_type_inc="EventsTable",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
+            )
+        ],
         links=[
             LinkSpec(
                 name= 'wearable_device',

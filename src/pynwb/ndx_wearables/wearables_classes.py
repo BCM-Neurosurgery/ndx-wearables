@@ -72,7 +72,7 @@ class WearableBase(object):
     
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
-    __nwbfields__ = TimeSeries.__nwbfields__ + ("algorithm",)
+   # __nwbfields__ = TimeSeries.__nwbfields__ + ("algorithm",)
 
     @docval(
         *(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval())
@@ -86,7 +86,7 @@ class WearableTimeSeries(WearableBase, TimeSeries):
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
-    __nwbfields__ = ("algorithm",)
+   # __nwbfields__ = ("algorithm",)
 
     @docval(
         *(get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval())
