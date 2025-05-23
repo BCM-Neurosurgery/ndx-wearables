@@ -10,7 +10,9 @@ def add_heart_rate_data(nwbfile, device):
     # Generate heart rate data
     timestamps = np.arange(0., 3600, 5)  # Every 5 seconds for 1 hour
     np.random.seed(42)
-    heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
+    #heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
+    heart_rate_values = np.random.randint(60, 100, size=len(timestamps))  # 721 values
+
 
     # Create HeartRateSeries object
     heart_rate_series = HeartRateSeries(
@@ -48,8 +50,8 @@ def test_heart_rate_write_read(write_nwb_with_heart_rate_data):
     '''
     # Expected test data
     np.random.seed(42)
-    expected_heart_rate_values = np.random.randint(60, 100, size=120)
-    expected_timestamps = np.arange(0., 3600, 30)
+    expected_heart_rate_values = np.random.randint(60, 100, size=721)
+    expected_timestamps = np.arange(0., 3600, 5)
 
     # Read the NWB file
     with NWBHDF5IO(write_nwb_with_heart_rate_data, 'r') as io:
