@@ -8,7 +8,7 @@ from ndx_wearables import HeartRateSeries  # Assumes HeartRateSeries is register
 
 def add_heart_rate_data(nwbfile, device):
     # Generate heart rate data
-    timestamps = np.arange(0., 3600, 30)  # Every 30 seconds for 1 hour
+    timestamps = np.arange(0., 3600, 5)  # Every 5 seconds for 1 hour
     np.random.seed(42)
     heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
 
