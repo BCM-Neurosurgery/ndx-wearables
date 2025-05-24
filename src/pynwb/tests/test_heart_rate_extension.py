@@ -24,14 +24,13 @@ def add_heart_rate_data(nwbfile, device):
         wearable_device=device  #  Must be accepted via WearableTimeSeries
     )
 
-    # Add heart rate data to the wearables processing module
     def add_heart_rate_data(nwbfile, device):
         # Step 1: Generate heart rate data
         timestamps = np.arange(0., 3600, 5)
         np.random.seed(42)
         heart_rate_values = np.random.randint(60, 100, size=len(timestamps))
 
-        # Step 2: Create HeartRateSeries for this device
+        # Step 2: Create HeartRateSeries
         heart_rate_series = HeartRateSeries(
             name=f"{device.name}_heart_rate",
             data=heart_rate_values,
@@ -41,7 +40,7 @@ def add_heart_rate_data(nwbfile, device):
             wearable_device=device
         )
 
-        # Step 3: Get or create the 'wearables' processing module
+        # Step 3: Create or get 'wearables'
         if "wearables" not in nwbfile.processing:
             wearables_module = nwbfile.create_processing_module(
                 name="wearables",
@@ -50,17 +49,18 @@ def add_heart_rate_data(nwbfile, device):
         else:
             wearables_module = nwbfile.processing["wearables"]
 
-        # Step 4: Get or create the 'heart_rate' modality container
+        # Step 4: Create or get 'heart_rate'
         if "heart_rate" not in wearables_module.data_interfaces:
             heart_rate_container = ProcessingModule(name="heart_rate", description="Heart rate modality")
             wearables_module.add(heart_rate_container)
         else:
             heart_rate_container = wearables_module["heart_rate"]
 
-        # Step 5: Add device-specific HeartRateSeries to the modality
+        # Step 5: Add the HeartRateSeries to the 'heart_rate' container
         heart_rate_container.add(heart_rate_series)
 
-    return nwbfile
+        return nwbfile
+
 
 
 
