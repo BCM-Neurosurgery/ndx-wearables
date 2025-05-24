@@ -25,31 +25,43 @@ def add_heart_rate_data(nwbfile, device):
     )
 
     # Add heart rate data to the wearables processing module
-    nwbfile.processing["wearables"].add_container(heart_rate_series)
-    # Step 1: Get or create the 'wearables' processing module
-    if "wearables" not in nwbfile.processing:
-        wearables_module = nwbfile.create_processing_module(
-            name="wearables",
-            description="Wearable device data"
+    def add_heart_rate_data(nwbfile, device):
+        # Step 1: Generate heart rate data
+        timestamps = np.arange(0., 3600, 5)
+        np.random.seed(42)
+        heart_rate_values = np.random.randint(60, 100, size=len(timestamps))
+
+        # Step 2: Create HeartRateSeries for this device
+        heart_rate_series = HeartRateSeries(
+            name=f"{device.name}_heart_rate",
+            data=heart_rate_values,
+            unit='bpm',
+            timestamps=timestamps,
+            description='Heart rate data from wrist sensor',
+            wearable_device=device
         )
-    else:
-        wearables_module = nwbfile.processing["wearables"]
 
-    # Step 2: Create or get the 'heart_rate' container inside 'wearables'
-    if "heart_rate" not in wearables_module.data_interfaces:
-        heart_rate_container = ProcessingModule(name="heart_rate", description="Heart rate modality")
-        wearables_module.add(heart_rate_container)
-    else:
-        heart_rate_container = wearables_module["heart_rate"]
+        # Step 3: Get or create the 'wearables' processing module
+        if "wearables" not in nwbfile.processing:
+            wearables_module = nwbfile.create_processing_module(
+                name="wearables",
+                description="Wearable device data"
+            )
+        else:
+            wearables_module = nwbfile.processing["wearables"]
 
-    # Step 3: Create the 'wrist_heart_rate' container under 'heart_rate'
-    wrist_hr_container = HeartRateSeries(name=f"{device.name}_heart_rate", description="Wrist-based heart rate sensor")
-    wrist_hr_container.add(heart_rate_series)
+        # Step 4: Get or create the 'heart_rate' modality container
+        if "heart_rate" not in wearables_module.data_interfaces:
+            heart_rate_container = ProcessingModule(name="heart_rate", description="Heart rate modality")
+            wearables_module.add(heart_rate_container)
+        else:
+            heart_rate_container = wearables_module["heart_rate"]
 
-    # Step 4: Add that to the hierarchy
-    heart_rate_container.add(wrist_hr_container)
+        # Step 5: Add device-specific HeartRateSeries to the modality
+        heart_rate_container.add(heart_rate_series)
 
     return nwbfile
+
 
 
 @pytest.fixture
