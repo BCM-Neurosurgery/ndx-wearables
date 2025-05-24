@@ -96,9 +96,14 @@ def test_heart_rate_write_read(write_nwb_with_heart_rate_data):
 
         # Check the HeartRateSeries interface
         wearables = nwbfile.processing['wearables']
-        assert 'HeartRate Data' in wearables.data_interfaces, 'HeartRateSeries is missing.'
+        assert 'heart_rate' in wearables.data_interfaces, 'Heart rate modality missing.'
 
-        heart_rate_series = wearables.get('HeartRate Data')
+        heart_rate_modality = wearables['heart_rate']
+        expected_series_name = f"{device.name}_heart_rate"
+        assert expected_series_name in heart_rate_modality.data_interfaces, f'{expected_series_name} is missing.'
+
+        heart_rate_series = heart_rate_modality[expected_series_name]
+
 
         # Validate shape and content
         assert heart_rate_series.data.shape == expected_heart_rate_values.shape, "Incorrect data shape."
