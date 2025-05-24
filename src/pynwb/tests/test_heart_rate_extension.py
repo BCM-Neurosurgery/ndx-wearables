@@ -6,89 +6,74 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
 from ndx_wearables import HeartRateSeries  # Assumes HeartRateSeries is registered in the namespace and accessible via get_class
 
+
 def add_heart_rate_data(nwbfile, device):
-    # Generate heart rate data
-    timestamps = np.arange(0., 3600, 5)  # Every 5 seconds for 1 hour
+    # Step 1: Generate heart rate data
+    timestamps = np.arange(0., 3600, 5)
     np.random.seed(42)
-    #heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
-    heart_rate_values = np.random.randint(60, 100, size=len(timestamps))  # 721 values
+    heart_rate_values = np.random.randint(60, 100, size=len(timestamps))
 
-
-    # Create HeartRateSeries object
+    # Step 2: Create HeartRateSeries
     heart_rate_series = HeartRateSeries(
-        name='HeartRate Data',
+        name=f"{device.name}_heart_rate",
         data=heart_rate_values,
-        unit='bpm',  # Beats per minute
+        unit='bpm',
         timestamps=timestamps,
-        description='Example HeartRate data',
-        wearable_device=device  #  Must be accepted via WearableTimeSeries
+        description='Heart rate data from wrist sensor',
+        wearable_device=device
     )
 
-    def add_heart_rate_data(nwbfile, device):
-        # Step 1: Generate heart rate data
-        timestamps = np.arange(0., 3600, 5)
-        np.random.seed(42)
-        heart_rate_values = np.random.randint(60, 100, size=len(timestamps))
-
-        # Step 2: Create HeartRateSeries
-        heart_rate_series = HeartRateSeries(
-            name=f"{device.name}_heart_rate",
-            data=heart_rate_values,
-            unit='bpm',
-            timestamps=timestamps,
-            description='Heart rate data from wrist sensor',
-            wearable_device=device
+    # Step 3: Create or get 'wearables'
+    if "wearables" not in nwbfile.processing:
+        wearables_module = nwbfile.create_processing_module(
+            name="wearables",
+            description="Wearable device data"
         )
+    else:
+        wearables_module = nwbfile.processing["wearables"]
 
-        # Step 3: Create or get 'wearables'
-        if "wearables" not in nwbfile.processing:
-            wearables_module = nwbfile.create_processing_module(
-                name="wearables",
-                description="Wearable device data"
-            )
-        else:
-            wearables_module = nwbfile.processing["wearables"]
+    # Step 4: Create or get 'heart_rate'
+    if "heart_rate" not in wearables_module.data_interfaces:
+        heart_rate_container = ProcessingModule(name="heart_rate", description="Heart rate modality")
+        wearables_module.add(heart_rate_container)
+    else:
+        heart_rate_container = wearables_module["heart_rate"]
 
-        # Step 4: Create or get 'heart_rate'
-        if "heart_rate" not in wearables_module.data_interfaces:
-            heart_rate_container = ProcessingModule(name="heart_rate", description="Heart rate modality")
-            wearables_module.add(heart_rate_container)
-        else:
-            heart_rate_container = wearables_module["heart_rate"]
+    # Step 5: Add the HeartRateSeries to the 'heart_rate' container
+    heart_rate_container.add(heart_rate_series)
 
-        # Step 5: Add the HeartRateSeries to the 'heart_rate' container
-        heart_rate_container.add(heart_rate_series)
-
-        return nwbfile
-
-
+    return nwbfile
 
 
 @pytest.fixture
 def nwb_with_heart_rate_data(wearables_nwbfile_device):
     nwbfile, device = wearables_nwbfile_device
     nwbfile = add_heart_rate_data(nwbfile, device)
-    return nwbfile
+    return nwbfile, device  # ✅ Return both
 
 
 @pytest.fixture
 def write_nwb_with_heart_rate_data(tmp_path, nwb_with_heart_rate_data):
-    with NWBHDF5IO(tmp_path, 'w') as io:
-        io.write(nwb_with_heart_rate_data)
-    return tmp_path
+    nwbfile, device = nwb_with_heart_rate_data
+    file_path = tmp_path / "test_heart_rate.nwb"
+    with NWBHDF5IO(file_path, 'w') as io:
+        io.write(nwbfile)
+    return file_path, device  # ✅ Return both
 
 
 def test_heart_rate_write_read(write_nwb_with_heart_rate_data):
     '''
     Test that HeartRateSeries can be written and read from an NWB file.
     '''
+    file_path, device = write_nwb_with_heart_rate_data
+
     # Expected test data
     np.random.seed(42)
     expected_heart_rate_values = np.random.randint(60, 100, size=720)
     expected_timestamps = np.arange(0., 3600, 5)
 
     # Read the NWB file
-    with NWBHDF5IO(write_nwb_with_heart_rate_data, 'r') as io:
+    with NWBHDF5IO(file_path, 'r') as io:
         nwbfile = io.read()
 
         # Confirm wearables module exists
@@ -103,7 +88,6 @@ def test_heart_rate_write_read(write_nwb_with_heart_rate_data):
         assert expected_series_name in heart_rate_modality.data_interfaces, f'{expected_series_name} is missing.'
 
         heart_rate_series = heart_rate_modality[expected_series_name]
-
 
         # Validate shape and content
         assert heart_rate_series.data.shape == expected_heart_rate_values.shape, "Incorrect data shape."
