@@ -1,9 +1,11 @@
+from pynwb.spec import NWBGroupSpec
 from pynwb import register_class
-from pynwb.base import MultiContainerInterface
-from hdmf.utils import docval, popargs, get_docval
-from pynwb import NWBContainer
-    def __init__(self, **kwargs):
-        description = popargs('description', kwargs)
-        super().__init__(**kwargs)
-        self.description = description
+from ndx_wearables import WearableTimeSeries
 
+def make_heart_rate_stage():
+    heart_rate_series = NWBGroupSpec(
+        doc='Stores heart rate.',
+        neurodata_type_def='HeartRateSeries',
+        neurodata_type_inc='WearableTimeSeries'
+    )
+    return heart_rate_series
