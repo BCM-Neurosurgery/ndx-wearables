@@ -12,6 +12,7 @@ def add_hrv_data(nwbfile, device):
     np.random.seed(42)
     heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
 
+
     # Create HRVSeries object
     hrv_series = HRVSeries(
         name='HRV Data',
