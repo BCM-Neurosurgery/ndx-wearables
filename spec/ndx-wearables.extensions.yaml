@@ -18,6 +18,13 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableTimeSeries
+- neurodata_type_def: PhysiologicalMeasure
+  neurodata_type_inc: NWBContainer
+  doc: Data recorded from wearable sensor/device
+  quantity: '*'
+  groups:
+  - neurodata_type_inc: WearableTimeSeries
+    doc: Place your device-specific estimates of this modality here
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices

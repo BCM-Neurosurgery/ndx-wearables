@@ -74,6 +74,22 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         super().__init__(**kwargs)
 
 
+@register_class('PhysiologicalMeasure', "ndx-wearables")
+class PhysiologicalMeasure(MultiContainerInterface):
+    """
+    LFP data from one or more channels. The electrode map in each published ElectricalSeries will
+    identify which channels are providing LFP data. Filter properties should be noted in the
+    ElectricalSeries description or comments field.
+    """
+
+    __clsconf__ = [
+        {'attr': 'wearable_series',
+         'type': WearableTimeSeries,
+         'add': 'add_wearable_series',
+         'get': 'get_wearable_series',
+         'create': 'create_wearable_series'}]
+
+
 # Adding events to inherit from ndx-wearables:
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
