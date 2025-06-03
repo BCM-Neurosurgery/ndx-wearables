@@ -1,5 +1,6 @@
 from pynwb import register_class, NWBContainer
 from pynwb.core import MultiContainerInterface
+from hdmf.common import SimpleMultiContainer
 from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
 from pynwb.base import TimeSeries
@@ -75,7 +76,7 @@ class WearableTimeSeries(WearableBase, TimeSeries):
 
 
 @register_class('PhysiologicalMeasure', "ndx-wearables")
-class PhysiologicalMeasure(MultiContainerInterface):
+class PhysiologicalMeasure(SimpleMultiContainer):
     """
     LFP data from one or more channels. The electrode map in each published ElectricalSeries will
     identify which channels are providing LFP data. Filter properties should be noted in the

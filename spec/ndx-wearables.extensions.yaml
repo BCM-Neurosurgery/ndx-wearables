@@ -10,6 +10,7 @@ groups:
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device
+  quantity: '*'
   datasets:
   - name: data
     dtype: float64
@@ -19,7 +20,7 @@ groups:
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableTimeSeries
 - neurodata_type_def: PhysiologicalMeasure
-  neurodata_type_inc: NWBContainer
+  neurodata_type_inc: SimpleMultiContainer
   doc: Data recorded from wearable sensor/device
   quantity: '*'
   groups:

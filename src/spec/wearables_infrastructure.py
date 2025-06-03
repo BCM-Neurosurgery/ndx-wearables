@@ -28,6 +28,7 @@ def make_wearables_infrastructure():
     wearable_timeseries = NWBGroupSpec(
         neurodata_type_def="WearableTimeSeries",
         neurodata_type_inc="TimeSeries",
+        quantity="*",
         doc="Data recorded from wearable sensor/device",
         datasets=[
             NWBDatasetSpec(
@@ -47,6 +48,7 @@ def make_wearables_infrastructure():
 
     physiological_measure = NWBGroupSpec(
         neurodata_type_def="PhysiologicalMeasure",
+        neurodata_type_inc="SimpleMultiContainer",
         doc="Data recorded from wearable sensor/device",
         quantity="*",
         groups=[
