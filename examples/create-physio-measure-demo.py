@@ -52,10 +52,10 @@ nwbfile.add_processing_module(wearables)
 
 wearables.add([modality])
 
-added_ts = modality.add_wearable_series(ts)
+added_ts = modality.add_wearable_time_series(ts)
 
 # add wearables objects to processing module
 tmp_path = Path(r"D:\Work\BCM\NDX-extensions\ndx-wearables")
-file_path = tmp_path / "physio_measure_test_2.nwb"
+file_path = tmp_path / "physio_measure_test_3.nwb"
 with NWBHDF5IO(file_path, 'w') as io:
     io.write(nwbfile)
