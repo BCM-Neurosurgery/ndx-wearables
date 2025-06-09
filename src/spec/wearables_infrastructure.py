@@ -34,7 +34,14 @@ def make_wearables_infrastructure():
             NWBDatasetSpec(
                 name="data",
                 dtype="float64",
+                shape=((None, None)),
+                dims=(("measurement_duration", "data")),
                 doc="Data which was collected from sensor",
+            )
+        ],
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
             )
         ],
         links=[
@@ -64,6 +71,11 @@ def make_wearables_infrastructure():
         neurodata_type_inc="EventsTable",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
+            )
+        ],
         links=[
             LinkSpec(
                 name= 'wearable_device',

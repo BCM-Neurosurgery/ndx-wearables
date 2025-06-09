@@ -37,7 +37,7 @@ class WearableDevice(Device):
         super().__init__(**kwargs)
 
         self.location = location
-
+    
 class WearableBase(object):
     """
     HDMF and by extension NWB does not really support multiple inheritance.
@@ -56,16 +56,24 @@ class WearableBase(object):
                 'type': 'WearableDevice',
                 'doc': 'Link to the WearableDevice used to record the data'
             },
+            {
+                'name': 'algorithm',
+                'type': str,
+                'doc': 'Algorithm used to extract data from raw sensor readings'
+            }
         )
 
     def wearables_init_helper(self, **kwargs):
         wearable_device = popargs('wearable_device', kwargs)
+        algorithm = popargs('algorithm', kwargs)
+
         self.wearable_device = wearable_device
+        self.algorithm = algorithm
         return kwargs
-
-
+    
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
+   # __nwbfields__ = TimeSeries.__nwbfields__ + ("algorithm",)
 
     @docval(
         *(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval())
@@ -99,6 +107,7 @@ PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
+   # __nwbfields__ = ("algorithm",)
 
     @docval(
         *(get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval())

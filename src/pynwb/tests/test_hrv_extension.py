@@ -12,6 +12,7 @@ def add_hrv_data(nwbfile, device):
     np.random.seed(42)
     heart_rate_values = np.random.randint(60, 100, size=120)  # Random BPM values
 
+
     # Create HRVSeries object
     hrv_series = HRVSeries(
         name='HRV Data',
@@ -19,7 +20,9 @@ def add_hrv_data(nwbfile, device):
         unit='bpm',  # Beats per minute
         timestamps=timestamps,
         description='Example HRV data',
-        wearable_device=device
+        wearable_device=device,
+        algorithm='test_algorithm',
+
     )
 
     # add heart rate data to the wearables processing module
