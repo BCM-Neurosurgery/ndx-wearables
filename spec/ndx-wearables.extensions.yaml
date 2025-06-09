@@ -10,6 +10,7 @@ groups:
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device
+  quantity: '*'
   attributes:
   - name: algorithm
     dtype: text
@@ -28,6 +29,13 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableTimeSeries
+- neurodata_type_def: PhysiologicalMeasure
+  neurodata_type_inc: NWBDataInterface
+  doc: Data recorded from wearable sensor/device
+  groups:
+  - neurodata_type_inc: WearableTimeSeries
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices

@@ -1,8 +1,9 @@
-from pynwb import register_class, NWBContainer
+from pynwb import register_class, get_class, NWBContainer
 from pynwb.core import MultiContainerInterface
+from hdmf.common import SimpleMultiContainer
 from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
-from pynwb.base import TimeSeries
+from pynwb.base import TimeSeries, NWBDataInterface
 from ndx_events import EventsTable, CategoricalVectorData
 
 
@@ -80,6 +81,26 @@ class WearableTimeSeries(WearableBase, TimeSeries):
     def __init__(self, **kwargs):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
+
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
+# @register_class('PhysiologicalMeasure', "ndx-wearables")
+# class PhysiologicalMeasure(NWBDataInterface, MultiContainerInterface):
+#     # TODO: this custom class registration would be nice but it throws a
+#     #      TypeError: Cannot create a consistent method resolution
+#     #      order (MRO) for bases NWBDataInterface, MultiContainerInterface
+#
+#     """
+#     LFP data from one or more channels. The electrode map in each published ElectricalSeries will
+#     identify which channels are providing LFP data. Filter properties should be noted in the
+#     ElectricalSeries description or comments field.
+#     """
+#
+#     __clsconf__ = [
+#         {'attr': 'wearable_series',
+#          'type': WearableTimeSeries,
+#          'add': 'add_wearable_series',
+#          'get': 'get_wearable_series',
+#          'create': 'create_wearable_series'}]
 
 
 # Adding events to inherit from ndx-wearables:
