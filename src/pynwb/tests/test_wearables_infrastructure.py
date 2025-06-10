@@ -27,7 +27,8 @@ def add_wearable_timeseries(nwbfile, device):
         data=wearable_values,
         timestamps=timestamps,
         unit='tests/s',
-        wearable_device=device
+        wearable_device=device,
+        algorithm='test_algorithm',
     )
 
     # add wearables objects to processing module
@@ -51,7 +52,8 @@ def add_wearable_events(nwbfile, device):
         description=f"test events collected from {device.name}",
         wearable_device=device,
         columns=[cat_column, text_column],
-        meanings_tables=[test_meanings]
+        meanings_tables=[test_meanings],
+        algorithm='test_algorithm',
     )
     events.add_row(timestamp=10.0, cat_column="a", text_column="first row text")
     events.add_row(timestamp=30.0, cat_column="b", text_column="second row text")

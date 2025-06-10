@@ -5,11 +5,12 @@ from ndx_events import NdxEventsNWBFile
 from ndx_wearables import WearableDevice
 
 
-def make_wearables_nwbfile():
+def make_wearables_nwbfile(identifier=None):
     now = datetime.now(pytz.timezone('America/Chicago'))
+    identifier = identifier if identifier else 'TEST_WEARABLES_'+now.strftime("%H%M%S")
     nwbfile = NdxEventsNWBFile(
         session_description="Example wearables study session created at "+now.strftime("%H%M%S"),
-        identifier='TEST_WEARABLES_'+now.strftime("%H%M%S"),
+        identifier=identifier,
         session_start_time=datetime.now(pytz.timezone('America/Chicago')),
     )
 

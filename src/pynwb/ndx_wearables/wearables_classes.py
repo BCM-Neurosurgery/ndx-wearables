@@ -1,8 +1,9 @@
-from pynwb import register_class, NWBContainer
+from pynwb import register_class, get_class, NWBContainer
 from pynwb.core import MultiContainerInterface
+from hdmf.common import SimpleMultiContainer
 from pynwb.device import Device
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
-from pynwb.base import TimeSeries
+from pynwb.base import TimeSeries, NWBDataInterface
 from ndx_events import EventsTable, CategoricalVectorData
 from hdmf.utils import docval, popargs, get_docval, get_data_shape
 from datetime import datetime
@@ -33,7 +34,7 @@ class WearableDevice(Device):
         super().__init__(**kwargs)
 
         self.location = location
-
+    
 class WearableBase(object):
     """
     HDMF and by extension NWB does not really support multiple inheritance.
@@ -52,16 +53,24 @@ class WearableBase(object):
                 'type': 'WearableDevice',
                 'doc': 'Link to the WearableDevice used to record the data'
             },
+            {
+                'name': 'algorithm',
+                'type': str,
+                'doc': 'Algorithm used to extract data from raw sensor readings'
+            }
         )
 
     def wearables_init_helper(self, **kwargs):
         wearable_device = popargs('wearable_device', kwargs)
+        algorithm = popargs('algorithm', kwargs)
+
         self.wearable_device = wearable_device
+        self.algorithm = algorithm
         return kwargs
-
-
+    
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
+   # __nwbfields__ = TimeSeries.__nwbfields__ + ("algorithm",)
 
     @docval(
         *(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval())
@@ -70,6 +79,7 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
+<<<<<<< HEAD
 # Adding in EnumTimeSeries
 @register_class("EnumTimeSeries", "ndx-wearables")
 class EnumTimeSeries(WearableTimeSeries):
@@ -78,11 +88,34 @@ class EnumTimeSeries(WearableTimeSeries):
     (e.g., sleep stages, activity classes) as enumerated values.
     """
     pass
+=======
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
+# @register_class('PhysiologicalMeasure', "ndx-wearables")
+# class PhysiologicalMeasure(NWBDataInterface, MultiContainerInterface):
+#     # TODO: this custom class registration would be nice but it throws a
+#     #      TypeError: Cannot create a consistent method resolution
+#     #      order (MRO) for bases NWBDataInterface, MultiContainerInterface
+#
+#     """
+#     LFP data from one or more channels. The electrode map in each published ElectricalSeries will
+#     identify which channels are providing LFP data. Filter properties should be noted in the
+#     ElectricalSeries description or comments field.
+#     """
+#
+#     __clsconf__ = [
+#         {'attr': 'wearable_series',
+#          'type': WearableTimeSeries,
+#          'add': 'add_wearable_series',
+#          'get': 'get_wearable_series',
+#          'create': 'create_wearable_series'}]
+
+>>>>>>> origin/develop
 
 # Adding events to inherit from ndx-wearables:
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
+   # __nwbfields__ = ("algorithm",)
 
     @docval(
         *(get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval())

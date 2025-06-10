@@ -17,18 +17,40 @@ groups:
 - neurodata_type_def: WearableTimeSeries
   neurodata_type_inc: TimeSeries
   doc: Data recorded from wearable sensor/device
+  quantity: '*'
+  attributes:
+  - name: algorithm
+    dtype: text
+    doc: Algorithm used to extract data from raw sensor readings
   datasets:
   - name: data
     dtype: float64
+    dims:
+    - measurement_duration
+    - data
+    shape:
+    - null
+    - null
     doc: Data which was collected from sensor
   links:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableTimeSeries
+- neurodata_type_def: PhysiologicalMeasure
+  neurodata_type_inc: NWBDataInterface
+  doc: Data recorded from wearable sensor/device
+  groups:
+  - neurodata_type_inc: WearableTimeSeries
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices
   quantity: '*'
+  attributes:
+  - name: algorithm
+    dtype: text
+    doc: Algorithm used to extract data from raw sensor readings
   links:
   - name: wearable_device
     target_type: WearableDevice
@@ -43,6 +65,7 @@ groups:
 - neurodata_type_def: HRVSeries
   neurodata_type_inc: WearableTimeSeries
   doc: Stores HRV values as strings over time.
+<<<<<<< HEAD
   datasets:
   - name: data
     dtype: int
@@ -92,6 +115,22 @@ groups:
 - neurodata_type_def: SleepPhaseSeries
   neurodata_type_inc: EnumTimeSeries
   doc: Stores sleep phase categories (e.g., REM, deep) over time.
+=======
+  attributes:
+  - name: algorithm
+    dtype: text
+    doc: Algorithm used to extract data from raw sensor readings
+- neurodata_type_def: VO2maxSeries
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores Vo2 max values as raw strings over time.
+  attributes:
+  - name: algorithm
+    dtype: text
+    doc: Algorithm used to extract data from raw sensor readings
+- neurodata_type_def: SleepStageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores sleep stages as raw strings over time.
+>>>>>>> origin/develop
   datasets:
   - name: data
     dtype: text
