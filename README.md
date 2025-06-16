@@ -62,6 +62,8 @@ If these arguments are omitted, instantiating the class will raise an error. You
 | `VO2MaxSeries`       | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
 | `ActivitySeries`     | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
 | `METSeries`          | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
+| `SleepMovementSeries`  | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
+
 
 
 These reflect typical usage in constructors. For full context or updates, refer to the class definitions in [`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
