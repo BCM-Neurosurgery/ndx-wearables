@@ -29,7 +29,7 @@ class WearableDevice(Device):
         *get_docval(Device.__init__)
         + (
             {"name":"location", "type": str, "doc": "Location on body of device"},
-            {"name":"os_software_version", "type": str, "doc":"The version number of the OS/software for the WearableDevice"}
+            {"name":"os_software_version", "type": str, "doc":"The version number of the OS/software for the WearableDevice", "default": None}
         )
     )
 
