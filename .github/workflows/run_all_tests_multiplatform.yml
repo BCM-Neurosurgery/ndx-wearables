@@ -133,7 +133,7 @@ jobs:
           fetch-depth: 0  # tags are required to determine the version
 
       - name: Set up Conda
-        uses: BCM-Neurosurgery/setup-miniconda@v3
+        uses: BCM-Neurosurgery/setup-miniconda
         with:
           auto-update-conda: true
           auto-activate-base: true
