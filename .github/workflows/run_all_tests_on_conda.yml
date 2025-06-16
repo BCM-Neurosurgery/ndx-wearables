@@ -1,4 +1,4 @@
-name: Run all tests
+name: Run all tests on conda
 on:
   push:
     branches:
@@ -11,7 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-
   run-all-tests-on-conda:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
@@ -39,7 +38,7 @@ jobs:
           fetch-depth: 0  # tags are required to determine the version
 
       - name: Set up Conda
-        uses: BCM-Neurosurgery/setup-miniconda
+        uses: BCM-Neurosurgery/setup-miniconda@main
         with:
           auto-update-conda: true
           auto-activate-base: true
