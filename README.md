@@ -52,18 +52,19 @@ If these arguments are omitted, instantiating the class will raise an error. You
 
 ## Arguments for ndx-wearables Classes
 
-| Class Name           | Required Arguments                                                     | Optional Arguments                            |
-|----------------------|------------------------------------------------------------------------|-----------------------------------------------|
-| `BloodOxygenSeries`  | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
-| `HeartRateSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
-| `HRVSeries`          | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`, `sampling_rate` | `comments`, `description`, `resolution` |
-| `SleepPhaseSeries`   | `name`, `data`, `timestamps`, `wearable_device`, `enums`, `algorithm`  | `resolution`, `conversion`, `comments`        |
-| `StepCountSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `resolution`, `conversion`, `comments`        |
-| `VO2MaxSeries`       | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
-| `ActivitySeries`     | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
-| `METSeries`          | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
+| Class Name             | Required Arguments                                                     | Optional Arguments                            |
+|------------------------|------------------------------------------------------------------------|-----------------------------------------------|
+| `ActivitySeries`       | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
+| `BloodOxygenSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
+| `HeartRateSeries`      | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
+| `HRVSeries`            | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`, `sampling_rate` | `comments`, `description`, `resolution` |
+| `METSeries`            | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
 | `SleepMovementSeries`  | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
+| `SleepPhaseSeries`     | `name`, `data`, `timestamps`, `wearable_device`, `enums`, `algorithm`  | `resolution`, `conversion`, `comments`        |
+| `StepCountSeries`      | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `resolution`, `conversion`, `comments`        |
+| `VO2MaxSeries`         | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
 
+ 
 
 
 These reflect typical usage in constructors. For full context or updates, refer to the class definitions in [`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
