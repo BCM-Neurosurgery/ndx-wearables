@@ -19,6 +19,7 @@ def add_blood_oxygen_data(nwbfile, device):
         unit='percent',
         timestamps=timestamps,
         description='Example blood oxygen data',
+        wearable_device= device,
         algorithm='pulse_oximeter'  # or another appropriate string
     )
 

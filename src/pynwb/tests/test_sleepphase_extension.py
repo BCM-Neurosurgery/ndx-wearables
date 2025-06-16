@@ -20,6 +20,7 @@ def add_sleepphase_data(nwbfile, device):
         unit='label',
         timestamps=timestamps,
         description='Example sleep phase labels',
+        wearable_device= device,
         algorithm='test_algorithm', # or another appropriate string
     )
 

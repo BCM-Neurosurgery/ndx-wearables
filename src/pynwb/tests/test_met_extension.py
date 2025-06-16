@@ -19,6 +19,7 @@ def add_met_data(nwbfile, device):
         unit='MET',
         timestamps=timestamps,
         description='Example metabolic equivalent values',
+        wearable_device= device,
         algorithm='test_algorithm', # or another appropriate string
     )
 

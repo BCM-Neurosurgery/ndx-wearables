@@ -19,6 +19,7 @@ def add_stepcount_data(nwbfile, device):
         unit='steps',
         timestamps=timestamps,
         description='Example step count values',
+        wearable_device= device,
         algorithm='test_algorithm', # or another appropriate string
     )
 
