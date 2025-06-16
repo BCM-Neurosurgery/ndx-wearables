@@ -80,6 +80,14 @@ jobs:
           # force upgrade of all dependencies to latest versions within allowed range
           python -m pip install -U --upgrade-strategy eager .
 
+      - name: Build extension YAML (if needed)
+        run: |
+          if [ -f create_extension.py ]; then
+            python create_extension.py
+          else
+            echo "No create_extension.py found, skipping manual build step"
+          fi
+
       - name: Run tests
         run: |
           pytest -v
@@ -165,6 +173,14 @@ jobs:
           python -m pip install -r requirements-dev.txt
           # force upgrade of all dependencies to latest versions within allowed range
           python -m pip install -U --upgrade-strategy eager .
+
+      - name: Build extension YAML (if needed)
+        run: |
+          if [ -f create_extension.py ]; then
+            python create_extension.py
+          else
+            echo "No create_extension.py found, skipping manual build step"
+          fi
 
       - name: Run tests
         run: |
