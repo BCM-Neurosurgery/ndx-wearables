@@ -30,6 +30,10 @@ jobs:
           python -m pip list
           python -m pip check
 
+      - name: Install ndx-events
+        run: |
+          pip install git+https://github.com/rly/ndx-events.git
+
       - name: Install run requirements (pinned)
         run: |
           python -m pip install -r requirements-dev.txt
