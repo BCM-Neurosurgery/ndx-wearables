@@ -28,12 +28,20 @@ def make_wearables_infrastructure():
     wearable_timeseries = NWBGroupSpec(
         neurodata_type_def="WearableTimeSeries",
         neurodata_type_inc="TimeSeries",
+        quantity="*",
         doc="Data recorded from wearable sensor/device",
         datasets=[
             NWBDatasetSpec(
                 name="data",
                 dtype="float64",
+                shape=((None, None)),
+                dims=(("measurement_duration", "data")),
                 doc="Data which was collected from sensor",
+            )
+        ],
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
             )
         ],
         links=[
@@ -45,11 +53,29 @@ def make_wearables_infrastructure():
         ]
     )
 
+    physiological_measure = NWBGroupSpec(
+        neurodata_type_def="PhysiologicalMeasure",
+        neurodata_type_inc="NWBDataInterface",
+        doc="Data recorded from wearable sensor/device",
+        groups=[
+            NWBGroupSpec(
+                doc="Place your device-specific estimates of this modality here",
+                neurodata_type_inc="WearableTimeSeries",
+                quantity="*",
+            )
+        ]
+    )
+
     wearable_events = NWBGroupSpec(
         neurodata_type_def="WearableEvents",
         neurodata_type_inc="EventsTable",
         doc="Interval-style data (e.g., workouts) from wearable sensors/devices",
         quantity="*",
+        attributes=[
+            NWBAttributeSpec(
+                name="algorithm", doc="Algorithm used to extract data from raw sensor readings", dtype="text", required=True
+            )
+        ],
         links=[
             LinkSpec(
                 name= 'wearable_device',
@@ -59,5 +85,5 @@ def make_wearables_infrastructure():
         ]
     )
 
-    return [wearable_device, wearable_timeseries, wearable_events]
+    return [wearable_device, wearable_timeseries, physiological_measure, wearable_events]
 
