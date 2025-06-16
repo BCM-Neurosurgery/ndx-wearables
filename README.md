@@ -45,7 +45,7 @@ You may write a test file using PyTest under `src/pynwb/tests` to verify that th
 Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional arguments beyond the usual `name`, `data`, and `timestamps`.
 
 In particular:
-- `wearable_device` is required for classes that link to a device (e.g., `BloodOxygenSeries`, `EnumTimeSeries`)
+- `wearable_device` is required for classes that link to a device (e.g., `BloodOxygenSeries`, `VO2MaxSeries`)
 - `algorithm` is required for many classes to indicate how the data was derived (e.g., `HRVSeries`, `StepCountSeries`)
 
 If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the test scripts under `src/pynwb/tests`.
