@@ -6,7 +6,11 @@ build-backend = "hatchling.build"
 name = "ndx-wearables"
 version = "0.1.0"
 authors = [
-    { name="Tomek", email="tomek.fraczek@bcm.edu" },
+    { name="Tomek Fraczek", email="tomek.fraczek@bcm.edu" },
+    { name="Nicole Guittari", email="nicole.guittari@jhuapl.edu" },
+    { name="Lauren Diaz", email="lauren.diaz@jhuapl.edu" },
+    { name="Rick Hanish", email="rh103@rice.edu" },
+    { name="Erik Johnson", email="erik.c.johnson@jhuapl.edu"}
 ]
 description = "Store data from human wearables"
 readme = "README.md"
@@ -34,15 +38,15 @@ keywords = [
 dependencies = [
     "pynwb>=2.8.0",
     "hdmf>=3.14.1",
+    "git+https://github.com/rly/ndx-events.git#egg=ndx_events"
 ]
 
-# TODO: add URLs before release
-# [project.urls]
-# "Homepage" = "https://github.com/organization/package"
-# "Documentation" = "https://package.readthedocs.io/"
-# "Bug Tracker" = "https://github.com/organization/package/issues"
-# "Discussions" = "https://github.com/organization/package/discussions"
-# "Changelog" = "https://github.com/organization/package/blob/main/CHANGELOG.md"
+ [project.urls]
+ "Homepage" = "https://github.com/BCM-Neurosurgery/ndx-wearables"
+ "Documentation" = "https://package.readthedocs.io/"
+ "Bug Tracker" = "https://github.com/BCM-Neurosurgery/ndx-wearables/issues"
+ "Discussions" = "https://github.com/BCM-Neurosurgery/ndx-wearables/discussions"
+ "Changelog" = "https://github.com/BCM-Neurosurgery/ndx-wearables/blob/main/CHANGELOG.md"
 
 # Include only the source code under `src/pynwb/ndx_wearables` and the spec files under `spec`
 # in the wheel.
