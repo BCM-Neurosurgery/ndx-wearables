@@ -38,7 +38,7 @@ keywords = [
 dependencies = [
     "pynwb>=2.8.0",
     "hdmf>=3.14.1",
-    "git+https://github.com/rly/ndx-events.git#egg=ndx_events"
+    "ndx_events@git+https://github.com/rly/ndx-events.git"
 ]
 
  [project.urls]
@@ -63,6 +63,8 @@ packages = [
 # ├── __init__.py
 # ├── spec
 # └── widgets
+[tool.hatch.metadata]
+allow-direct-references = true
 [tool.hatch.build.targets.wheel.sources]
 "spec" = "ndx_wearables/spec"
 
