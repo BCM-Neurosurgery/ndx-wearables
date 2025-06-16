@@ -40,5 +40,12 @@ To create a new extension, first define the extension in a new file located unde
 
 You may write a test file using PyTest under `src/pynwb/tests` to verify that the new extension can properly write and read data.
 
+## Notes on Extension Usage
+
+Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional arguments beyond the usual name, data, and timestamps. Most notably:
+- `wearable_device` is a required argument for classes that link to a device (e.g., `BloodOxygenSeries`, `EnumTimeSeries`)
+- `algorithm` is required for many classes to indicate how the data was derived (e.g., `HRVSeries`, `StepCountSeries`)
+If these arguments are omitted, instantiating the class will raise an error. You can find examples of the correct usage in the test scripts under src/pynwb/tests.
+
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
