@@ -42,10 +42,29 @@ You may write a test file using PyTest under `src/pynwb/tests` to verify that th
 
 ## Notes on Extension Usage
 
-Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional arguments beyond the usual name, data, and timestamps. Most notably:
-- `wearable_device` is a required argument for classes that link to a device (e.g., `BloodOxygenSeries`, `EnumTimeSeries`)
+Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional arguments beyond the usual `name`, `data`, and `timestamps`.
+
+In particular:
+- `wearable_device` is required for classes that link to a device (e.g., `BloodOxygenSeries`, `EnumTimeSeries`)
 - `algorithm` is required for many classes to indicate how the data was derived (e.g., `HRVSeries`, `StepCountSeries`)
-If these arguments are omitted, instantiating the class will raise an error. You can find examples of the correct usage in the test scripts under src/pynwb/tests.
+
+If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the test scripts under `src/pynwb/tests`.
+
+## Arguments for ndx-wearables Classes
+
+| Class Name           | Required Arguments                                                     | Optional Arguments                            |
+|----------------------|------------------------------------------------------------------------|-----------------------------------------------|
+| `BloodOxygenSeries`  | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
+| `EnumTimeSeries`     | `name`, `data`, `timestamps`, `wearable_device`, `enums`               | `description`, `resolution`, `conversion`     |
+| `HeartRateSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
+| `HRVSeries`          | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`, `sampling_rate` | `comments`, `description`, `resolution` |
+| `SleepPhaseSeries`   | `name`, `data`, `timestamps`, `wearable_device`, `enums`, `algorithm`  | `resolution`, `conversion`, `comments`        |
+| `StepCountSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `resolution`, `conversion`, `comments`        |
+| `VO2MaxSeries`       | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
+
+These reflect typical usage in constructors. For full context or updates, refer to the class definitions in [`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
+
+
 
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
