@@ -26,15 +26,19 @@ class WearableDevice(Device):
         *get_docval(Device.__init__)
         + (
             {"name":"location", "type": str, "doc": "Location on body of device"},
+            {"name":"os_software_version", "type": str, "doc":"The version number of the OS/software for the WearableDevice", "default": None}
         )
     )
 
     def __init__(self, **kwargs):
         location = popargs("location", kwargs)
+        os_software_version = popargs("os_software_version", kwargs)
         super().__init__(**kwargs)
 
         self.location = location
-    
+        self.os_software_version = os_software_version
+  
+  
 class WearableBase(object):
     """
     HDMF and by extension NWB does not really support multiple inheritance.
