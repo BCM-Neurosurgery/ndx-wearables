@@ -105,5 +105,5 @@ def make_wearables_infrastructure():
         ]
     )
 
-    return [wearable_device, wearable_timeseries, physiological_measure, wearable_events]
+    return [wearable_device, wearable_timeseries, physiological_measure, wearable_events, enum_timeseries]
 
