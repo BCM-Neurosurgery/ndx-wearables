@@ -47,9 +47,17 @@ if not os.path.exists(__spec_path):
 from .wearables_classes import *
 
 # Generate classes for individual modalities on the fly
+EnumTimeSeries = get_class("EnumTimeSeries", "ndx-wearables")
 SleepStageSeries = get_class("SleepStageSeries", "ndx-wearables")
 HRVSeries = get_class("HRVSeries", "ndx-wearables")
 VO2maxSeries = get_class("VO2maxSeries", "ndx-wearables")
+HeartRateSeries = get_class("HeartRateSeries", "ndx-wearables")
+BloodOxygenSeries = get_class("BloodOxygenSeries", "ndx-wearables")
+StepCountSeries = get_class("StepCountSeries", "ndx-wearables")
+MetSeries = get_class("MetSeries", "ndx-wearables")
+SleepMovementSeries = get_class("SleepMovementSeries", "ndx-wearables")
+ActivityClassSeries = get_class("ActivityClassSeries", "ndx-wearables")
+SleepPhaseSeries = get_class("SleepPhaseSeries", "ndx-wearables")
 
 print(f'Final: {available_namespaces()}')
 

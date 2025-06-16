@@ -84,6 +84,26 @@ def make_wearables_infrastructure():
             )
         ]
     )
+    
+    enum_timeseries = NWBGroupSpec(
+        neurodata_type_def="EnumTimeSeries",
+        neurodata_type_inc="WearableTimeSeries",
+        doc="A wearable time series intended for storing enumerated string labels",
+        datasets=[
+            NWBDatasetSpec(
+                name="data",
+                dtype="text",
+                doc="String labels representing enumerated classes (e.g., 'walking', 'sitting')"
+            )
+        ],
+        links=[
+            LinkSpec(
+                name='wearable_device',
+                target_type='WearableDevice',
+                doc='Link to WearableDevice used to record this data'
+            )
+        ]
+    )
 
-    return [wearable_device, wearable_timeseries, physiological_measure, wearable_events]
+    return [wearable_device, wearable_timeseries, physiological_measure, wearable_events, enum_timeseries]
 

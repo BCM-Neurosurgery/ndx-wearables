@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 import os.path
-
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttributeSpec
 from wearables_infrastructure import make_wearables_infrastructure
-
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
 import sleep
 import hrv
 import vo2max
+import heart_rate
+import blood_oxygen
+import step_count
+import met
+import sleep_movement
+import activity_class
+import sleep_phase
+
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
@@ -38,14 +44,32 @@ def main():
     sleep_stage_series = sleep.make_sleep_stage()
     hrv_series = hrv.make_hrv_stage()
     vo2max_series = vo2max.make_vo2max_stage()
+    wearables_infra_datastructures = make_wearables_infrastructure()
+    # Adding 
+    heart_rate_series = heart_rate.make_heart_rate_stage()
+    blood_oxygen_series = blood_oxygen.make_blood_oxygen_stage()
+    step_count_series = step_count.make_step_count_stage()
+    met_series = met.make_met_stage()
+    sleep_movement_series = sleep_movement.make_sleep_movement_stage()
+    activity_class_series = activity_class.make_activity_class_stage()
+    sleep_phase_series = sleep_phase.make_sleep_phase_stage()
 
-    # TODO: add all of your new data types to this list
-    new_data_types = [*wearables_infra_datastructures]
-    new_data_types.extend([
+# TODO: add all of your new data types to this list
+
+    # Combine all series types
+    new_data_types = [
+        *wearables_infra_datastructures,
         hrv_series,
         vo2max_series,
-        sleep_stage_series
-    ])
+        sleep_stage_series,
+        heart_rate_series,
+        blood_oxygen_series,
+        step_count_series,
+        met_series,
+        sleep_movement_series,
+        activity_class_series,
+        sleep_phase_series
+    ]
 
 
     # export the spec to yaml files in the spec folder

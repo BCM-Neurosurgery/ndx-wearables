@@ -1,7 +1,6 @@
 
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBAttributeSpec
 
-
 def make_hrv_stage():
     hrv_series = NWBGroupSpec(
         doc='Stores HRV values as strings over time.',
