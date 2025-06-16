@@ -79,16 +79,6 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
-<<<<<<< HEAD
-# Adding in EnumTimeSeries
-@register_class("EnumTimeSeries", "ndx-wearables")
-class EnumTimeSeries(WearableTimeSeries):
-    """
-    A WearableTimeSeries subclass intended to store string labels over time
-    (e.g., sleep stages, activity classes) as enumerated values.
-    """
-    pass
-=======
 PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
 # @register_class('PhysiologicalMeasure', "ndx-wearables")
 # class PhysiologicalMeasure(NWBDataInterface, MultiContainerInterface):
@@ -109,7 +99,6 @@ PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
 #          'get': 'get_wearable_series',
 #          'create': 'create_wearable_series'}]
 
->>>>>>> origin/develop
 
 # Adding events to inherit from ndx-wearables:
 # WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables

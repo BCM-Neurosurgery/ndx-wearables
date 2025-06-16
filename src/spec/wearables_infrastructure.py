@@ -105,11 +105,5 @@ def make_wearables_infrastructure():
         ]
     )
 
-<<<<<<< HEAD
-
-
-    return [wearable_device, wearable_timeseries, wearable_events, enum_timeseries]
-=======
     return [wearable_device, wearable_timeseries, physiological_measure, wearable_events]
->>>>>>> origin/develop
 

@@ -21,8 +21,7 @@ def add_hrv_data(nwbfile, device):
         timestamps=timestamps,
         description='Example HRV data',
         wearable_device=device,
-        algorithm='test_algorithm',
-
+        algorithm='test_algorithm', # or another appropriate string
     )
 
     # add heart rate data to the wearables processing module

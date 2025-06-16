@@ -20,7 +20,8 @@ def add_activityclass_data(nwbfile, device):
         unit='label',
         timestamps=timestamps,
         description='Example activity classification labels',
-        wearable_device=device
+        wearable_device=device,
+        algorithm='model_v1'  # or your actual algorithm name
     )
 
     # Add activity class data to the wearables processing module

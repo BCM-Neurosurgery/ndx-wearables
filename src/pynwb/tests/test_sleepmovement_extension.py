@@ -19,7 +19,7 @@ def add_sleepmovement_data(nwbfile, device):
         unit='a.u.',  # Arbitrary units
         timestamps=timestamps,
         description='Example sleep movement values',
-        wearable_device=device
+        algorithm='test_algorithm', # or another appropriate string
     )
 
     # Add sleep movement data to the wearables processing module

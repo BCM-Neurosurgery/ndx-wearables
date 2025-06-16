@@ -19,7 +19,7 @@ def add_heart_rate_data(nwbfile, device):
         unit='bpm',
         timestamps=timestamps,
         description='Example Heart Rate data',
-        wearable_device=device
+        algorithm='simulated data' # or another appropriate string
     )
 
     # Add heart rate data to the wearables processing module
