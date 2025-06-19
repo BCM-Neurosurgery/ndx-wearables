@@ -1,6 +1,4 @@
 from pynwb.spec import NWBGroupSpec
-from pynwb import register_class
-from ndx_wearables import EnumTimeSeries
 
 def make_sleep_phase_stage():
     sleep_phase_series = NWBGroupSpec(

@@ -1,6 +1,4 @@
 from pynwb.spec import NWBGroupSpec
-from pynwb import register_class
-from ndx_wearables import WearableTimeSeries
 
 def make_met_stage():
     met_series = NWBGroupSpec(

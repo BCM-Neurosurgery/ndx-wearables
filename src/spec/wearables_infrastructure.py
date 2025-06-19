@@ -1,14 +1,4 @@
-from pynwb import register_class, NWBContainer
-from pynwb.core import MultiContainerInterface
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
-from pynwb.base import TimeSeries
-from ndx_events import EventsTable
-
-from hdmf.utils import docval, popargs, get_docval, get_data_shape
-
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
 
 
 def make_wearables_infrastructure():
