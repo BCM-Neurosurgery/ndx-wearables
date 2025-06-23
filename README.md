@@ -1,56 +1,45 @@
 # ndx-wearables Extension for NWB
 
-Store data from human wearables
+Store data from wearable devices in NWB
+
+This extension is designed to help store data collected from a wide variety of wearable devices in a cross-device 
+capable way, and with an eye towards clinical applications.
+For more details about the extension, see the paper "NDX-Wearables: An NWB Extension for Clinical Neuroscience" 
+(submitted to NER 2025).
+
+
 
 ## Installation
 
-Create a new Python environment. Python 3.11 worked for me, while 3.13 ran into some installation issues.
+Create a new Python environment. Python 3.11 works well, python 3.8-3.12 have been tested.
 
 ```terminal
 conda create -n <env_name> python=3.11
 ```
 
-Navigate to the project root `cd path/to/ndx-wearables`, then install the required dependencies. For developers, use:
-
-```terminal
-pip install -r requirements-dev.txt
-```
+If you would like to install and contribute to developing the package, follow the instructions below 
+in [Installing in editable mode](#Installing-in-editable-mode)
 
 ## Usage
 
-Custom extensions are added to the extension spec YAML file by running:
 
-```terminal
-python src/spec/create_extension_spec.py
-```
 
-After running this script, you can verify that the extensions are correctly added to `spec/ndx-wearables.extensions.yaml`.
-
-Running test code may be done with PyTest using the test files located in `src/pynwb/tests`.
-
-To use custom extensions outside of a PyTest setting, they must be registered by navigating to the directory root and installing the package:
-```terminal
-cd path/to/ndx-wearables
-pip install -e .
-```
-
-## Creating New Extensions (Developers)
-
-To create a new extension, first define the extension in a new file located under `src/spec`. The new file should contain a function that returns a PyNWB NWBGroupSpec object containing the extension. Then, update `src/spec/create_extension_spec.py` to define your new data type and add it to the list of data types to be exported. Finally, update `pynwb/ndx_wearables/__init__.py` to register your class to make it accessible at the package level.
-
-You may write a test file using PyTest under `src/pynwb/tests` to verify that the new extension can properly write and read data.
 
 ## Notes on Extension Usage
 
-Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional arguments beyond the usual `name`, `data`, and `timestamps`.
+Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional
+arguments beyond the usual `name`, `data`, and `timestamps`.
 
 In particular:
 - `wearable_device` is required for classes that link to a device (e.g., `BloodOxygenSeries`, `VO2MaxSeries`)
 - `algorithm` is required for many classes to indicate how the data was derived (e.g., `HRVSeries`, `StepCountSeries`)
 
-If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the test scripts under `src/pynwb/tests`.
+If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the test 
+scripts under `src/pynwb/tests`.
 
 ## Arguments for ndx-wearables Classes
+
+#### TimeSeries (WearableTimeSeries) based modalities
 
 | Class Name             | Required Arguments                                                     | Optional Arguments                            |
 |------------------------|------------------------------------------------------------------------|-----------------------------------------------|
@@ -64,12 +53,43 @@ If these arguments are omitted, instantiating the class will raise an error. You
 | `StepCountSeries`      | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `resolution`, `conversion`, `comments`        |
 | `VO2MaxSeries`         | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
 
- 
+
+#### EventTable (WearableEvents) based modalities
+
+| Class Name    | Required Arguments                                                     | Optional Arguments                            |
+|---------------|------------------------------------------------------------------------|-----------------------------------------------|
+| `Workouts`    | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
+| `SleepEvents` | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
 
 
-These reflect typical usage in constructors. For full context or updates, refer to the class definitions in [`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
+These reflect typical usage in constructors. For full context or updates, refer to the class definitions in
+[`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
 
 
+## Developing the extension
+
+
+### Installing in editable mode
+Navigate to the project root `cd path/to/ndx-wearables`, then install the required dependencies. For developers, use:
+
+```terminal
+pip install -r requirements-dev.txt
+```
+Custom extensions are added to the extension spec YAML file by running:
+
+```terminal
+python src/spec/create_extension_spec.py
+```
+
+After running this script, you can verify that the extensions are correctly added to `spec/ndx-wearables.extensions.yaml`.
+
+Running test code may be done with PyTest using the test files located in `src/pynwb/tests`.
+
+To use custom extensions outside a PyTest setting, they must be registered by navigating to the directory root and installing the package:
+```terminal
+cd path/to/ndx-wearables
+pip install -e .
+```
 
 ---
 This extension was created using [ndx-template](https://github.com/nwb-extensions/ndx-template).
