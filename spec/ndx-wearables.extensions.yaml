@@ -1,11 +1,4 @@
 groups:
-- neurodata_type_def: SleepStageSeries
-  neurodata_type_inc: TimeSeries
-  doc: Stores sleep stages as raw strings over time.
-  datasets:
-  - name: data
-    dtype: text
-    doc: Sleep stage labels
 - neurodata_type_def: WearableDevice
   neurodata_type_inc: Device
   doc: Wearable device from which data was recorded
@@ -59,13 +52,13 @@ groups:
   neurodata_type_inc: WearableTimeSeries
   doc: A wearable time series intended for storing enumerated string labels
   datasets:
-    - name: data
-      dtype: text
-      doc: Enumerated string labels (e.g., sitting, walking, running)
+  - name: data
+    dtype: text
+    doc: String labels representing enumerated classes (e.g., 'walking', 'sitting')
   links:
-    - name: wearable_device
-      target_type: WearableDevice
-      doc: Link to WearableDevice used to record this data
+  - name: wearable_device
+    target_type: WearableDevice
+    doc: Link to WearableDevice used to record this data
 - neurodata_type_def: HRVSeries
   neurodata_type_inc: WearableTimeSeries
   doc: Stores HRV values as strings over time.
@@ -80,95 +73,31 @@ groups:
   - name: algorithm
     dtype: text
     doc: Algorithm used to extract data from raw sensor readings
+- neurodata_type_def: SleepStageSeries
+  neurodata_type_inc: TimeSeries
+  doc: Stores sleep stages as raw strings over time.
+  datasets:
+  - name: data
+    dtype: text
+    doc: Sleep stage labels
 - neurodata_type_def: HeartRateSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of heart-rate measurements over time
-  datasets:
-    - name: data
-      dtype: float
-      doc: The heart-rate values (beats per minute)
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the heart-rate values (e.g., "beats/min")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm used to derive heart rate
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores heart rate.
 - neurodata_type_def: BloodOxygenSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of blood-oxygen saturation measurements over time
-  datasets:
-    - name: data
-      dtype: float
-      doc: The oxygen saturation values (percent)
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the values (e.g., "% SpO₂")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm or sensor used to compute SpO₂
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores blood oxygen saturation levels over time.
 - neurodata_type_def: StepCountSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of cumulative step counts over time
-  datasets:
-    - name: data
-      dtype: int
-      doc: The step-count values
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the values (e.g., "steps")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm or sensor used to compute step count
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores number of steps recorded by wearable device.
 - neurodata_type_def: MetSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of metabolic-equivalent (MET) measurements over time
-  datasets:
-    - name: data
-      dtype: float
-      doc: The MET values
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the values (e.g., "METs")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm used to compute MET
+  neurodata_type_inc: WearableTimeSeries
+  doc: Stores metabolic equivalent (MET) values over time.
 - neurodata_type_def: SleepMovementSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of sleep‐movement measurements over time
-  datasets:
-    - name: data
-      dtype: float
-      doc: The movement magnitude or count during sleep periods
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the values (e.g., "arbitrary units" or "counts")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm used to detect movement
-- neurodata_type_def: SleepPhaseSeries
-  neurodata_type_inc: TimeSeries
-  doc: Series of sleep‐phase annotations over time
-  datasets:
-    - name: data
-      dtype: text
-      doc: The sleep phase label at each timestamp (e.g., "N1","REM")
-  attributes:
-    - name: unit
-      dtype: text
-      doc: Units for the values (e.g., "sleep stage")
-    - name: algorithm
-      dtype: text
-      doc: Name of the algorithm used to classify sleep phases
+  neurodata_type_inc: WearableTimeSeries
+  doc: Captures movement intensity or frequency during sleep.
 - neurodata_type_def: ActivityClassSeries
   neurodata_type_inc: EnumTimeSeries
   doc: Stores categorical labels for physical activity class over time.
-  attributes:
-  - name: algorithm
-    dtype: text
-    doc: Name of the algorithm used to classify activity
-
+- neurodata_type_def: SleepPhaseSeries
+  neurodata_type_inc: EnumTimeSeries
+  doc: Stores sleep phase categories (e.g., REM, deep) over time.
