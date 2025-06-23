@@ -11,6 +11,9 @@ def make_wearables_infrastructure():
         attributes=[
             NWBAttributeSpec(
                 name="location", doc="Location of wearable device on body", dtype="text", required=True
+            ),
+            NWBAttributeSpec(
+                name="os_software_version", doc="The version number of the OS/software for the WearableDevice", dtype="text", required=False
             )
         ],
     )
