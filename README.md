@@ -8,6 +8,10 @@ For more details about the extension, see the paper "NDX-Wearables: An NWB Exten
 (submitted to NER 2025).
 
 
+To see how the data stored using this extension looks, visit our example dataset on the
+[EMBER Archive](https://dandi.emberarchive.org/dandiset/000207).
+
+You can also generate a local copy of a synthetic dataset by running the `examples/all_modalities.py` script.
 
 ## Installation
 
@@ -21,7 +25,6 @@ If you would like to install and contribute to developing the package, follow th
 in [Installing in editable mode](#Installing-in-editable-mode)
 
 ## Usage
-
 
 
 
@@ -54,7 +57,7 @@ scripts under `src/pynwb/tests`.
 | `VO2MaxSeries`         | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
 
 
-#### EventTable (WearableEvents) based modalities
+#### EventTable (WearableEvents) based modalities (WIP)
 
 | Class Name    | Required Arguments                                                     | Optional Arguments                            |
 |---------------|------------------------------------------------------------------------|-----------------------------------------------|
@@ -68,6 +71,9 @@ These reflect typical usage in constructors. For full context or updates, refer 
 
 ## Developing the extension
 
+We use a gitflow model for collaborative development. Each feature should be created on a branch that branches off of 
+the `develop` branch. Draft PRs back into develop should be open for each WIP feature, and marked as ready for review 
+once the feature is complete. Periodic releases will be made from develop into `main`.
 
 ### Installing in editable mode
 Navigate to the project root `cd path/to/ndx-wearables`, then install the required dependencies. For developers, use:
