@@ -8,11 +8,6 @@ For more details about the extension, see the paper "NDX-Wearables: An NWB Exten
 (submitted to NER 2025).
 
 
-To see how the data stored using this extension looks, visit our example dataset on the
-[EMBER Archive](https://dandi.emberarchive.org/dandiset/000207).
-
-You can also generate a local copy of a synthetic dataset by running the `examples/all_modalities.py` script.
-
 ## Installation
 
 Create a new Python environment. Python 3.11 works well, python 3.8-3.12 have been tested.
@@ -20,12 +15,17 @@ Create a new Python environment. Python 3.11 works well, python 3.8-3.12 have be
 ```terminal
 conda create -n <env_name> python=3.11
 ```
+You should be able to install from pypi using `pip install ndx-wearables`
 
 If you would like to install and contribute to developing the package, follow the instructions below 
 in [Installing in editable mode](#Installing-in-editable-mode)
 
 ## Usage
 
+To see how the data stored using this extension looks, visit our example dataset on the
+[EMBER Archive](https://dandi.emberarchive.org/dandiset/000207).
+
+You can also generate a local copy of a synthetic dataset by running the `examples/all_modalities.py` script.
 
 
 ## Notes on Extension Usage
