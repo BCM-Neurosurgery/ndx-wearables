@@ -21,9 +21,22 @@ def main():
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-wearables""",
         version="""0.1.0""",
-        doc="""Store data from human wearables""",
+        doc="""Store data from human wearable devices in NWB""",
         author=[
-            "Tomasz Fraczek",
+            "Tomasz M. Fraczek",
+            "Lauren Diaz",
+            "Nicole Guittari",
+            "Rick Hanish",
+            "Timon Merk",
+            "Nicole Tregoning",
+            "Sandy Hider",
+            "Wayne K. Goodman",
+            "Sameer A. Sheth",
+            "Han Yi",
+            "Brock A. Wester",
+            "Jeffery A. Herron",
+            "Erik C. Johnson",
+            "Nicole R. Provenza"
         ],
         contact=[
             "tomek.fraczek@bcm.edu", 
