@@ -52,6 +52,7 @@ import textwrap  # noqa: E402
 intersphinx_mapping.update({
     'core': ('https://nwb-schema.readthedocs.io/en/latest/', None),
     'hdmf-common': ('https://hdmf-common-schema.readthedocs.io/en/latest/', None),
+    'ndx-events': ('https://github.com/rly/ndx-events?tab=readme-ov-file#readme', None),
 })
 
 # -- Generate sources from YAML---------------------------------------------------

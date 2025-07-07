@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
       - 'releases/**'
-  schedule:
-    - cron: '0 5 * * 0'  # once every Sunday at midnight ET
   workflow_dispatch:
 
 jobs:
