@@ -43,7 +43,7 @@ dependencies = [
 
  [project.urls]
  "Homepage" = "https://github.com/BCM-Neurosurgery/ndx-wearables"
- "Documentation" = "https://package.readthedocs.io/"
+ "Documentation" = "https://github.com/BCM-Neurosurgery/ndx-wearables/blob/main/README.md"
  "Bug Tracker" = "https://github.com/BCM-Neurosurgery/ndx-wearables/issues"
  "Discussions" = "https://github.com/BCM-Neurosurgery/ndx-wearables/discussions"
  "Changelog" = "https://github.com/BCM-Neurosurgery/ndx-wearables/blob/main/CHANGELOG.md"
