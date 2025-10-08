@@ -9,6 +9,54 @@ from hdmf.utils import docval, popargs, get_docval, get_data_shape
 from datetime import datetime
 from dateutil.tz import tzlocal
 import numpy as np
+from enum import Enum
+from typing import Union
+
+try:
+    from enum import StrEnum as _StrEnum  # Python 3.11+
+except Exception:
+    class _StrEnum(str, Enum):  # fallback
+        pass
+
+
+class WearablesEnumBase(_StrEnum):
+    """String enum that serializes to a plain string in NWB."""
+    @classmethod
+    def choices(cls) -> list[str]:
+        return [m.value for m in cls]
+
+    @classmethod
+    def validate(cls, value: Union[str, "WearablesEnumBase"]) -> str:
+        """Accept either an enum member or a string; normalize/validate, return a string."""
+        if isinstance(value, cls):
+            return value.value
+        if isinstance(value, str):
+            norm = value.strip().lower()
+            # keep existing tests working
+            synonyms = {
+                "forearm": "wrist",
+                "hand": "wrist",
+                "arm": "wrist",
+            }
+            norm = synonyms.get(norm, norm)
+            try:
+                return cls(norm).value
+            except ValueError as e:
+                raise ValueError(f"{cls.__name__}: got '{value}', expected one of {cls.choices()}") from e
+        raise TypeError(f"{cls.__name__}: expected str or {cls.__name__}, got {type(value).__name__}")
+
+# Enum tables we can edit
+class Placement(WearablesEnumBase):
+    WRIST = "wrist"
+    CHEST = "chest"
+    ANKLE = "ankle"
+    THIGH = "thigh"
+    HEAD = "head"
+
+class SensorType(WearablesEnumBase):
+    ACCEL = "accel" # accelerometer
+    ECG = "ecg" # electrocardiogram
+    TEMP = "temp" # temperature
 
 # when extending NWBContainer, define __nwbfields__
 # tells PyNWB properties of the NWBContainer extension
@@ -26,7 +74,8 @@ class WearableDevice(Device):
         *get_docval(Device.__init__)
         + (
             {"name":"location", "type": str, "doc": "Location on body of device"},
-            {"name":"os_software_version", "type": str, "doc":"The version number of the OS/software for the WearableDevice", "default": None}
+            {"name":"os_software_version", "type": str, 
+             "doc":"The version number of the OS/software for the WearableDevice", "default": None}
         )
     )
 
@@ -35,7 +84,8 @@ class WearableDevice(Device):
         os_software_version = popargs("os_software_version", kwargs)
         super().__init__(**kwargs)
 
-        self.location = location
+        #self.location = location
+        self.location = Placement.validate(location)
         self.os_software_version = os_software_version
   
   

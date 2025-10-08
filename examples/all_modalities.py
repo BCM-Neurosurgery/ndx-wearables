@@ -11,7 +11,7 @@ from tests.test_vo2max_extension import add_vo2max_data
 from tests.test_met_extension import add_met_data
 from tests.test_activityclass_extension import add_activityclass_data
 from tests.test_sleepmovement_extension import add_sleepmovement_data
-from tests.test_blood_oxygen_extension import add_blood_oxygen_data
+from examples.test_blood_oxygen_extension import add_blood_oxygen_data
 from tests.test_heart_rate_extension import add_heart_rate_data
 from tests.test_sleepphase_extension import add_sleepphase_data
 from tests.test_stepcount_extension import add_stepcount_data
