@@ -33,7 +33,7 @@ MODALITY_BUILDERS = [
 RELEASE = 'pre-release-0-1'
 IDENTIFIER = '{}_{}'
 subject = f'synthetic-{RELEASE}'
-OUTPUT_PATH = fr'D:\Work\BCM\NDX-extensions\ndx-wearables\000207\sub-{subject}\sub-{subject}.nwb'
+OUTPUT_PATH = fr'.\000207\sub-{subject}\sub-{subject}.nwb'
 
 now = datetime.now(pytz.timezone('America/Chicago'))
 today = now.strftime("%Y-%m-%d")

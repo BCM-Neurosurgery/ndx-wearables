@@ -3,4 +3,4 @@
 # NOTE: it may be possible to relax these minimum requirements
 pynwb>=2.8.0
 hdmf>=3.14.1, < 4.0
-git+ssh://git@github.com/rly/ndx-events#egg=ndx_events
+git+https://git@github.com/rly/ndx-events#egg=ndx_events

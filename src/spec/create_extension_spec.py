@@ -20,10 +20,23 @@ def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-wearables""",
-        version="""0.1.0""",
-        doc="""Store data from human wearables""",
+        version="""0.1.1""",
+        doc="""Store data from human wearable devices in NWB""",
         author=[
-            "Tomek", 
+            "Tomasz M. Fraczek",
+            "Lauren Diaz",
+            "Nicole Guittari",
+            "Rick Hanish",
+            "Timon Merk",
+            "Nicole Tregoning",
+            "Sandy Hider",
+            "Wayne K. Goodman",
+            "Sameer A. Sheth",
+            "Han Yi",
+            "Brock A. Wester",
+            "Jeffery A. Herron",
+            "Erik C. Johnson",
+            "Nicole R. Provenza"
         ],
         contact=[
             "tomek.fraczek@bcm.edu", 
@@ -31,21 +44,11 @@ def main():
     )
     ns_builder.include_namespace("core")
     ns_builder.include_namespace("ndx-events")
-    
-    # TODO: if your extension builds on another extension, include the namespace
-    # of the other extension below
-    # ns_builder.include_namespace("ndx-other-extension")
-
-    # TODO: define your new data types
-    # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
-    # for more information
 
     wearables_infra_datastructures = make_wearables_infrastructure()
     sleep_stage_series = sleep.make_sleep_stage()
     hrv_series = hrv.make_hrv_stage()
     vo2max_series = vo2max.make_vo2max_stage()
-    wearables_infra_datastructures = make_wearables_infrastructure()
-    # Adding 
     heart_rate_series = heart_rate.make_heart_rate_stage()
     blood_oxygen_series = blood_oxygen.make_blood_oxygen_stage()
     step_count_series = step_count.make_step_count_stage()

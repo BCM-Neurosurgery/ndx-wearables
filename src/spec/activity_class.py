@@ -1,6 +1,4 @@
 from pynwb.spec import NWBGroupSpec
-from pynwb import register_class
-from ndx_wearables import EnumTimeSeries
 
 def make_activity_class_stage():
     activity_class_series = NWBGroupSpec(
