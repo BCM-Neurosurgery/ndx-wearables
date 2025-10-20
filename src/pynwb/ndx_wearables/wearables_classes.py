@@ -11,7 +11,6 @@ from dateutil.tz import tzlocal
 import numpy as np
 from enum import Enum
 from typing import Union
-from .enums import Placement, SensorType
 from hdmf.common import DynamicTable  # <-- already present
 
 # Common enums (used across multiple classes)
