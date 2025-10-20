@@ -120,40 +120,25 @@ class WearablesEnumTimeseriesBase(TimeSeries, WearableBase):
                                 data=[''] * len(categories))
         self.meanings = meanings
         
-# Concrete constrained subclass examples 
-class SleepPhase(str, Enum):
-    AWAKE = "awake"
-    N1 = "n1"
-    N2 = "n2"
-    N3 = "n3"
-    REM = "rem"
+ENUM_MAP = {
+    "sleep_phase": SleepPhase,
+    "activity_class": ActivityClass
+    # Add more
+}
 
-class SleepPhaseSeries(WearablesEnumTimeseriesBase):
-    def __init__(self, name='sleep_phase', data=(), rate=None, timestamps=None, meanings=None, **kwargs):
-        categories = [e.value for e in SleepPhase]
-        super().__init__(name=name,
-                         data=list(data),
-                         categories=categories,
-                         rate=rate,
-                         timestamps=timestamps,
-                         meanings=meanings,
-                         **kwargs)
-        
-class ActivityClass(str, Enum):
-    SITTING = "sitting"
-    WALKING = "walking"
-    RUNNING = "running"
-
-class ActivityClassSeries(WearablesEnumTimeseriesBase):
-    def __init__(self, name='activity_class', data=(), rate=None, timestamps=None, meanings=None, **kwargs):
-        categories = [e.value for e in ActivityClass]
-        super().__init__(name=name,
-                         data=list(data),
-                         categories=categories,
-                         rate=rate,
-                         timestamps=timestamps,
-                         meanings=meanings,
-                         **kwargs)
+class CategoricalSeries(WearablesEnumTimeseriesBase):
+    def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, **kwargs):
+        enum_class = ENUM_MAP[category_type]
+        categories = [e.value for e in enum_class]
+        super().__init__(
+            name=category_type,
+            data=list(data),
+            categories=categories,
+            rate=rate,
+            timestamps=timestamps,
+            meanings=meanings,
+            **kwargs
+        )
 
 # Device and existing classes (unchanged except for Placement handling)
 
