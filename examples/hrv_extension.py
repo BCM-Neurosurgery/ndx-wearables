@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -34,7 +34,7 @@ def main():
     hrv_values = np.random.randint(60, 100, size=timestamps.size)
 
     # 4) Create the HRVSeries and add it to the processing module
-    series = HRVSeries(
+    series = WearableBaseSeries(
         name="HRV Data",
         data=hrv_values,
         unit="bpm",

@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -39,7 +39,7 @@ def main():
     heart_rate_values = np.random.randint(60, 100, size=timestamps.size)
 
     # 4) Create series and add to module
-    series = HeartRateSeries(
+    series = WearableBaseSeries(
         name="Heart Rate Data",
         data=heart_rate_values,
         unit="bpm",

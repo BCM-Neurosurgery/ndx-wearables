@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -27,7 +27,7 @@ def main():
     stepcount_values = np.random.randint(0, 200, size=timestamps.size)
 
     # 4) Create series and add to processing module
-    series = StepCountSeries(
+    series = WearableBaseSeries(
         name="StepCount Data",
         data=stepcount_values,
         unit="steps",

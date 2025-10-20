@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -28,7 +28,7 @@ def main():
     labels = np.array(["sitting", "walking", "running"])
     data = np.tile(labels, 40)[:timestamps.size]
 
-    series = ActivityClassSeries(
+    series = EnumWearableBaseSeries(
         name="ActivityClass Data",
         data=data,
         unit="label",             # categorical

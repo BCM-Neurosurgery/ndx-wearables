@@ -2,7 +2,7 @@
 Note, tests expect to be run from the ndc-wearables root directory
 """
 
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz

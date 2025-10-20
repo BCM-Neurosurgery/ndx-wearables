@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -23,7 +23,7 @@ def nwb_with_sleep_stages(tmp_path):
     stages = np.random.RandomState(42).choice(['awake', 'light_sleep', 'deep_sleep', 'rem'], size=len(timestamps))
 
     # Create SleepStageSeries object
-    sleep_stage_series = SleepStageSeries(
+    sleep_stage_series = WearableBaseSeries(
         name='Sleep Stages',
         data=stages,
         unit='stage',

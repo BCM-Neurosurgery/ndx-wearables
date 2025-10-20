@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -34,7 +34,7 @@ def main():
     vo2max_values = np.random.randint(30, 60, size=timestamps.size)  # mL/kg/min
 
     # 4) Create the VO2maxSeries and add to processing module
-    series = VO2maxSeries(
+    series = WearableBaseSeries(
         name="VO2 Max Data",
         data=vo2max_values,
         unit="mL/kg/min",

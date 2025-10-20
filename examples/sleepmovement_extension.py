@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -27,7 +27,7 @@ def main():
     sleepmovement_values = np.random.rand(timestamps.size)  # floats in [0,1)
 
     # 4) Create series and add to processing module
-    series = SleepMovementSeries(
+    series = WearableBaseSeries(
         name="SleepMovement Data",
         data=sleepmovement_values,
         unit="a.u.",  # arbitrary units

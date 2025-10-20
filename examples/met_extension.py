@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -46,7 +46,7 @@ def main():
     met_values = np.random.uniform(1.0, 10.0, size=timestamps.size)
 
     # 4) Create MetSeries and add to the processing module
-    series = MetSeries(
+    series = WearableBaseSeries(
         name="Met Data",
         data=met_values,
         unit="MET",

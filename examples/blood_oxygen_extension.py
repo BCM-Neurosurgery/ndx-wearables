@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -34,7 +34,7 @@ def main():
     blood_oxygen_values = np.random.randint(90, 100, size=timestamps.size)
 
     # 4) Create the series and add it to the processing module
-    series = BloodOxygenSeries(
+    series = WearableBaseSeries(
         name="BloodOxygen Data",
         data=blood_oxygen_values,
         unit="percent",

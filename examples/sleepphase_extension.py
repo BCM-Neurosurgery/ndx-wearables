@@ -1,4 +1,4 @@
-import pytest
+
 import numpy as np
 from datetime import datetime
 import pytz
@@ -18,7 +18,7 @@ def main():
     labels = np.array(["awake", "n1", "n2", "n2", "n3", "rem", "awake"])
     timestamps = np.arange(labels.size, dtype=float)
 
-    series = SleepPhaseSeries(
+    series = EnumWearableBaseSeries(
         name="sleep_phase",
         data=labels,              # labels map to codes internally
         timestamps=timestamps,
