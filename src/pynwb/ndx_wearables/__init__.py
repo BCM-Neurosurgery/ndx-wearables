@@ -1,5 +1,6 @@
 import os
 from pynwb import load_namespaces, get_class, available_namespaces
+from .wearables_classes import WearablesEnumBase, SleepPhaseSeries, ActivityClassSeries, Placement, SensorType
 
 try:
     from importlib.resources import files
