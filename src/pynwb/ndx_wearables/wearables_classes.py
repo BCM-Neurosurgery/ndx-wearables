@@ -61,8 +61,8 @@ class WearableBase(object):
 
 # Categorical TimeSeries container (what Tomek expected)
 
-@register_class('WearablesEnumTimeseriesBase', 'ndx-wearables')
-class WearablesEnumTimeseriesBase(TimeSeries, WearableBase):
+@register_class('WearableEnumSeries', 'ndx-wearables')
+class WearableEnumSeries(TimeSeries, WearableBase):
     """
     A categorical TimeSeries for wearable data.
     Stores category values (strings or integer indices), the allowed categories,
@@ -126,7 +126,7 @@ ENUM_MAP = {
     # Add more
 }
 
-class CategoricalSeries(WearablesEnumTimeseriesBase):
+class CategoricalSeries(WearableEnumSeries):
     def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, **kwargs):
         enum_class = ENUM_MAP[category_type]
         categories = [e.value for e in enum_class]
