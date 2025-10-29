@@ -49,17 +49,17 @@ def main():
 
     # Combine all series types
     new_data_types = [
-        *wearables_infra_datastructures,
-        hrv_series,
-        vo2max_series,
-        sleep_stage_series,
-        heart_rate_series,
-        blood_oxygen_series,
-        step_count_series,
-        met_series,
-        sleep_movement_series,
-        activity_class_series,
-        sleep_phase_series
+        # *wearables_infra_datastructures,
+        # hrv_series,
+        # vo2max_series,
+        # sleep_stage_series,
+        # heart_rate_series,
+        # blood_oxygen_series,
+        # step_count_series,
+        # met_series,
+        # sleep_movement_series,
+        # activity_class_series,
+        # sleep_phase_series
     ]
 
 
