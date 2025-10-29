@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
-from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttributeSpec
+from pynwb.spec import NWBNamespaceBuilder, export_spec
 from wearables_infrastructure import make_wearables_infrastructure
 # TODO: import other spec classes as needed
 # from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec

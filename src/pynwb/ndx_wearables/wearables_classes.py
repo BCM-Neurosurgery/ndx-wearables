@@ -1,17 +1,14 @@
-from pynwb import register_class, get_class, NWBContainer
-from pynwb.core import MultiContainerInterface
-from hdmf.common import SimpleMultiContainer
+from pynwb import register_class, get_class
 from pynwb.device import Device
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
-from pynwb.base import TimeSeries, NWBDataInterface
-from ndx_events import EventsTable, CategoricalVectorData
-from hdmf.utils import docval, popargs, get_docval, get_data_shape, getargs  # <-- added getargs
-from datetime import datetime
-from dateutil.tz import tzlocal
+from pynwb.base import TimeSeries
+from ndx_events import EventsTable
+from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
 import numpy as np
 from enum import Enum
-from typing import Union
 from hdmf.common import DynamicTable  # <-- already present
+
+from ndx_wearables.categorical_enums import ENUM_MAP
+
 
 # Common enums (used across multiple classes)
 class Placement(str, Enum):
@@ -119,12 +116,7 @@ class WearableEnumSeries(TimeSeries, WearableBase):
             meanings.add_column(name='description', description='human-readable definition',
                                 data=[''] * len(categories))
         self.meanings = meanings
-        
-ENUM_MAP = {
-    "sleep_phase": SleepPhase,
-    "activity_class": ActivityClass
-    # Add more
-}
+
 
 class CategoricalSeries(WearableEnumSeries):
     def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, **kwargs):

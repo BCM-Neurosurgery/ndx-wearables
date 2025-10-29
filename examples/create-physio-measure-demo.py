@@ -2,13 +2,10 @@
 import numpy as np
 from datetime import datetime
 import pytz
-from pynwb import NWBFile, NWBHDF5IO
-from pynwb.base import TimeSeries
+from pynwb import NWBHDF5IO
 from pynwb.file import ProcessingModule
 from pathlib import Path
-from hdmf.common.table import VectorData
-from ndx_events import NdxEventsNWBFile, EventsTable, TimestampVectorData, CategoricalVectorData, MeaningsTable
-from unicodedata import category
+from ndx_events import NdxEventsNWBFile
 
 from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents, PhysiologicalMeasure
 
