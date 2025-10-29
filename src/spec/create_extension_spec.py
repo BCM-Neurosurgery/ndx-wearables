@@ -3,18 +3,6 @@ import os.path
 from pynwb.spec import NWBNamespaceBuilder, export_spec, NWBGroupSpec, NWBAttributeSpec
 from wearables_infrastructure import make_wearables_infrastructure
 # TODO: import other spec classes as needed
-# from pynwb.spec import NWBDatasetSpec, NWBLinkSpec, NWBDtypeSpec, NWBRefSpec
-import sleep
-import hrv
-import vo2max
-import heart_rate
-import blood_oxygen
-import step_count
-import met
-import sleep_movement
-import activity_class
-import sleep_phase
-
 
 def main():
     # these arguments were auto-generated from your cookiecutter inputs
