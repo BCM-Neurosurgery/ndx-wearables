@@ -52,7 +52,7 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
-- neurodata_type_def: EnumTimeSeries
+- neurodata_type_def: WearableEnumSeries
   neurodata_type_inc: WearableTimeSeries
   doc: A wearable time series intended for storing enumerated string labels
   datasets:
