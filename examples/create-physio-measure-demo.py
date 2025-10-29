@@ -43,6 +43,7 @@ ts = WearableTimeSeries(
     description="test",
     unit="unit",
     wearable_device=device,
+    algorithm='placeholder'
 )
 
 nwbfile.add_processing_module(wearables)
