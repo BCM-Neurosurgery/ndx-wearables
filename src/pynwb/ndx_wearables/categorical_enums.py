@@ -65,3 +65,10 @@ def build_activity_class_meanings():
         ]
     )
     return table
+
+
+ENUM_MAP = {
+    "sleep_phase": SleepPhase,
+    "activity_class": ActivityClass
+    # Add more
+}
