@@ -10,6 +10,7 @@ from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
 from pathlib import Path
+import pytest
 
 from hdmf.common.table import VectorData
 from ndx_events import NdxEventsNWBFile, MeaningsTable, CategoricalVectorData
