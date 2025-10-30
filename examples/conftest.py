@@ -1,6 +1,7 @@
 
 from pathlib import Path
 from examples import make_wearables_nwbfile, add_wearables_device
+import pytest
 
 @pytest.fixture(scope='session')
 def tmp_path():
