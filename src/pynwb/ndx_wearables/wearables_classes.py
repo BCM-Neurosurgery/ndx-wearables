@@ -17,6 +17,7 @@ class Placement(str, Enum):
     ANKLE = "ankle"
     THIGH = "thigh"
     HEAD = "head"
+    FINGER = "finger"
 
 class SensorType(str, Enum):
     ACCEL = "accel"  # accelerometer
