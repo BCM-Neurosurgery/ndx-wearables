@@ -158,16 +158,7 @@ class WearableDevice(Device):
         os_software_version = popargs("os_software_version", kwargs)
         super().__init__(**kwargs)
 
-        # Normalize/validate against Placement enum (since Placement.validate() no longer exists)
-        if isinstance(location, Placement):
-            self.location = location.value
-        else:
-            norm = location.strip().lower()
-            # simple synonyms (optional)
-            synonyms = {"forearm": "wrist", "hand": "wrist", "arm": "wrist"}
-            norm = synonyms.get(norm, norm)
-            self.location = Placement(norm).value  # raises ValueError if invalid
-
+        self.location = location
         self.os_software_version = os_software_version
 
 @register_class("WearableTimeSeries", "ndx-wearables")
