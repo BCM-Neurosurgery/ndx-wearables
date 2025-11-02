@@ -40,6 +40,12 @@ groups:
   - neurodata_type_inc: WearableTimeSeries
     doc: Place your device-specific estimates of this modality here
     quantity: '*'
+  - neurodata_type_inc: WearableEnumSeries
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
+  - neurodata_type_inc: WearableEvents
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices

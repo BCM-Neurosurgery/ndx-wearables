@@ -55,6 +55,16 @@ def make_wearables_infrastructure():
                 doc="Place your device-specific estimates of this modality here",
                 neurodata_type_inc="WearableTimeSeries",
                 quantity="*",
+            ),
+            NWBGroupSpec(
+                doc="Place your device-specific estimates of this modality here",
+                neurodata_type_inc="WearableEnumSeries",
+                quantity="*",
+            ),
+            NWBGroupSpec(
+                doc="Place your device-specific estimates of this modality here",
+                neurodata_type_inc="WearableEvents",
+                quantity="*",
             )
         ]
     )
