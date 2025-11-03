@@ -1,49 +1,48 @@
 
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timezone
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import VO2maxSeries #Assuming VO2maxSeries is correctly implemented in ndx_wearables/yaml file
+from ndx_wearables import VO2MaxSeries, WearableDevice
 
 def main():
-    # 1) Create the NWB container
+    # 1) Create an NWBFile container (timezone-aware start time)
     nwbfile = NWBFile(
         session_description="Wearables VO2 Max example",
         identifier="VO2-001",
-        session_start_time=datetime.now()
+        session_start_time=datetime.now(timezone.utc),
     )
 
-    # 2) Add a device and processing module
-    device = Device(
+    # 2) Add a device and a wearables processing module
+    wearable_dev = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
-        description="Example wearable"
+        description="Example wearable",
+        location="left_wrist",   # required by your spec
     )
-    nwbfile.add_device(device)
-
-    wearables = ProcessingModule(
+    nwbfile.add_device(wearable_dev)
+    wearables = nwbfile.create_processing_module(
         name="wearables",
-        description="Wearables derived data"
+        description="Wearables derived data",
     )
-    nwbfile.add_processing_module(wearables)
 
-    # 3) Generate synthetic VO2 max data (every 30s for 1 hour)
-    timestamps = np.arange(0.0, 3600.0, 30.0)
-    np.random.seed(42)
-    vo2max_values = np.random.randint(30, 60, size=timestamps.size)  # mL/kg/min
+    # 3) Generate synthetic SpO2 data (every 30s for 1 hour)
+    timestamps = np.arange(0.0, 3600.0, 30.0, dtype="float64")
+    rng = np.random.default_rng(42)
+    vo2max_values = rng.normal(loc=42.0, scale=6.0, size=timestamps.size).astype("float64")
 
-    # 4) Create the VO2maxSeries and add to processing module
-    series = WearableBaseSeries(
+    # 4) Create the series and add it to the processing module
+    series = VO2MaxSeries(
         name="VO2 Max Data",
         data=vo2max_values,
         unit="mL/kg/min",
         timestamps=timestamps,
-        description="Example VO2 max data",
-        wearable_device=device,
-        algorithm="test_algorithm"
+        description="Estimated VO2max over time",
+        wearable_device=wearable_dev,     # REQUIRED link object
+        algorithm="vo2max_estimator_v1",  # REQUIRED by your schema
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
     out_path = "examples/vo2max_example.nwb"
@@ -58,7 +57,7 @@ def main():
         s = pm.get("VO2 Max Data")
         print("Series:", s.name)
         print("Samples:", len(s.data[:]))
-        print("First 5 VO2 max values (mL/kg/min):", s.data[:5])
+        print("First 5 values (mL/kg/min):", s.data[:5])
         print("Timestamps length:", len(s.timestamps[:]))
 
 if __name__ == "__main__":

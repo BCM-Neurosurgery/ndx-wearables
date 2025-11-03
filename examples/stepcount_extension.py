@@ -1,42 +1,45 @@
 
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timezone
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import StepCountSeries  # Assumes StepCountSeries is registered in the namespace and accessible via get_class
+from ndx_wearables import StepCountSeries, WearableDevice  # Assumes StepCountSeries is registered in the namespace and accessible via get_class
 
 def main():
     # 1) Create NWB container
     nwbfile = NWBFile(
         session_description="Wearables StepCount example",
         identifier="STEP-001",
-        session_start_time=datetime.now()
+        session_start_time=datetime.now(timezone.utc),
     )
 
-    # 2) Add device and processing module
-    device = Device(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
-    nwbfile.add_device(device)
+    # 2) Add a device and a wearables processing module
+    wearable_dev = WearableDevice(
+        name="wearable_device",
+        manufacturer="ExampleCo",
+        description="Example wearable",
+        location="left_wrist",
+    )
+    nwbfile.add_device(wearable_dev)
+    wearables = nwbfile.create_processing_module("wearables", "Wearables derived data")
 
-    wearables = ProcessingModule(name="wearables", description="Wearables derived data")
-    nwbfile.add_processing_module(wearables)
-
-    # 3) Generate synthetic step-count data (every 30s for 1h)
-    timestamps = np.arange(0.0, 3600.0, 30.0)  # 120 samples
-    np.random.seed(42)
-    stepcount_values = np.random.randint(0, 200, size=timestamps.size)
+    # 3) Generate synthetic SpO2 data (every 30s for 1 hour)
+    timestamps = np.arange(0.0, 3600.0, 30.0, dtype="float64")
+    rng = np.random.default_rng(42)
+    values = rng.integers(90, 100, size=timestamps.size).astype("float64")
 
     # 4) Create series and add to processing module
-    series = WearableBaseSeries(
+    series = StepCountSeries(
         name="StepCount Data",
-        data=stepcount_values,
+        data=values,
         unit="steps",
         timestamps=timestamps,
         description="Example step count values",
-        wearable_device=device,
+        wearable_device=wearable_dev,
         algorithm="test_algorithm",
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
     out_path = "examples/stepcount_example.nwb"

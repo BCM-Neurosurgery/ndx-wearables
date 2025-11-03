@@ -1,49 +1,45 @@
-
 import numpy as np
-from datetime import datetime
-import pytz
+from datetime import datetime, timezone
 from pynwb import NWBFile, NWBHDF5IO
-from pynwb.file import ProcessingModule
-from ndx_wearables import HRVSeries #Assuming HRVSeries is correctly implemented in ndx_wearables/yaml file
+from ndx_wearables import HRVSeries, WearableDevice 
 
 def main():
-    # 1) Create NWB container
+    # 1) Create an NWBFile container (timezone-aware start time)
     nwbfile = NWBFile(
         session_description="Wearables HRV example",
         identifier="HRV-001",
-        session_start_time=datetime.now()
+        session_start_time=datetime.now(timezone.utc),
     )
 
-    # 2) Add device and processing module
-    device = Device(
+    # 2) Add a device and a wearables processing module
+    wearable_dev = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
-        description="Example wearable"
+        description="Example wearable",
+        location="left_wrist",  # REQUIRED by spec
     )
-    nwbfile.add_device(device)
-
-    wearables = ProcessingModule(
+    nwbfile.add_device(wearable_dev)
+    wearables = nwbfile.create_processing_module(
         name="wearables",
-        description="Wearables derived data"
+        description="Wearables derived data",
     )
-    nwbfile.add_processing_module(wearables)
 
-    # 3) Generate synthetic HRV data (every 30s for 1h)
-    timestamps = np.arange(0.0, 3600.0, 30.0)
-    np.random.seed(42)
-    hrv_values = np.random.randint(60, 100, size=timestamps.size)
+    # 3) Generate synthetic SpO2 data (every 30s for 1 hour)
+    timestamps = np.arange(0.0, 3600.0, 30.0, dtype="float64")
+    rng = np.random.default_rng(42)
+    hrv_ms = rng.normal(loc=55.0, scale=10.0, size=timestamps.size).astype("float64")  # ms
 
-    # 4) Create the HRVSeries and add it to the processing module
-    series = WearableBaseSeries(
+    # 4) Create the series and add it to the processing module
+    series = HRVSeries(
         name="HRV Data",
-        data=hrv_values,
-        unit="bpm",
+        data=hrv_ms,
         timestamps=timestamps,
-        description="Example HRV data",
-        wearable_device=device,
-        algorithm="test_algorithm"
+        unit="ms",
+        description="Example time domain HRV (e.g., RMSSD-like) in milliseconds",
+        wearable_device=wearable_dev,   # required by schema
+        algorithm="hrv_time_domain",   # required by schema
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
     out_path = "examples/hrv_example.nwb"

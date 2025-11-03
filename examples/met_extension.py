@@ -1,61 +1,50 @@
 
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timezone
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import MetSeries  # Assumes MetSeries is registered in the namespace and accessible via get_class
-
-"""
-Run: python examples/test_met_extension.py
-Creates an NWB file with MetSeries and verifies a roundtrip (write → read).
-"""
-
-import numpy as np
-from datetime import datetime
-from pynwb import NWBFile, NWBHDF5IO
-from pynwb.device import Device
-from pynwb.file import ProcessingModule
-from ndx_wearables import MetSeries  # assumes exported/registered
+from ndx_wearables import MetSeries, WearableDevice  # Assumes MetSeries is registered in the namespace and accessible via get_class
 
 def main():
-    # 1) Create the NWB container
+    # 1) Create the NWB container (timezone-aware start time)
     nwbfile = NWBFile(
         session_description="Wearables MET example",
         identifier="MET-001",
-        session_start_time=datetime.now()
+        session_start_time=datetime.now(timezone.utc),
     )
 
-    # 2) Add a device and processing module
-    device = Device(
+    # 2) Create your extension device (WearableDevice), then add it to the file
+    wearable_dev = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
-        description="Example wearable"
+        description="Example wearable",
+        location="left_wrist",  # required by your spec
     )
-    nwbfile.add_device(device)
+    nwbfile.add_device(wearable_dev)
 
-    wearables = ProcessingModule(
+    # Processing module
+    wearables = nwbfile.create_processing_module(
         name="wearables",
-        description="Wearables derived data"
+        description="Wearables derived data",
     )
-    nwbfile.add_processing_module(wearables)
 
-    # 3) Generate synthetic MET data (every 30s for 1 hour)
-    timestamps = np.arange(0.0, 3600.0, 30.0)
-    np.random.seed(42)
-    met_values = np.random.uniform(1.0, 10.0, size=timestamps.size)
+    # 3) Generate synthetic MET data (every 30 s for 1 hour)
+    timestamps = np.arange(0.0, 3600.0, 30.0, dtype="float64")
+    rng = np.random.default_rng(42)
+    met_values = rng.uniform(1.0, 10.0, size=timestamps.size).astype("float64")
 
-    # 4) Create MetSeries and add to the processing module
-    series = WearableBaseSeries(
+    # 4) Create the series and add it to the processing module
+    series = MetSeries(
         name="Met Data",
         data=met_values,
         unit="MET",
         timestamps=timestamps,
         description="Example metabolic equivalent values",
-        wearable_device=device,
-        algorithm="test_algorithm"
+        wearable_device=wearable_dev,   # REQUIRED: link to WearableDevice
+        algorithm="met_estimator_v1",   # REQUIRED by schema
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
     out_path = "examples/met_example.nwb"
@@ -70,4 +59,8 @@ def main():
         s = pm.get("Met Data")
         print("Series:", s.name)
         print("Samples:", len(s.data[:]))
-        print("First 5 MET values:
+        print("First 5 values:", s.data[:5])
+        print("Timestamps length:", len(s.timestamps[:]))
+
+if __name__ == "__main__":
+    main()

@@ -1,52 +1,52 @@
+# src/pynwb/ndx_wearables/__init__.py
 import os
+import pathlib
 from pynwb import load_namespaces, get_class, available_namespaces
 
 try:
     from importlib.resources import files
 except ImportError:
-    # TODO: Remove when python 3.9 becomes the new minimum
     from importlib_resources import files
 
 print(f'Initial namespaces: {available_namespaces()}')
 
 # Load the spec for NDX-Events first
 import ndx_events
-__events_spec = ndx_events.__spec_path
-events_ns = load_namespaces(str(__events_spec))
-
+_events_spec = getattr(ndx_events, "__spec_path", None)
+if _events_spec is not None:
+    load_namespaces(str(_events_spec))
 print(f'After events: {available_namespaces()}')
 
-# Get path to the namespace.yaml file with the expected location when installed not in editable mode
-__location_of_this_file = files(__name__)
-__spec_path = __location_of_this_file / "spec" / "ndx-wearables.namespace.yaml"
+# Load this repo's ndx-wearables namespace (repo_root/spec/…)
+_pkg_files = files(__name__)
+_spec_path = _pkg_files / "spec" / "ndx-wearables.namespace.yaml"
+if not os.path.exists(os.fspath(_spec_path)):
+    _spec_path = pathlib.Path(__file__).resolve().parents[3] / "spec" / "ndx-wearables.namespace.yaml"
 
-# If that path does not exist, we are likely running in editable mode. Use the local path instead
-if not os.path.exists(__spec_path):
-    __spec_path = __location_of_this_file.parent.parent.parent / "spec" / "ndx-wearables.namespace.yaml"
+print("Loading namespace from:", _spec_path)
+load_namespaces(str(_spec_path))
 
-# Load the namespace
-load_namespaces(str(__spec_path))
+# Export classes 
+WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
+WearableDevice = get_class("WearableDevice", "ndx-wearables")
+WearableEnumSeries  = get_class("WearableEnumSeries", "ndx-wearables")
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
+BloodOxygenSeries  = WearableTimeSeries
+HRVSeries = WearableTimeSeries
+MetSeries = WearableTimeSeries
+SleepMovementSeries = WearableTimeSeries
+VO2MaxSeries = WearableTimeSeries
+StepCountSeries = WearableTimeSeries
 
-# TODO: Define your classes here to make them accessible at the package level.
-# Safe fallback if the namespace was not found in original logic
-import pathlib
-if not os.path.exists(__spec_path):
-    print("Namespace not found in the default paths, trying fallback...")
-    
-    # Get the location of this file
-    fallback_path = pathlib.Path(__file__).parent / "ndx-wearables.namespace.yaml"
+# Confirm if this is the correct logic
+SleepPhaseSeries = WearableTimeSeries
+ActivityClassSeries = WearableTimeSeries
 
-    # Try to load from the fallback path
-    if os.path.exists(fallback_path):
-        print(f"Namespace found in fallback path: {fallback_path}")
-        load_namespaces(str(fallback_path))
-    else:
-        print(f"Namespace not found in fallback path: {fallback_path}")
+# convenience wrapper lives in code (not YAML), so import directly
+from .wearables_classes import CategoricalSeries
+# meanings-table builders
+from .categorical_enums import build_sleep_phase_meanings, build_activity_class_meanings
 
-# Import the base classes
-from .wearables_classes import *
-
-print(f'Final: {available_namespaces()}')
-
-# Remove these functions from the package
+__all__ = ["WearableTimeSeries", "WearableDevice", "WearableEnumSeries","CategoricalSeries","BloodOxygenSeries", "HRVSeries", "MetSeries", "SleepMovementSeries", "VO2MaxSeries", "StepCountSeries","SleepPhaseSeries", "ActivityClassSeries"]
+print(f'Final namespaces: {available_namespaces()}')
 del load_namespaces, get_class

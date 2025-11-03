@@ -65,56 +65,56 @@ class WearableEnumSeries(TimeSeries, WearableBase):
     Stores category values (strings or integer indices), the allowed categories,
     and an optional meanings table with human-readable descriptions.
     """
-    # ensure round-trip of these fields
     __nwbfields__ = tuple(list(getattr(TimeSeries, "__nwbfields__", ())) + ["categories", "meanings"])
 
     @docval(
         {'name': 'name', 'type': str, 'doc': 'name of the series'},
         {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
-        {'name': 'categories', 'type': ('array_data',), 'doc': 'list of allowed string labels'},
+        {'name': 'categories', 'type': (('array_data',), type(None)), 'doc': 'list of allowed string labels', 'default': None},
         {'name': 'rate', 'type': (float, type(None)), 'doc': 'sampling rate', 'default': None},
         {'name': 'timestamps', 'type': ('array_data', type(None)), 'doc': 'timestamps', 'default': None},
         {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
-        # If you want WearableBase metadata, uncomment the next line and the helper call below:
-        # *WearableBase.get_wearables_docval(),
+        # Accept but do not require these until YAML serializes them:
+        {'name': 'wearable_device', 'type': (Device, type(None)), 'doc': 'Link to WearableDevice', 'default': None},
+        {'name': 'algorithm', 'type': (str, type(None)), 'doc': 'Algorithm used to derive categories', 'default': None},
     )
     def __init__(self, **kwargs):
         name, data, categories, rate, timestamps, meanings = getargs(
             'name', 'data', 'categories', 'rate', 'timestamps', 'meanings', kwargs
         )
-
-        # If you enabled WearableBase docval above, also call:
-        # kwargs = self.wearables_init_helper(**kwargs)
+        wearable_device = kwargs.pop('wearable_device', None)
+        algorithm = kwargs.pop('algorithm', None)
 
         arr = np.asanyarray(list(data) if not hasattr(data, "__array__") else data)
-        categories = [str(c) for c in categories]
+        if categories is not None:
+            categories = [str(c) for c in categories]
 
-        # Validate membership
-        if arr.size:
+        # Validate only if we have categories
+        if arr.size and categories is not None:
             if arr.dtype.kind in {'U', 'S', 'O'}:
                 bad = sorted(set(arr.tolist()) - set(categories))
                 if bad:
                     raise ValueError(f"values not in categories: {bad}")
             else:
-                # integer indices
                 if arr.min() < 0 or arr.max() >= len(categories):
                     raise ValueError("index values out of range for categories")
 
-        # categorical → use a non-physical unit
         super().__init__(name=name, data=data, rate=rate, timestamps=timestamps, unit='na')
 
-        # Attach categories for downstream access and serialization
         self.categories = categories
+        self.wearable_device = wearable_device  # stored for convenience; won’t serialize unless YAML supports it
+        self.algorithm = algorithm
 
-        # Meanings table (category → description)
         if meanings is None:
             meanings = DynamicTable(
                 name=f"{name}_meanings",
-                description="Category definitions for this series"
+                description="Category definitions for this series",
             )
-            meanings.add_column(name='category', description='category label', data=categories)
-            meanings.add_column(name='description', description='human-readable definition',
-                                data=[''] * len(categories))
+            meanings.add_column(name='category', description='category label')
+            meanings.add_column(name='meaning', description='human-readable definition')
+            if categories is not None:
+                for cat in categories:
+                    meanings.add_row(category=cat, meaning='')
         self.meanings = meanings
 
 
