@@ -2,13 +2,11 @@ from pynwb import register_class, get_class
 from pynwb.device import Device
 from pynwb.base import TimeSeries
 from ndx_events import EventsTable
-from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
+from hdmf.utils import docval, popargs, get_docval, getargs  
 import numpy as np
 from enum import Enum
-from hdmf.common import DynamicTable  # <-- already present
-
+from hdmf.common import DynamicTable  
 from ndx_wearables.categorical_enums import ENUM_MAP
-
 
 # Common enums (used across multiple classes)
 class Placement(str, Enum):
@@ -49,9 +47,8 @@ class WearableBase(object):
         )
 
     def wearables_init_helper(self, **kwargs):
-        wearable_device = popargs('wearable_device', kwargs)
-        algorithm = popargs('algorithm', kwargs)
-
+        wearable_device = kwargs.pop('wearable_device', None)
+        algorithm = kwargs.pop('algorithm', None)
         self.wearable_device = wearable_device
         self.algorithm = algorithm
         return kwargs
@@ -60,12 +57,9 @@ class WearableBase(object):
 
 @register_class('WearableEnumSeries', 'ndx-wearables')
 class WearableEnumSeries(TimeSeries, WearableBase):
-    """
-    A categorical TimeSeries for wearable data.
-    Stores category values (strings or integer indices), the allowed categories,
-    and an optional meanings table with human-readable descriptions.
-    """
-    __nwbfields__ = tuple(list(getattr(TimeSeries, "__nwbfields__", ())) + ["categories", "meanings"])
+    # make sure these round-trip
+    __nwbfields__ = tuple(list(getattr(TimeSeries, "__nwbfields__", ())) +
+                          ["categories", "meanings", "wearable_device", "algorithm"])
 
     @docval(
         {'name': 'name', 'type': str, 'doc': 'name of the series'},
@@ -74,41 +68,50 @@ class WearableEnumSeries(TimeSeries, WearableBase):
         {'name': 'rate', 'type': (float, type(None)), 'doc': 'sampling rate', 'default': None},
         {'name': 'timestamps', 'type': ('array_data', type(None)), 'doc': 'timestamps', 'default': None},
         {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
-        # Accept but do not require these until YAML serializes them:
-        {'name': 'wearable_device', 'type': (Device, type(None)), 'doc': 'Link to WearableDevice', 'default': None},
-        {'name': 'algorithm', 'type': (str, type(None)), 'doc': 'Algorithm used to derive categories', 'default': None},
+        {'name': 'description', 'type': (str, type(None)), 'doc': 'description of the series', 'default': None},
+        # wearables metadata (may be None in some files)
+        {'name': 'wearable_device', 'type': ('WearableDevice', type(None)), 'doc': 'Device used to record the data', 'default': None},
+        {'name': 'algorithm', 'type': (str, type(None)), 'doc': 'Algorithm used to extract data', 'default': None},
     )
     def __init__(self, **kwargs):
-        name, data, categories, rate, timestamps, meanings = getargs(
-            'name', 'data', 'categories', 'rate', 'timestamps', 'meanings', kwargs
+        name, data, categories, rate, timestamps, meanings, description = getargs(
+            'name', 'data', 'categories', 'rate', 'timestamps', 'meanings', 'description', kwargs
         )
-        wearable_device = kwargs.pop('wearable_device', None)
-        algorithm = kwargs.pop('algorithm', None)
+        # pull wearables args off kwargs (don’t assign yet)
+        wearable_device = popargs('wearable_device', kwargs)
+        algorithm = popargs('algorithm', kwargs)
 
         arr = np.asanyarray(list(data) if not hasattr(data, "__array__") else data)
         if categories is not None:
             categories = [str(c) for c in categories]
 
-        # Validate only if we have categories
         if arr.size and categories is not None:
-            if arr.dtype.kind in {'U', 'S', 'O'}:
+            if arr.dtype.kind in {'U','S','O'}:
                 bad = sorted(set(arr.tolist()) - set(categories))
                 if bad:
                     raise ValueError(f"values not in categories: {bad}")
             else:
                 if arr.min() < 0 or arr.max() >= len(categories):
                     raise ValueError("index values out of range for categories")
+        super().__init__(name=name,
+                         data=data,
+                         rate=rate,
+                         timestamps=timestamps,
+                         unit='na',
+                         description=(description or ""))
 
-        super().__init__(name=name, data=data, rate=rate, timestamps=timestamps, unit='na')
-
-        self.categories = categories
-        self.wearable_device = wearable_device  # stored for convenience; won’t serialize unless YAML supports it
+        # now it is safe to set custom fields
+        self.wearable_device = wearable_device
         self.algorithm = algorithm
 
+        # categories
+        self.categories = categories
+
+        # meanings table (robust creation: add columns then rows)
         if meanings is None:
             meanings = DynamicTable(
                 name=f"{name}_meanings",
-                description="Category definitions for this series",
+                description="Category definitions for this series"
             )
             meanings.add_column(name='category', description='category label')
             meanings.add_column(name='meaning', description='human-readable definition')
@@ -119,7 +122,7 @@ class WearableEnumSeries(TimeSeries, WearableBase):
 
 
 class CategoricalSeries(WearableEnumSeries):
-    def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, **kwargs):
+    def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, description=None, **kwargs):
         enum_class = ENUM_MAP[category_type]
         categories = [e.value for e in enum_class]
         super().__init__(
@@ -129,6 +132,7 @@ class CategoricalSeries(WearableEnumSeries):
             rate=rate,
             timestamps=timestamps,
             meanings=meanings,
+            description=description or f"{category_type} categorical series",
             **kwargs
         )
 

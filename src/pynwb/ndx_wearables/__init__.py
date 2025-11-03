@@ -3,6 +3,7 @@ import os
 import pathlib
 from pynwb import load_namespaces, get_class, available_namespaces
 
+
 try:
     from importlib.resources import files
 except ImportError:
@@ -30,6 +31,7 @@ load_namespaces(str(_spec_path))
 WearableTimeSeries = get_class("WearableTimeSeries", "ndx-wearables")
 WearableDevice = get_class("WearableDevice", "ndx-wearables")
 WearableEnumSeries  = get_class("WearableEnumSeries", "ndx-wearables")
+CategoricalSeries  = get_class("WearableEnumSeries", "ndx-wearables")
 PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
 BloodOxygenSeries  = WearableTimeSeries
 HRVSeries = WearableTimeSeries
@@ -41,12 +43,22 @@ StepCountSeries = WearableTimeSeries
 # Confirm if this is the correct logic
 SleepPhaseSeries = WearableTimeSeries
 ActivityClassSeries = WearableTimeSeries
-
 # convenience wrapper lives in code (not YAML), so import directly
-from .wearables_classes import CategoricalSeries
+#from .wearables_classes import CategoricalSeries
+#try:
+    #CategoricalSeries = get_class("CategoricalSeries", "ndx-wearables")
+#except ValueError:
+    #CategoricalSeries = WearableEnumSeries
 # meanings-table builders
-from .categorical_enums import build_sleep_phase_meanings, build_activity_class_meanings
+# from .categorical_enums import build_sleep_phase_meanings, build_activity_class_meanings
+# __all__ = ["WearableTimeSeries", "WearableDevice", "WearableEnumSeries","CategoricalSeries","BloodOxygenSeries", "HRVSeries", "MetSeries", "SleepMovementSeries", "VO2MaxSeries", "StepCountSeries","SleepPhaseSeries", "ActivityClassSeries"]
 
-__all__ = ["WearableTimeSeries", "WearableDevice", "WearableEnumSeries","CategoricalSeries","BloodOxygenSeries", "HRVSeries", "MetSeries", "SleepMovementSeries", "VO2MaxSeries", "StepCountSeries","SleepPhaseSeries", "ActivityClassSeries"]
+from .categorical_enums import build_sleep_phase_meanings, build_activity_class_meanings
+__all__ = [
+    "WearableTimeSeries", "WearableDevice", "WearableEnumSeries", "CategoricalSeries",
+    "BloodOxygenSeries", "HRVSeries", "MetSeries", "SleepMovementSeries",
+    "VO2MaxSeries", "StepCountSeries", "SleepPhaseSeries", "ActivityClassSeries",
+    "build_sleep_phase_meanings", "build_activity_class_meanings",
+]
 print(f'Final namespaces: {available_namespaces()}')
 del load_namespaces, get_class
