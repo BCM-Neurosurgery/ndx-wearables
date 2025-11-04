@@ -113,6 +113,7 @@ def make_wearables_infrastructure():
                 target_type='WearableDevice',
                 doc='Link to WearableDevice used to record this data'
             ),
+            # TODO: Should we explicitly store meanings tables somewhere better than the wearables module?
             # LinkSpec(
             #     name='meanings',
             #     target_type='DynamicTable',
