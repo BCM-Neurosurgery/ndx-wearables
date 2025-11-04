@@ -21,13 +21,13 @@ class ActivityClass(str, Enum):
 
 # Add small, direct functions that build and return the tables 
 def build_sleep_phase_meanings():
-    labels = VectorData(
+    category = VectorData(
         name="category",
         description="Sleep phase label",
         data=[e.value for e in SleepPhase]
     )
-    descriptions = VectorData(
-        name="description",
+    meaning = VectorData(
+        name="meaning",
         description="Human-readable description",
         data=[
             "Wakefulness",
@@ -40,20 +40,20 @@ def build_sleep_phase_meanings():
     table = DynamicTable(
         name="meanings",
         description="Category definitions for sleep stages",
-        columns=[labels, descriptions],
+        columns=[category, meaning],
     )
     return table
 
 
 def build_activity_class_meanings():
 
-    labels = VectorData(
+    category = VectorData(
         name="category",
         description="Activity label",
         data=[e.value for e in ActivityClass]
     )
-    descriptions = VectorData(
-        name="description",
+    meaning = VectorData(
+        name="meaning",
         description="Human-readable description",
         data=[
             "Minimal movement",
@@ -63,7 +63,7 @@ def build_activity_class_meanings():
     )
     table = DynamicTable(
         name="meanings",
-        columns=[labels, descriptions],
+        columns=[category, meaning],
         description="Category definitions for activity classes"
     )
     return table
