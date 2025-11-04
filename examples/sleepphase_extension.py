@@ -4,32 +4,42 @@ from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import SleepPhaseSeries  # Assumes SleepPhaseSeries is registered in the namespace and accessible via get_class
+from ndx_wearables import WearableDevice, WearableEnumSeries
+from ndx_wearables.categorical_enums import build_sleep_phase_meanings
+
 
 def main():
     nwb = NWBFile("Wearables SleepPhase example", "SLEEP-001", datetime.now())
 
-    device = Device(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
+    device = WearableDevice(
+        name="wearable_device",
+        manufacturer="ExampleCo",
+        description="Example wearable",
+        location='wrist'
+    )
     nwb.add_device(device)
 
     wearables = ProcessingModule("wearables", "Wearables derived data")
     nwb.add_processing_module(wearables)
 
+    meanings = build_sleep_phase_meanings()
+    wearables.add(meanings)
+
     labels = np.array(["awake", "n1", "n2", "n2", "n3", "rem", "awake"])
     timestamps = np.arange(labels.size, dtype=float)
 
-    series = EnumWearableBaseSeries(
+    series = WearableEnumSeries(
         name="sleep_phase",
         data=labels,              # labels map to codes internally
         timestamps=timestamps,
-        unit="na",                # categorical
         description="Toy sleep stage labels over time",
         wearable_device=device,
         algorithm="sleep_stager_v1",
+        meanings=meanings,
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
-    out_path = "examples/sleep_phase_example.nwb"
+    out_path = "sleep_phase_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:
         io.write(nwb)
     print("Wrote:", out_path)
