@@ -37,6 +37,7 @@ def build_sleep_phase_meanings():
             "Rapid eye movement (REM) sleep"
         ]
     )
+    # TODO: this should probably be explicit NDX-Events `MeaningsTables` eventually
     table = DynamicTable(
         name="meanings",
         description="Category definitions for sleep stages",
@@ -61,6 +62,7 @@ def build_activity_class_meanings():
             "Ambulatory movement at a faster pace"
         ]
     )
+    # TODO: this should probably be explicit NDX-Events `MeaningsTables` eventually
     table = DynamicTable(
         name="meanings",
         columns=[category, meaning],

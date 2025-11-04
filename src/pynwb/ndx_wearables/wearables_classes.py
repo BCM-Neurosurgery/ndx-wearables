@@ -66,43 +66,6 @@ def update_docval(original, *updates, to_remove=None):
     return tuple(updated)
 
 
-# Categorical TimeSeries container (what Tomek expected)
-@register_class('WearableEnumSeries', 'ndx-wearables')
-class WearableEnumSeries(TimeSeries, WearableBase):
-    """
-    A categorical TimeSeries for wearable data.
-    Stores category values (strings or integer indices), the allowed categories,
-    and an optional meanings table with human-readable descriptions.
-    """
-    # ensure round-trip of these fields
-    __nwbfields__ = tuple(list(getattr(TimeSeries, "__nwbfields__", ())) + ["categories", "meanings"])
-
-    @docval(
-        *update_docval(
-            get_docval(TimeSeries.__init__),
-            {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
-            to_remove=['unit']
-        )
-        + WearableBase.get_wearables_docval()
-        + (
-            {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
-         )
-    )
-    def __init__(self, **kwargs):
-        name = kwargs.pop('name')
-        meanings = kwargs.pop('meanings')
-
-        # If you enabled WearableBase docval above, also call:
-        kwargs = self.wearables_init_helper(**kwargs)
-
-
-        super().__init__(name=name, unit='category', **kwargs)
-
-        # TODO: not sure why this is not writing, it's defined correctly in the spec,
-        self.fields['meanings'] = meanings
-        # self.meanings = meanings
-        # self.meaning.add_parent(self)
-
 # Device and existing classes (unchanged except for Placement handling)
 @register_class("WearableDevice", "ndx-wearables")
 class WearableDevice(Device):
@@ -138,6 +101,32 @@ class WearableTimeSeries(WearableBase, TimeSeries):
     def __init__(self, **kwargs):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
+
+
+# Categorical TimeSeries container (what Tomek expected)
+@register_class('WearableEnumSeries', 'ndx-wearables')
+class WearableEnumSeries(WearableTimeSeries):
+    """
+    A categorical TimeSeries for wearable data.
+    Stores category values (strings or integer indices), the allowed categories,
+    and an optional meanings table with human-readable descriptions.
+    """
+
+    @docval(
+        *update_docval(
+            get_docval(WearableTimeSeries.__init__),
+            {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
+            to_remove=['unit']
+        )
+        + (
+            {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
+         )
+    )
+    def __init__(self, **kwargs):
+        meanings = kwargs.pop('meanings')
+        self.meanings = meanings
+        super().__init__(unit='category', **kwargs)
+
 
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):

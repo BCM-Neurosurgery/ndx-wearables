@@ -26,13 +26,15 @@ def main():
     labels = np.array(["sitting", "walking", "running"])
     data = np.tile(labels, 40)[:timestamps.size]
 
+    meanings = build_activity_class_meanings()
+
     series = WearableEnumSeries(
         name="ActivityClass Data",
         data=data,
         timestamps=timestamps,
         description="Example activity classification labels",
         wearable_device=device,
-        meanings=build_activity_class_meanings(),
+        meanings=meanings,
         algorithm="model_v1",
     )
     wearables.add(series)

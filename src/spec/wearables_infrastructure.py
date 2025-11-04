@@ -112,7 +112,12 @@ def make_wearables_infrastructure():
                 name='wearable_device',
                 target_type='WearableDevice',
                 doc='Link to WearableDevice used to record this data'
-            )
+            ),
+            # LinkSpec(
+            #     name='meanings',
+            #     target_type='DynamicTable',
+            #     doc="Dynamic table storing the descriptions of all categories used in this dataset"
+            # )
         ]
     )
 

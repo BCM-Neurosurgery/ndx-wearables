@@ -65,6 +65,11 @@ groups:
   - name: data
     dtype: text
     doc: String labels representing enumerated classes (e.g., 'walking', 'sitting')
+  groups:
+  - name: meanings
+    neurodata_type_inc: DynamicTable
+    doc: Dynamic table with detailed descriptions for all category labels used in
+      the dataset
   links:
   - name: wearable_device
     target_type: WearableDevice
