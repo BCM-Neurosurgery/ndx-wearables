@@ -5,24 +5,10 @@ from ndx_events import EventsTable
 from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
 import numpy as np
 from enum import Enum
-from hdmf.common import DynamicTable  # <-- already present
+from hdmf.common import DynamicTable
 
 from ndx_wearables.categorical_enums import ENUM_MAP
 
-
-# Common enums (used across multiple classes)
-class Placement(str, Enum):
-    WRIST = "wrist"
-    CHEST = "chest"
-    ANKLE = "ankle"
-    THIGH = "thigh"
-    HEAD = "head"
-    FINGER = "finger"
-
-class SensorType(str, Enum):
-    ACCEL = "accel"  # accelerometer
-    ECG = "ecg"      # electrocardiogram
-    TEMP = "temp"    # temperature
     
 class WearableBase(object):
     """
@@ -119,20 +105,6 @@ class WearableEnumSeries(TimeSeries, WearableBase):
         self.meanings = meanings
 
 
-class CategoricalSeries(WearableEnumSeries):
-    def __init__(self, category_type, data=(), rate=None, timestamps=None, meanings=None, **kwargs):
-        enum_class = ENUM_MAP[category_type]
-        categories = [e.value for e in enum_class]
-        super().__init__(
-            name=category_type,
-            data=list(data),
-            categories=categories,
-            rate=rate,
-            timestamps=timestamps,
-            meanings=meanings,
-            **kwargs
-        )
-
 # Device and existing classes (unchanged except for Placement handling)
 
 @register_class("WearableDevice", "ndx-wearables")
@@ -170,8 +142,6 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
-PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
-
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
     @docval(
@@ -180,3 +150,5 @@ class WearableEvents(WearableBase, EventsTable):
     def __init__(self, **kwargs):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
+
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
