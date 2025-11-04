@@ -16,6 +16,7 @@ from hdmf.common.table import VectorData
 from ndx_events import NdxEventsNWBFile, MeaningsTable, CategoricalVectorData
 from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
 
+
 def add_wearable_timeseries(nwbfile, device):
     # generate fake wearables data
     timestamps = np.arange(0, 3600, 30)
