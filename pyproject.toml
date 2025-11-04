@@ -38,6 +38,7 @@ keywords = [
 dependencies = [
     "pynwb>=2.8.0",
     "hdmf>=3.14.1",
+    "pandas",
     "ndx-events>=0.4.0"
 ]
 
