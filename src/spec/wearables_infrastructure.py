@@ -100,7 +100,7 @@ def make_wearables_infrastructure():
                 doc="String labels representing enumerated classes (e.g., 'walking', 'sitting')"
             )
         ],
-        groups = [
+        groups=[
             NWBGroupSpec(
                 name="meanings",
                 doc="Dynamic table with detailed descriptions for all category labels used in the dataset",

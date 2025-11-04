@@ -95,39 +95,13 @@ class WearableEnumSeries(TimeSeries, WearableBase):
         # If you enabled WearableBase docval above, also call:
         kwargs = self.wearables_init_helper(**kwargs)
 
-        # arr = np.asanyarray(list(data) if not hasattr(data, "__array__") else data)
-        # categories = [str(c) for c in categories]
-        #
-        # # Validate membership
-        # if arr.size:
-        #     if arr.dtype.kind in {'U', 'S', 'O'}:
-        #         bad = sorted(set(arr.tolist()) - set(categories))
-        #         if bad:
-        #             raise ValueError(f"values not in categories: {bad}")
-        #     else:
-        #         # integer indices
-        #         if arr.min() < 0 or arr.max() >= len(categories):
-        #             raise ValueError("index values out of range for categories")
 
-        # categorical → use a non-physical unit
-
-
-        # # Attach categories for downstream access and serialization
-        # self.categories = categories
-        #
-        # # Meanings table (category → description)
-        # if meanings is None:
-        #     meanings = DynamicTable(
-        #         name=f"{name}_meanings",
-        #         description="Category definitions for this series"
-        #     )
-        #     meanings.add_column(name='category', description='category label', data=categories)
-        #     meanings.add_column(name='description', description='human-readable definition',
-        #                         data=[''] * len(categories))
         super().__init__(name=name, unit='category', **kwargs)
-        self.meanings = meanings
 
-
+        # TODO: not sure why this is not writing, it's defined correctly in the spec,
+        self.fields['meanings'] = meanings
+        # self.meanings = meanings
+        # self.meaning.add_parent(self)
 
 # Device and existing classes (unchanged except for Placement handling)
 @register_class("WearableDevice", "ndx-wearables")
