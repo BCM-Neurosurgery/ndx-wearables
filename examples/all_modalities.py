@@ -6,15 +6,15 @@ from pynwb.file import Subject
 from ndx_wearables.wearables_classes import WearableDevice
 
 from tests import make_wearables_nwbfile
-from tests.test_hrv_extension import add_hrv_data
-from tests.test_vo2max_extension import add_vo2max_data
-from tests.test_met_extension import add_met_data
-from tests.test_activityclass_extension import add_activityclass_data
-from tests.test_sleepmovement_extension import add_sleepmovement_data
-from tests.test_blood_oxygen_extension import add_blood_oxygen_data
-from tests.test_heart_rate_extension import add_heart_rate_data
-from tests.test_sleepphase_extension import add_sleepphase_data
-from tests.test_stepcount_extension import add_stepcount_data
+from examples.hrv_extension import add_hrv_data
+from examples.vo2max_extension import add_vo2max_data
+from examples.met_extension import add_met_data
+from examples.activityclass_extension import add_activityclass_data
+from examples.sleepmovement_extension import add_sleepmovement_data
+from examples.blood_oxygen_extension import add_blood_oxygen_data
+from examples.heart_rate_extension import add_heart_rate_data
+from examples.sleepphase_extension import add_sleepphase_data
+from examples.stepcount_extension import add_stepcount_data
 
 # List of all modality specific build functions. Add your mode functions here to register them in the full demo NWB
 # Each of these functions should take a pre-built NWB file, and add some synthetic data for the modality in question

@@ -79,7 +79,7 @@ def make_wearables_infrastructure():
     )
     
     enum_timeseries = NWBGroupSpec(
-        neurodata_type_def="EnumTimeSeries",
+        neurodata_type_def="WearableEnumSeries",
         neurodata_type_inc="WearableTimeSeries",
         doc="A wearable time series intended for storing enumerated string labels",
         datasets=[
