@@ -4,7 +4,8 @@ from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import BloodOxygenSeries  # Assumes BloodOxygenSeries is registered in the namespace and accessible via get_class
+from ndx_wearables import WearableDevice, WearableTimeSeries
+
 
 def main():
     # 1) Create an NWBFile container
@@ -15,10 +16,11 @@ def main():
     )
 
     # 2) Add a device and a wearables processing module
-    device = Device(
+    device = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
-        description="Example wearable"
+        description="Example wearable",
+        location="wrist"
     )
     nwbfile.add_device(device)
 
@@ -34,14 +36,14 @@ def main():
     blood_oxygen_values = np.random.randint(90, 100, size=timestamps.size)
 
     # 4) Create the series and add it to the processing module
-    series = WearableBaseSeries(
+    series = WearableTimeSeries(
         name="BloodOxygen Data",
         data=blood_oxygen_values,
         unit="percent",
         timestamps=timestamps,
         description="Example blood oxygen data",
         wearable_device=device,
-        algorithm="pulse_oximeter"
+        algorithm="proprietary Company algorithm v3"
     )
     wearables.add_container(series)
 

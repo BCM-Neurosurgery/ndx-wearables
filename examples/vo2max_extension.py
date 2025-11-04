@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import VO2maxSeries #Assuming VO2maxSeries is correctly implemented in ndx_wearables/yaml file
+from ndx_wearables import WearableDevice, WearableTimeSeries
 
 def main():
     # 1) Create the NWB container
@@ -15,7 +15,7 @@ def main():
     )
 
     # 2) Add a device and processing module
-    device = Device(
+    device = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
         description="Example wearable"
@@ -34,7 +34,7 @@ def main():
     vo2max_values = np.random.randint(30, 60, size=timestamps.size)  # mL/kg/min
 
     # 4) Create the VO2maxSeries and add to processing module
-    series = WearableBaseSeries(
+    series = WearableTimeSeries(
         name="VO2 Max Data",
         data=vo2max_values,
         unit="mL/kg/min",

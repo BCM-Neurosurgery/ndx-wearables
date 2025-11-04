@@ -4,7 +4,8 @@ from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import SleepMovementSeries  # Assumes SleepMovementSeries is registered in the namespace and accessible via get_class
+from ndx_wearables import WearableDevice, WearableTimeSeries
+
 
 def main():
     # 1) Create NWB container
@@ -15,7 +16,7 @@ def main():
     )
 
     # 2) Add device and processing module
-    device = Device(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
+    device = WearableDevice(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
     nwbfile.add_device(device)
 
     wearables = ProcessingModule(name="wearables", description="Wearables derived data")
@@ -27,7 +28,7 @@ def main():
     sleepmovement_values = np.random.rand(timestamps.size)  # floats in [0,1)
 
     # 4) Create series and add to processing module
-    series = WearableBaseSeries(
+    series = WearableTimeSeries(
         name="SleepMovement Data",
         data=sleepmovement_values,
         unit="a.u.",  # arbitrary units

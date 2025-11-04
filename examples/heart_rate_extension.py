@@ -1,11 +1,3 @@
-
-import numpy as np
-from datetime import datetime
-import pytz
-from pynwb import NWBFile, NWBHDF5IO
-from pynwb.file import ProcessingModule
-from ndx_wearables import HeartRateSeries  # Assumes HeartRateSeries is correctly implemented
-
 """
 Run: python examples/test_heart_rate_extension.py
 Creates an NWB file with HeartRateSeries and verifies a roundtrip (write → read).
@@ -14,9 +6,8 @@ Creates an NWB file with HeartRateSeries and verifies a roundtrip (write → rea
 import numpy as np
 from datetime import datetime
 from pynwb import NWBFile, NWBHDF5IO
-from pynwb.device import Device
 from pynwb.file import ProcessingModule
-from ndx_wearables import HeartRateSeries  # assumes exported/registered
+from ndx_wearables import WearableDevice, WearableTimeSeries
 
 def main():
     # 1) Create NWB container
@@ -27,7 +18,7 @@ def main():
     )
 
     # 2) Add device + processing module
-    device = Device(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
+    device = WearableDevice(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
     nwbfile.add_device(device)
 
     wearables = ProcessingModule(name="wearables", description="Wearables derived data")
@@ -39,7 +30,7 @@ def main():
     heart_rate_values = np.random.randint(60, 100, size=timestamps.size)
 
     # 4) Create series and add to module
-    series = WearableBaseSeries(
+    series = WearableTimeSeries(
         name="Heart Rate Data",
         data=heart_rate_values,
         unit="bpm",

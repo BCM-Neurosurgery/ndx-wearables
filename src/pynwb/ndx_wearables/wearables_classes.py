@@ -106,7 +106,6 @@ class WearableEnumSeries(TimeSeries, WearableBase):
 
 
 # Device and existing classes (unchanged except for Placement handling)
-
 @register_class("WearableDevice", "ndx-wearables")
 class WearableDevice(Device):
     '''

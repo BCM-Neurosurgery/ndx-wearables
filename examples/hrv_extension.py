@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
-from ndx_wearables import HRVSeries #Assuming HRVSeries is correctly implemented in ndx_wearables/yaml file
+from ndx_wearables import WearableDevice, WearableTimeSeries
 
 def main():
     # 1) Create NWB container
@@ -15,7 +15,7 @@ def main():
     )
 
     # 2) Add device and processing module
-    device = Device(
+    device = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
         description="Example wearable"
@@ -34,7 +34,7 @@ def main():
     hrv_values = np.random.randint(60, 100, size=timestamps.size)
 
     # 4) Create the HRVSeries and add it to the processing module
-    series = WearableBaseSeries(
+    series = WearableTimeSeries(
         name="HRV Data",
         data=hrv_values,
         unit="bpm",
