@@ -1,3 +1,4 @@
+from networkx.utils.misc import groups
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 
 
@@ -93,10 +94,17 @@ def make_wearables_infrastructure():
         neurodata_type_inc="WearableTimeSeries",
         doc="A wearable time series intended for storing enumerated string labels",
         datasets=[
-            NWBDatasetSpec(
+            NWBDatasetSpec(   # Overwrite the default dataset to always require strings
                 name="data",
                 dtype="text",
                 doc="String labels representing enumerated classes (e.g., 'walking', 'sitting')"
+            )
+        ],
+        groups = [
+            NWBGroupSpec(
+                name="meanings",
+                doc="Dynamic table with detailed descriptions for all category labels used in the dataset",
+                neurodata_type_inc="DynamicTable"
             )
         ],
         links=[

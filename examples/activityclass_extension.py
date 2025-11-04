@@ -1,22 +1,20 @@
-
-import numpy as np
-from datetime import datetime
-import pytz
-from pynwb import NWBFile, NWBHDF5IO
-from pynwb.file import ProcessingModule
-from ndx_wearables import ActivityClassSeries  # Assumes ActivityClassSeries is registered in the namespace and accessible via get_class
-
 import numpy as np
 from datetime import datetime
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.device import Device
 from pynwb.file import ProcessingModule
-from ndx_wearables import ActivityClassSeries  # requires export in __init__.py
+from ndx_wearables import WearableEnumSeries, WearableDevice
+from ndx_wearables.categorical_enums import build_activity_class_meanings
 
 def main():
     nwb = NWBFile("Wearables ActivityClass example", "ACT-001", datetime.now())
 
-    device = Device(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
+    device = WearableDevice(
+        name="wearable_device",
+        manufacturer="ExampleCo",
+        description="Example wearable",
+        location="Wrist"
+    )
     nwb.add_device(device)
 
     wearables = ProcessingModule("wearables", "Wearables derived data")
@@ -28,16 +26,16 @@ def main():
     labels = np.array(["sitting", "walking", "running"])
     data = np.tile(labels, 40)[:timestamps.size]
 
-    series = EnumWearableBaseSeries(
+    series = WearableEnumSeries(
         name="ActivityClass Data",
         data=data,
-        unit="label",             # categorical
         timestamps=timestamps,
         description="Example activity classification labels",
         wearable_device=device,
+        meanings=build_activity_class_meanings(),
         algorithm="model_v1",
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     out_path = "examples/activity_class_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:

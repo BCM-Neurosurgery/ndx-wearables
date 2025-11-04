@@ -1,9 +1,8 @@
 from enum import Enum
-from hdmf.common import DynamicTable
 
 try:
     # HDMF is where DynamicTable lives
-    from hdmf.common import DynamicTable
+    from hdmf.common import DynamicTable, VectorData
 except Exception as e:
     raise ImportError("hdmf is required for meanings table builders") from e
 
@@ -22,16 +21,12 @@ class ActivityClass(str, Enum):
 
 # Add small, direct functions that build and return the tables 
 def build_sleep_phase_meanings():
-    table = DynamicTable(
-        name="sleep_phase_meanings",
-        description="Category definitions for sleep stages"
-    )
-    table.add_column(
+    labels = VectorData(
         name="category",
         description="Sleep phase label",
         data=[e.value for e in SleepPhase]
     )
-    table.add_column(
+    descriptions = VectorData(
         name="description",
         description="Human-readable description",
         data=[
@@ -42,20 +37,22 @@ def build_sleep_phase_meanings():
             "Rapid eye movement (REM) sleep"
         ]
     )
+    table = DynamicTable(
+        name="meanings",
+        description="Category definitions for sleep stages",
+        columns=[labels, descriptions],
+    )
     return table
 
 
 def build_activity_class_meanings():
-    table = DynamicTable(
-        name="activity_class_meanings",
-        description="Category definitions for activity classes"
-    )
-    table.add_column(
+
+    labels = VectorData(
         name="category",
         description="Activity label",
         data=[e.value for e in ActivityClass]
     )
-    table.add_column(
+    descriptions = VectorData(
         name="description",
         description="Human-readable description",
         data=[
@@ -63,6 +60,11 @@ def build_activity_class_meanings():
             "Ambulatory movement at a comfortable pace",
             "Ambulatory movement at a faster pace"
         ]
+    )
+    table = DynamicTable(
+        name="meanings",
+        columns=[labels, descriptions],
+        description="Category definitions for activity classes"
     )
     return table
 

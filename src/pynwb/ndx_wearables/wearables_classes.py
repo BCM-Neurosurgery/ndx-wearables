@@ -1,3 +1,5 @@
+import copy
+
 from pynwb import register_class, get_class
 from pynwb.device import Device
 from pynwb.base import TimeSeries
@@ -43,8 +45,28 @@ class WearableBase(object):
         self.algorithm = algorithm
         return kwargs
 
-# Categorical TimeSeries container (what Tomek expected)
 
+def update_docval(original, *updates, to_remove=None):
+    """Helper function to allow modification of docval attributes on the fly"""
+    updated = list(copy.deepcopy(original))
+    for update in updates:
+        for doc_dict in updated:
+            if doc_dict['name'] == update['name']:
+                doc_dict.update(update)
+                break
+    if to_remove is not None:
+        idx_to_remove = []
+        for remove_name in to_remove:
+            for idx, doc_dict in enumerate(updated):
+                if doc_dict['name'] == remove_name:
+                    idx_to_remove.append(idx)
+        desc_removals = sorted(idx_to_remove, reverse=True) # process in desc order to avoid errors. probs a better way
+        for i in desc_removals:
+            del updated[i]
+    return tuple(updated)
+
+
+# Categorical TimeSeries container (what Tomek expected)
 @register_class('WearableEnumSeries', 'ndx-wearables')
 class WearableEnumSeries(TimeSeries, WearableBase):
     """
@@ -56,53 +78,55 @@ class WearableEnumSeries(TimeSeries, WearableBase):
     __nwbfields__ = tuple(list(getattr(TimeSeries, "__nwbfields__", ())) + ["categories", "meanings"])
 
     @docval(
-        {'name': 'name', 'type': str, 'doc': 'name of the series'},
-        {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
-        {'name': 'categories', 'type': ('array_data',), 'doc': 'list of allowed string labels'},
-        {'name': 'rate', 'type': (float, type(None)), 'doc': 'sampling rate', 'default': None},
-        {'name': 'timestamps', 'type': ('array_data', type(None)), 'doc': 'timestamps', 'default': None},
-        {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
-        # If you want WearableBase metadata, uncomment the next line and the helper call below:
-        # *WearableBase.get_wearables_docval(),
+        *update_docval(
+            get_docval(TimeSeries.__init__),
+            {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
+            to_remove=['unit']
+        )
+        + WearableBase.get_wearables_docval()
+        + (
+            {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
+         )
     )
     def __init__(self, **kwargs):
-        name, data, categories, rate, timestamps, meanings = getargs(
-            'name', 'data', 'categories', 'rate', 'timestamps', 'meanings', kwargs
-        )
+        name = kwargs.pop('name')
+        meanings = kwargs.pop('meanings')
 
         # If you enabled WearableBase docval above, also call:
-        # kwargs = self.wearables_init_helper(**kwargs)
+        kwargs = self.wearables_init_helper(**kwargs)
 
-        arr = np.asanyarray(list(data) if not hasattr(data, "__array__") else data)
-        categories = [str(c) for c in categories]
-
-        # Validate membership
-        if arr.size:
-            if arr.dtype.kind in {'U', 'S', 'O'}:
-                bad = sorted(set(arr.tolist()) - set(categories))
-                if bad:
-                    raise ValueError(f"values not in categories: {bad}")
-            else:
-                # integer indices
-                if arr.min() < 0 or arr.max() >= len(categories):
-                    raise ValueError("index values out of range for categories")
+        # arr = np.asanyarray(list(data) if not hasattr(data, "__array__") else data)
+        # categories = [str(c) for c in categories]
+        #
+        # # Validate membership
+        # if arr.size:
+        #     if arr.dtype.kind in {'U', 'S', 'O'}:
+        #         bad = sorted(set(arr.tolist()) - set(categories))
+        #         if bad:
+        #             raise ValueError(f"values not in categories: {bad}")
+        #     else:
+        #         # integer indices
+        #         if arr.min() < 0 or arr.max() >= len(categories):
+        #             raise ValueError("index values out of range for categories")
 
         # categorical → use a non-physical unit
-        super().__init__(name=name, data=data, rate=rate, timestamps=timestamps, unit='na')
 
-        # Attach categories for downstream access and serialization
-        self.categories = categories
 
-        # Meanings table (category → description)
-        if meanings is None:
-            meanings = DynamicTable(
-                name=f"{name}_meanings",
-                description="Category definitions for this series"
-            )
-            meanings.add_column(name='category', description='category label', data=categories)
-            meanings.add_column(name='description', description='human-readable definition',
-                                data=[''] * len(categories))
+        # # Attach categories for downstream access and serialization
+        # self.categories = categories
+        #
+        # # Meanings table (category → description)
+        # if meanings is None:
+        #     meanings = DynamicTable(
+        #         name=f"{name}_meanings",
+        #         description="Category definitions for this series"
+        #     )
+        #     meanings.add_column(name='category', description='category label', data=categories)
+        #     meanings.add_column(name='description', description='human-readable definition',
+        #                         data=[''] * len(categories))
+        super().__init__(name=name, unit='category', **kwargs)
         self.meanings = meanings
+
 
 
 # Device and existing classes (unchanged except for Placement handling)
