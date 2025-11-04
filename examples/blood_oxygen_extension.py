@@ -45,10 +45,10 @@ def main():
         wearable_device=device,
         algorithm="proprietary Company algorithm v3"
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
-    out_path = "examples/blood_oxygen_example.nwb"
+    out_path = "blood_oxygen_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:
         io.write(nwbfile)
     print(f"Wrote: {out_path}")

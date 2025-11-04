@@ -18,7 +18,8 @@ def main():
     device = WearableDevice(
         name="wearable_device",
         manufacturer="ExampleCo",
-        description="Example wearable"
+        description="Example wearable",
+        location="wrist"
     )
     nwbfile.add_device(device)
 
@@ -43,10 +44,10 @@ def main():
         wearable_device=device,
         algorithm="test_algorithm"
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
-    out_path = "examples/vo2max_example.nwb"
+    out_path = "vo2max_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:
         io.write(nwbfile)
     print(f"Wrote: {out_path}")

@@ -16,7 +16,12 @@ def main():
     )
 
     # 2) Add device and processing module
-    device = WearableDevice(name="wearable_device", manufacturer="ExampleCo", description="Example wearable")
+    device = WearableDevice(
+        name="wearable_device",
+        manufacturer="ExampleCo",
+        description="Example wearable",
+        location="wrist"
+    )
     nwbfile.add_device(device)
 
     wearables = ProcessingModule(name="wearables", description="Wearables derived data")
@@ -37,10 +42,10 @@ def main():
         wearable_device=device,
         algorithm="test_algorithm",
     )
-    wearables.add_container(series)
+    wearables.add(series)
 
     # 5) Write to disk
-    out_path = "examples/sleepmovement_example.nwb"
+    out_path = "sleepmovement_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:
         io.write(nwbfile)
     print(f"Wrote: {out_path}")

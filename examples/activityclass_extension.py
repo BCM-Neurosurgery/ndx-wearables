@@ -40,7 +40,7 @@ def main():
     )
     wearables.add(series)
 
-    out_path = "examples/activity_class_example.nwb"
+    out_path = "activity_class_example.nwb"
     with NWBHDF5IO(out_path, "w") as io:
         io.write(nwb)
     print("Wrote:", out_path)

@@ -53,7 +53,6 @@ wearables.add([modality])
 added_ts = modality.add_wearable_time_series(ts)
 
 # add wearables objects to processing module
-tmp_path = Path(r"./examples")
-file_path = tmp_path / "physio_measure_demo.nwb"
+file_path = "physio_measure_demo.nwb"
 with NWBHDF5IO(file_path, 'w') as io:
     io.write(nwbfile)
