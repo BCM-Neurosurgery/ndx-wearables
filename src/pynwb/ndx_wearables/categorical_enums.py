@@ -39,7 +39,7 @@ def build_sleep_phase_meanings():
     )
     # TODO: this should probably be explicit NDX-Events `MeaningsTables` eventually
     table = DynamicTable(
-        name="meanings",
+        name="SleepPhase_Meanings",
         description="Category definitions for sleep stages",
         columns=[category, meaning],
     )
@@ -64,7 +64,7 @@ def build_activity_class_meanings():
     )
     # TODO: this should probably be explicit NDX-Events `MeaningsTables` eventually
     table = DynamicTable(
-        name="meanings",
+        name="Activity_Meanings",
         columns=[category, meaning],
         description="Category definitions for activity classes"
     )

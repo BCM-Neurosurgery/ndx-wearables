@@ -27,6 +27,7 @@ def main():
     data = np.tile(labels, 40)[:timestamps.size]
 
     meanings = build_activity_class_meanings()
+    wearables.add(meanings)
 
     series = WearableEnumSeries(
         name="ActivityClass Data",
