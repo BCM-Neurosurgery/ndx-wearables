@@ -50,20 +50,20 @@ def make_wearables_infrastructure():
     physiological_measure = NWBGroupSpec(
         neurodata_type_def="PhysiologicalMeasure",
         neurodata_type_inc="NWBDataInterface",
-        doc="Data recorded from wearable sensor/device",
+        doc="Group collecting multiple wearable device's concurrent estimates of a single metric",
         groups=[
             NWBGroupSpec(
-                doc="Place your device-specific estimates of this modality here",
+                doc="A single wearable device's time series data",
                 neurodata_type_inc="WearableTimeSeries",
                 quantity="*",
             ),
             NWBGroupSpec(
-                doc="Place your device-specific estimates of this modality here",
+                doc="A single wearable device's categorical time series data",
                 neurodata_type_inc="WearableEnumSeries",
                 quantity="*",
             ),
             NWBGroupSpec(
-                doc="Place your device-specific estimates of this modality here",
+                doc="A single wearable device's collection of events with additional data columns",
                 neurodata_type_inc="WearableEvents",
                 quantity="*",
             )
