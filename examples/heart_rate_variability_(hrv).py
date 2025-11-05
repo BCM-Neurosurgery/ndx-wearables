@@ -32,7 +32,7 @@ def main():
     # 3) Generate synthetic HRV data (every 30s for 1h)
     timestamps = np.arange(0.0, 3600.0, 30.0)
     np.random.seed(42)
-    hrv_values = np.random.randint(60, 100, size=timestamps.size)
+    hrv_values = np.random.uniform(low=60, high=100, size=timestamps.size)
 
     # 4) Create the HRVSeries and add it to the processing module
     series = WearableTimeSeries(

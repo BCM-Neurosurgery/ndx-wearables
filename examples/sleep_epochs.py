@@ -39,7 +39,7 @@ def main():
 
     # 3) Generate some synthetic sleep interals
     fake_sleep_intervals = pd.DataFrame.from_dict({
-        'start_times': [13, 20, 44, 52],      # Entered here in hours, needs to be converted to seconds
+        'start_times': [13.0, 20.0, 44.0, 52.0],      # Entered here in hours, needs to be converted to seconds
         'durations': [1.2, 8.0, 7.3, 2.1],    # Entered here in hours, needs to be converted to seconds
         'classified_types': ['nap', 'long_rest', 'long_rest', 'nap'],
         'time_in_bed': [1.2, 8.5, 9.2, 2.4]   # Entered here in hours, needs to be converted to seconds

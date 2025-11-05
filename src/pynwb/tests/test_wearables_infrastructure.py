@@ -19,7 +19,7 @@ from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
 
 def add_wearable_timeseries(nwbfile, device):
     # generate fake wearables data
-    timestamps = np.arange(0, 3600, 30)
+    timestamps = np.arange(0.0, 3600.0, 30.0)
     np.random.seed(0)
     wearable_values = np.random.random(size=(120, 2))
 
@@ -34,7 +34,7 @@ def add_wearable_timeseries(nwbfile, device):
     )
 
     # add wearables objects to processing module
-    nwbfile.processing["wearables"].add_container(ts)
+    nwbfile.processing["wearables"].add(ts)
     return nwbfile
 
 def add_wearable_events(nwbfile, device):
@@ -61,7 +61,7 @@ def add_wearable_events(nwbfile, device):
     events.add_row(timestamp=30.0, cat_column="b", text_column="second row text")
     events.add_row(timestamp=120.0, cat_column="a", text_column="third row text")
 
-    nwbfile.processing["wearables"].add_container(events)
+    nwbfile.processing["wearables"].add(events)
     return nwbfile
 
 @pytest.fixture
@@ -93,7 +93,7 @@ def write_nwb_with_wearable_events(tmp_path, nwb_with_wearable_events):
 
 
 def test_wearables_timeseries(write_nwb_with_wearable_timeseries):
-    expected_timestamps = np.arange(0, 3600, 30)
+    expected_timestamps = np.arange(0.0, 3600.0, 30.0)
     np.random.seed(0)
     expected_wearable_values = np.random.random(size=(120,2))
 

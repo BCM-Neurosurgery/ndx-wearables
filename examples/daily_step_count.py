@@ -29,7 +29,7 @@ def main():
     # 3) Generate synthetic step-count data (every 30s for 1h)
     timestamps = np.arange(0.0, 3600.0, 30.0)  # 120 samples
     np.random.seed(42)
-    stepcount_values = np.random.randint(0, 200, size=timestamps.size)
+    stepcount_values = np.floor(np.random.uniform(low=0, high=200, size=timestamps.size))
 
     # 4) Create series and add to processing module
     series = WearableTimeSeries(

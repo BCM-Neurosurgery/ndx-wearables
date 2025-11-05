@@ -32,7 +32,7 @@ def main():
     # 3) Generate synthetic heart-rate data (every 5s for 1h)
     timestamps = np.arange(0.0, 3600.0, 5.0)   # 720 samples
     np.random.seed(42)
-    heart_rate_values = np.random.randint(60, 100, size=timestamps.size)
+    heart_rate_values = np.random.uniform(low=60, high=100, size=timestamps.size)
 
     # 4) Create series and add to module
     series = WearableTimeSeries(
