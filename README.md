@@ -5,7 +5,7 @@ Store data from wearable devices in NWB
 This extension is designed to help store data collected from a wide variety of wearable devices in a cross-device 
 capable way, and with an eye towards clinical applications.
 For more details about the extension, see the paper "NDX-Wearables: An NWB Extension for Clinical Neuroscience" 
-(submitted to NER 2025).
+(to be presented at NER 2025).
 
 
 ## Installation
@@ -25,48 +25,38 @@ in [Installing in editable mode](#Installing-in-editable-mode)
 To see how the data stored using this extension looks, visit our example dataset on the
 [EMBER Archive](https://dandi.emberarchive.org/dandiset/000207).
 
-You can also generate a local copy of a synthetic dataset by running the `examples/all_modalities.py` script.
+You can also generate a local copy of a synthetic datasets by running the relevant `examples/` scripts, for instance
+```
+python examples/activity_classification.py
+```
 
 
 ## Notes on Extension Usage
 
-Several of the modality-specific extensions (e.g., `BloodOxygenSeries`, `HeartRateSeries`, etc.) now require additional
-arguments beyond the usual `name`, `data`, and `timestamps`.
+This extension provides three key classes (`WearableTimeSeries`, `WearableEnumSeries`, `WearableEvents`) to cover:
+- `WearableTimeSeries` for general time series data sampled from a wearable device, such as blood oxygenation level
+- `WearableEnumSeries` for categorical variables over time with pre-defined meanings (for example sleep stages over time)
+- `WearableEvents` for sparse events over long time periods (e.g. exercise events)
 
-In particular:
-- `wearable_device` is required for classes that link to a device (e.g., `BloodOxygenSeries`, `VO2MaxSeries`)
-- `algorithm` is required for many classes to indicate how the data was derived (e.g., `HRVSeries`, `StepCountSeries`)
+In addition to these classes, metadata may be required, including:
+- `wearable_device` is required for classes that link to a device 
+- `algorithm` is required for many classes to indicate how the data was derived 
 
-If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the test 
-scripts under `src/pynwb/tests`.
+The `PhysiologicalMeasure` class is povided to group together similar physiological measurements (e.g. heart rate variability, motion) from different devices/sources. This could include redundant measurements of the same physiological variable, or multiple measurements which will be fused by later processing to estimate an unknown quantity (e.g. multiple accelerometer measurements).
+
+If these arguments are omitted, instantiating the class will raise an error. You can find working examples in the scripts under `examples`.
 
 ## Arguments for ndx-wearables Classes
 
-#### TimeSeries (WearableTimeSeries) based modalities
-
 | Class Name             | Required Arguments                                                     | Optional Arguments                            |
 |------------------------|------------------------------------------------------------------------|-----------------------------------------------|
-| `ActivitySeries`       | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
-| `BloodOxygenSeries`    | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
-| `HeartRateSeries`      | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
-| `HRVSeries`            | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`, `sampling_rate` | `comments`, `description`, `resolution` |
-| `METSeries`            | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
-| `SleepMovementSeries`  | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
-| `SleepPhaseSeries`     | `name`, `data`, `timestamps`, `wearable_device`, `enums`, `algorithm`  | `resolution`, `conversion`, `comments`        |
-| `StepCountSeries`      | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `resolution`, `conversion`, `comments`        |
-| `VO2MaxSeries`         | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `comments`, `resolution`, `conversion`        |
-
-
-#### EventTable (WearableEvents) based modalities (WIP)
-
-| Class Name    | Required Arguments                                                     | Optional Arguments                            |
-|---------------|------------------------------------------------------------------------|-----------------------------------------------|
-| `Workouts`    | `name`, `data`, `timestamps`, `wearable_device`, `algorithm`           | `comments`, `resolution`, `conversion`        |
-| `SleepEvents` | `name`, `data`, `timestamps`, `wearable_device`, `unit`, `algorithm`   | `resolution`, `conversion`, `comments`        |
+| `WearableTimeSeries`   | `name`, `description`, `data`, `timestamps`, `wearable_device`, `algorithm`             | `comments`, `resolution`, `conversion`        |
+| `WearableEnumSeries`   | `name`, `description`, `data`, `timestamps`, `wearable_device`, `meanings`, `algorithm` | `resolution`, `conversion`, `comments`        |
+| `WearableEvents`       | `name`, `description`, `columns`, `wearable_device`, `algorithm`                        | `resolution`, `conversion`, `comments`        |
 
 
 These reflect typical usage in constructors. For full context or updates, refer to the class definitions in
-[`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`src/pynwb/tests`](src/pynwb/tests).
+[`src/pynwb/ndx_wearables`](src/pynwb/ndx_wearables) and usage examples in [`examples`](examples).
 
 
 ## Developing the extension
