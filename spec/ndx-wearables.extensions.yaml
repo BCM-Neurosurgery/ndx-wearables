@@ -40,6 +40,12 @@ groups:
   - neurodata_type_inc: WearableTimeSeries
     doc: Place your device-specific estimates of this modality here
     quantity: '*'
+  - neurodata_type_inc: WearableEnumSeries
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
+  - neurodata_type_inc: WearableEvents
+    doc: Place your device-specific estimates of this modality here
+    quantity: '*'
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
   doc: Interval-style data (e.g., workouts) from wearable sensors/devices
@@ -52,56 +58,19 @@ groups:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record WearableEvents
-- neurodata_type_def: EnumTimeSeries
+- neurodata_type_def: WearableEnumSeries
   neurodata_type_inc: WearableTimeSeries
   doc: A wearable time series intended for storing enumerated string labels
   datasets:
   - name: data
     dtype: text
     doc: String labels representing enumerated classes (e.g., 'walking', 'sitting')
+  groups:
+  - name: meanings
+    neurodata_type_inc: DynamicTable
+    doc: Dynamic table with detailed descriptions for all category labels used in
+      the dataset
   links:
   - name: wearable_device
     target_type: WearableDevice
     doc: Link to WearableDevice used to record this data
-- neurodata_type_def: HRVSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores HRV values as strings over time.
-  attributes:
-  - name: algorithm
-    dtype: text
-    doc: Algorithm used to extract data from raw sensor readings
-- neurodata_type_def: VO2maxSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores Vo2 max values as raw strings over time.
-  attributes:
-  - name: algorithm
-    dtype: text
-    doc: Algorithm used to extract data from raw sensor readings
-- neurodata_type_def: SleepStageSeries
-  neurodata_type_inc: TimeSeries
-  doc: Stores sleep stages as raw strings over time.
-  datasets:
-  - name: data
-    dtype: text
-    doc: Sleep stage labels
-- neurodata_type_def: HeartRateSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores heart rate.
-- neurodata_type_def: BloodOxygenSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores blood oxygen saturation levels over time.
-- neurodata_type_def: StepCountSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores number of steps recorded by wearable device.
-- neurodata_type_def: MetSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Stores metabolic equivalent (MET) values over time.
-- neurodata_type_def: SleepMovementSeries
-  neurodata_type_inc: WearableTimeSeries
-  doc: Captures movement intensity or frequency during sleep.
-- neurodata_type_def: ActivityClassSeries
-  neurodata_type_inc: EnumTimeSeries
-  doc: Stores categorical labels for physical activity class over time.
-- neurodata_type_def: SleepPhaseSeries
-  neurodata_type_inc: EnumTimeSeries
-  doc: Stores sleep phase categories (e.g., REM, deep) over time.

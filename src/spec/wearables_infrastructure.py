@@ -1,3 +1,4 @@
+from networkx.utils.misc import groups
 from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
 
 
@@ -49,11 +50,21 @@ def make_wearables_infrastructure():
     physiological_measure = NWBGroupSpec(
         neurodata_type_def="PhysiologicalMeasure",
         neurodata_type_inc="NWBDataInterface",
-        doc="Data recorded from wearable sensor/device",
+        doc="Group collecting multiple wearable device's concurrent estimates of a single metric",
         groups=[
             NWBGroupSpec(
-                doc="Place your device-specific estimates of this modality here",
+                doc="A single wearable device's time series data",
                 neurodata_type_inc="WearableTimeSeries",
+                quantity="*",
+            ),
+            NWBGroupSpec(
+                doc="A single wearable device's categorical time series data",
+                neurodata_type_inc="WearableEnumSeries",
+                quantity="*",
+            ),
+            NWBGroupSpec(
+                doc="A single wearable device's collection of events with additional data columns",
+                neurodata_type_inc="WearableEvents",
                 quantity="*",
             )
         ]
@@ -79,14 +90,21 @@ def make_wearables_infrastructure():
     )
     
     enum_timeseries = NWBGroupSpec(
-        neurodata_type_def="EnumTimeSeries",
+        neurodata_type_def="WearableEnumSeries",
         neurodata_type_inc="WearableTimeSeries",
         doc="A wearable time series intended for storing enumerated string labels",
         datasets=[
-            NWBDatasetSpec(
+            NWBDatasetSpec(   # Overwrite the default dataset to always require strings
                 name="data",
                 dtype="text",
                 doc="String labels representing enumerated classes (e.g., 'walking', 'sitting')"
+            )
+        ],
+        groups=[
+            NWBGroupSpec(
+                name="meanings",
+                doc="Dynamic table with detailed descriptions for all category labels used in the dataset",
+                neurodata_type_inc="DynamicTable"
             )
         ],
         links=[
@@ -94,7 +112,13 @@ def make_wearables_infrastructure():
                 name='wearable_device',
                 target_type='WearableDevice',
                 doc='Link to WearableDevice used to record this data'
-            )
+            ),
+            # TODO: Should we explicitly store meanings tables somewhere better than the wearables module?
+            # LinkSpec(
+            #     name='meanings',
+            #     target_type='DynamicTable',
+            #     doc="Dynamic table storing the descriptions of all categories used in this dataset"
+            # )
         ]
     )
 
