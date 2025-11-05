@@ -14,8 +14,32 @@ import pytest
 
 from hdmf.common.table import VectorData
 from ndx_events import NdxEventsNWBFile, MeaningsTable, CategoricalVectorData
-from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents
+from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents, WearableEnumSeries, PhysiologicalMeasure
+from ndx_wearables.categorical_enums import build_sleep_phase_meanings
 
+
+def add_wearable_enumseries(nwbfile, device):
+    # generate fake wearables data
+    expected_labels = np.array(["awake", "n1", "n2", "n2", "n3", "rem", "awake"])
+    np.random.seed(0)
+    expected_timestamps = np.arange(expected_labels.size, dtype=float)
+    meanings = build_sleep_phase_meanings()
+    nwbfile.processing["wearables"].add(meanings)
+
+    # create wearable timeseries
+    series = WearableEnumSeries(
+        name="test_enum_series",
+        data=expected_labels,              # labels map to codes internally
+        timestamps=expected_timestamps,
+        description="test sleep stage labels over time",
+        wearable_device=device,
+        algorithm="test_algorithm",
+        meanings=meanings,
+    )
+
+    # add wearables objects to processing module
+    nwbfile.processing["wearables"].add(series)
+    return nwbfile
 
 def add_wearable_timeseries(nwbfile, device):
     # generate fake wearables data
@@ -91,6 +115,19 @@ def write_nwb_with_wearable_events(tmp_path, nwb_with_wearable_events):
 
     return tmp_path
 
+@pytest.fixture
+def nwb_with_wearable_enum(wearables_nwbfile_device):
+    nwbfile, device = wearables_nwbfile_device
+    nwbfile = add_wearable_enumseries(nwbfile, device)
+    return nwbfile
+
+@pytest.fixture
+def write_nwb_with_wearable_enum(tmp_path, nwb_with_wearable_enum):
+    with NWBHDF5IO(tmp_path, 'w') as io:
+        io.write(nwb_with_wearable_enum)
+
+    return tmp_path
+
 
 def test_wearables_timeseries(write_nwb_with_wearable_timeseries):
     expected_timestamps = np.arange(0.0, 3600.0, 30.0)
@@ -137,3 +174,31 @@ def test_wearable_events(write_nwb_with_wearable_events):
         np.testing.assert_array_equal(workout_event.timestamp[:], [10.0, 30.0, 120.0])
         assert events.wearable_device.name == "test_wearable_device"
 
+def test_enum_timeseries(write_nwb_with_wearable_enum):
+    expected_labels = np.array(["awake", "n1", "n2", "n2", "n3", "rem", "awake"])
+    np.random.seed(0)
+    expected_timestamps = np.arange(expected_labels.size, dtype=float)
+
+    with NWBHDF5IO(write_nwb_with_wearable_enum, 'r') as io:
+        nwbfile = io.read()
+
+        # ensure processing module is in the file
+        assert 'wearables' in nwbfile.processing, 'Wearables processing module is missing.'
+        wearables_module = nwbfile.processing["wearables"]
+
+        # ensure wearable timeseries is in file
+        assert 'test_enum_series' in wearables_module.data_interfaces, "Wearable enum eries data not present in processing module"
+        # ensure data is correct
+        wearable_timeseries = wearables_module.get('test_enum_series')
+        # validate shape
+        assert wearable_timeseries.data.shape == expected_labels.shape, "Incorrect wearables enum data shape"
+        assert wearable_timeseries.timestamps.shape == expected_timestamps.shape, "Incorrect timestamp shape"
+        # validate data values
+        np.testing.assert_array_equal(wearable_timeseries.data[:], expected_labels, "Mismatch in wearable enum values")
+        np.testing.assert_array_equal(wearable_timeseries.timestamps[:], expected_timestamps, "Mismatch in timestamps")
+        
+        # validate metadata
+        assert 'test_wearable_device' in nwbfile.devices, "Wearable device is missing"
+
+        # ensure wearabletimeseries has link to wearabledevice
+        assert wearable_timeseries.wearable_device is nwbfile.devices['test_wearable_device']
