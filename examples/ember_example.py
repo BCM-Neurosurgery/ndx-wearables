@@ -9,10 +9,23 @@ from hdmf.common.table import VectorData
 from ndx_events import DurationVectorData
 from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEnumSeries, WearableEvents, PhysiologicalMeasure
 from ndx_wearables.categorical_enums import build_sleep_phase_meanings
-
+from pynwb.file import Subject
 
 def main():
-    nwb = NWBFile("NDX Wearables Example", "pre-release-0-2_2025-11", datetime.now())
+
+    now = datetime.now(pytz.timezone('America/new_york'))
+    subjectid = f'synthetic-pre-release-0-2'
+
+    nwb = NWBFile("NDX Wearables Example", "pre-release-0-2_2025-11", now)
+
+    subj = Subject(
+        age='P0D',
+        description='Nonexistent subject for a synthetic data example',
+        subject_id=subjectid,
+        species='Homo sapiens',
+        sex='O'
+    )
+    nwb.subject = subj
 
     #Two example devicdes
     deviceRing = WearableDevice(
@@ -39,7 +52,7 @@ def main():
 
     labels = np.array(["awake", "n1", "n2", "n2", "n3", "rem", "awake"])
     timestamps = np.arange(labels.size, dtype=float)
-
+    
     series = WearableEnumSeries(
         name="sleep_phase",
         data=labels,              # labels map to codes internally
@@ -50,7 +63,7 @@ def main():
         meanings=meanings,
     )
     wearables.add(series)
-
+    
     # Example Heart Rate Wearables Time Series- Generate synthetic heart-rate data (every 5s for 1h)
     timestamps = np.arange(0.0, 3600.0, 5.0)   # 720 samples
     np.random.seed(42)
@@ -67,42 +80,6 @@ def main():
         algorithm="simulated data"
     )
     wearables.add(series)
-
-    # Example Sleep Interval Wearables Events - Create the SleepEpochs table, including custom columns and add to the processing module
-    fake_sleep_intervals = pd.DataFrame.from_dict({
-        'start_times': [13.0, 20.0, 44.0, 52.0],      # Entered here in hours, needs to be converted to seconds
-        'durations': [1.2, 8.0, 7.3, 2.1],    # Entered here in hours, needs to be converted to seconds
-        'classified_types': ['nap', 'long_rest', 'long_rest', 'nap'],
-        'time_in_bed': [1.2, 8.5, 9.2, 2.4]   # Entered here in hours, needs to be converted to seconds
-    })
-    duration = DurationVectorData(
-        name="duration",
-        description="The duration, in seconds, of the sleep epoch"
-    )
-    sleep_type = VectorData(
-        name='sleep_type',
-        description='Type of sleep this was categorized as',
-    )
-    time_in_bed = VectorData(
-        name='time_in_bed',
-        description='Total time (in seconds) in bed (more than just sleeping)',
-    )
-    sleep_epochs = WearableEvents(
-        name='SleepEpochs',
-        description=f"Sleep epochs collected from {deviceWatch.name}",
-        wearable_device=deviceWatch,
-        columns=[duration, sleep_type, time_in_bed],
-        algorithm='proprietary algorithm',
-    )
-    for row_data in fake_sleep_intervals.itertuples():
-        sleep_epochs.add_row(
-            timestamp=row_data.start_times*3600,     # converting to seconds since start of file,
-            duration=row_data.durations*3600,         # Converting hours to seconds
-            sleep_type=row_data.classified_types,
-            time_in_bed=row_data.time_in_bed*3600,
-        )
-
-    wearables.add(sleep_epochs)
 
     # Example Physiological Measures
     timestamps = np.arange(0.0, 3600.0, 30.0)
