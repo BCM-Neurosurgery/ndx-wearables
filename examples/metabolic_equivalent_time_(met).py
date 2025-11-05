@@ -65,3 +65,6 @@ def main():
         print("Samples:", len(s.data[:]))
         print("First 5 values:", s.data[:5])
         print("Timestamps length:", len(s.timestamps[:]))
+
+if __name__ == "__main__":
+    main()

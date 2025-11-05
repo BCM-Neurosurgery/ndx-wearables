@@ -19,7 +19,7 @@ def main():
     )
     nwb.add_device(device)
 
-    wearables = ProcessingModule("wearables", "Wearables derived data")
+    wearables = ProcessingModule(name="wearables", description="Wearables derived data")
     nwb.add_processing_module(wearables)
 
     meanings = build_sleep_phase_meanings()

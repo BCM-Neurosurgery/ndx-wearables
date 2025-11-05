@@ -33,7 +33,7 @@ def main():
     # 3) Generate synthetic SpO2 data (every 30s for 1 hour)
     timestamps = np.arange(0.0, 3600.0, 30.0)
     np.random.seed(42)
-    blood_oxygen_values = np.random.randint(90, 100, size=timestamps.size)
+    blood_oxygen_values = np.random.uniform(low=90, high=100, size=timestamps.size)
 
     # 4) Create the series and add it to the processing module
     series = WearableTimeSeries(
