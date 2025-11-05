@@ -103,7 +103,7 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         super().__init__(**kwargs)
 
 
-# Categorical TimeSeries container (what Tomek expected)
+# Categorical Wearable TimeSeries container, with a required meanings table
 @register_class('WearableEnumSeries', 'ndx-wearables')
 class WearableEnumSeries(WearableTimeSeries):
     """
