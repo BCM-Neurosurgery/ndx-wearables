@@ -27,7 +27,7 @@ def main():
     )
     nwb.subject = subj
 
-    #Two example devicdes
+    #Two example devices
     deviceRing = WearableDevice(
         name="ExampleRing",
         manufacturer="Examplon LLC",

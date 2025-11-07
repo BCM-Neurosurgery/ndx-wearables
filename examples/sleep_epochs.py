@@ -37,7 +37,7 @@ def main():
     )
     nwbfile.add_processing_module(wearables)
 
-    # 3) Generate some synthetic sleep interals
+    # 3) Generate some synthetic sleep intervals
     fake_sleep_intervals = pd.DataFrame.from_dict({
         'start_times': [13.0, 20.0, 44.0, 52.0],      # Entered here in hours, needs to be converted to seconds
         'durations': [1.2, 8.0, 7.3, 2.1],    # Entered here in hours, needs to be converted to seconds
