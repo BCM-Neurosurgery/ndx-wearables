@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-wearables"
-version = "0.1.3"
+version = "0.2.0"
 authors = [
     { name="Tomek Fraczek", email="tomek.fraczek@bcm.edu" },
     { name="Nicole Guittari", email="nicole.guittari@jhuapl.edu" },
@@ -38,6 +38,7 @@ keywords = [
 dependencies = [
     "pynwb>=2.8.0",
     "hdmf>=3.14.1",
+    "pandas",
     "ndx-events>=0.4.0"
 ]
 

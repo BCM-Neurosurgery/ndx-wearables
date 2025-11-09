@@ -1,44 +1,17 @@
-from pynwb import register_class, get_class, NWBContainer
-from pynwb.core import MultiContainerInterface
-from hdmf.common import SimpleMultiContainer
+import copy
+
+from pynwb import register_class, get_class
 from pynwb.device import Device
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec
-from pynwb.base import TimeSeries, NWBDataInterface
-from ndx_events import EventsTable, CategoricalVectorData
-from hdmf.utils import docval, popargs, get_docval, get_data_shape
-from datetime import datetime
-from dateutil.tz import tzlocal
+from pynwb.base import TimeSeries
+from ndx_events import EventsTable
+from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
 import numpy as np
+from enum import Enum
+from hdmf.common import DynamicTable
 
-# when extending NWBContainer, define __nwbfields__
-# tells PyNWB properties of the NWBContainer extension
-@register_class("WearableDevice", "ndx-wearables")
-class WearableDevice(Device):
-    '''
-    - name
-    - description
-    - manufacturer
-    - location (on body)
-    '''
-    __nwbfields__ = ("location",)
+from ndx_wearables.categorical_enums import ENUM_MAP
 
-    @docval(
-        *get_docval(Device.__init__)
-        + (
-            {"name":"location", "type": str, "doc": "Location on body of device"},
-            {"name":"os_software_version", "type": str, "doc":"The version number of the OS/software for the WearableDevice", "default": None}
-        )
-    )
-
-    def __init__(self, **kwargs):
-        location = popargs("location", kwargs)
-        os_software_version = popargs("os_software_version", kwargs)
-        super().__init__(**kwargs)
-
-        self.location = location
-        self.os_software_version = os_software_version
-  
-  
+    
 class WearableBase(object):
     """
     HDMF and by extension NWB does not really support multiple inheritance.
@@ -71,11 +44,57 @@ class WearableBase(object):
         self.wearable_device = wearable_device
         self.algorithm = algorithm
         return kwargs
-    
+
+
+def update_docval(original, *updates, to_remove=None):
+    """Helper function to allow modification of docval attributes on the fly"""
+    updated = list(copy.deepcopy(original))
+    for update in updates:
+        for doc_dict in updated:
+            if doc_dict['name'] == update['name']:
+                doc_dict.update(update)
+                break
+    if to_remove is not None:
+        idx_to_remove = []
+        for remove_name in to_remove:
+            for idx, doc_dict in enumerate(updated):
+                if doc_dict['name'] == remove_name:
+                    idx_to_remove.append(idx)
+        desc_removals = sorted(idx_to_remove, reverse=True) # process in desc order to avoid errors. probs a better way
+        for i in desc_removals:
+            del updated[i]
+    return tuple(updated)
+
+
+# Device and existing classes (unchanged except for Placement handling)
+@register_class("WearableDevice", "ndx-wearables")
+class WearableDevice(Device):
+    '''
+    - name
+    - description
+    - manufacturer
+    - location (on body)
+    '''
+    __nwbfields__ = ("location",)
+
+    @docval(
+        *get_docval(Device.__init__)
+        + (
+            {"name":"location", "type": str, "doc": "Location on body of device"},
+            {"name":"os_software_version", "type": str,
+             "doc":"The version number of the OS/software for the WearableDevice", "default": None}
+        )
+    )
+    def __init__(self, **kwargs):
+        location = popargs("location", kwargs)
+        os_software_version = popargs("os_software_version", kwargs)
+        super().__init__(**kwargs)
+
+        self.location = location
+        self.os_software_version = os_software_version
+
 @register_class("WearableTimeSeries", "ndx-wearables")
 class WearableTimeSeries(WearableBase, TimeSeries):
-   # __nwbfields__ = TimeSeries.__nwbfields__ + ("algorithm",)
-
     @docval(
         *(get_docval(TimeSeries.__init__) + WearableBase.get_wearables_docval())
     )
@@ -83,33 +102,34 @@ class WearableTimeSeries(WearableBase, TimeSeries):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
-PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
-# @register_class('PhysiologicalMeasure', "ndx-wearables")
-# class PhysiologicalMeasure(NWBDataInterface, MultiContainerInterface):
-#     # TODO: this custom class registration would be nice but it throws a
-#     #      TypeError: Cannot create a consistent method resolution
-#     #      order (MRO) for bases NWBDataInterface, MultiContainerInterface
-#
-#     """
-#     LFP data from one or more channels. The electrode map in each published ElectricalSeries will
-#     identify which channels are providing LFP data. Filter properties should be noted in the
-#     ElectricalSeries description or comments field.
-#     """
-#
-#     __clsconf__ = [
-#         {'attr': 'wearable_series',
-#          'type': WearableTimeSeries,
-#          'add': 'add_wearable_series',
-#          'get': 'get_wearable_series',
-#          'create': 'create_wearable_series'}]
+
+# Categorical Wearable TimeSeries container, with a required meanings table
+@register_class('WearableEnumSeries', 'ndx-wearables')
+class WearableEnumSeries(WearableTimeSeries):
+    """
+    A categorical TimeSeries for wearable data.
+    Stores category values (strings or integer indices), the allowed categories,
+    and an optional meanings table with human-readable descriptions.
+    """
+
+    @docval(
+        *update_docval(
+            get_docval(WearableTimeSeries.__init__),
+            {'name': 'data', 'type': ('array_data',), 'doc': 'categorical values as strings or int indices'},
+            to_remove=['unit']
+        )
+        + (
+            {'name': 'meanings', 'type': (DynamicTable, type(None)), 'doc': 'optional category->description table', 'default': None},
+         )
+    )
+    def __init__(self, **kwargs):
+        meanings = kwargs.pop('meanings')
+        self.meanings = meanings
+        super().__init__(unit='category', **kwargs)
 
 
-# Adding events to inherit from ndx-wearables:
-# WearableEvents inherits from EventsTable (from rly/ndx-events) to store timestamped discrete events from wearables
 @register_class("WearableEvents", "ndx-wearables")
 class WearableEvents(WearableBase, EventsTable):
-   # __nwbfields__ = ("algorithm",)
-
     @docval(
         *(get_docval(EventsTable.__init__) + WearableBase.get_wearables_docval())
     )
@@ -117,3 +137,4 @@ class WearableEvents(WearableBase, EventsTable):
         kwargs = self.wearables_init_helper(**kwargs)
         super().__init__(**kwargs)
 
+PhysiologicalMeasure = get_class("PhysiologicalMeasure", "ndx-wearables")
