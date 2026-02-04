@@ -1,7 +1,6 @@
 
 import numpy as np
 from datetime import datetime
-import pytz
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.file import ProcessingModule
 from ndx_wearables import WearableDevice, WearableEnumSeries

@@ -14,12 +14,11 @@ authors = [
 ]
 description = "Store data from human wearables"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {text = "BSD-3"}
 classifiers = [
     # TODO: add classifiers before release
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

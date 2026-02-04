@@ -1,7 +1,7 @@
 
 import numpy as np
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 from pynwb import NWBFile, NWBHDF5IO
 import pandas as pd
 from pynwb.file import ProcessingModule
@@ -13,7 +13,7 @@ from pynwb.file import Subject
 
 def main():
 
-    now = datetime.now(pytz.timezone('America/new_york'))
+    now = datetime.now(ZoneInfo('America/New_York'))
     subjectid = f'synthetic-pre-release-0-2'
 
     nwb = NWBFile("NDX Wearables Example", "pre-release-0-2_2025-11", now)
