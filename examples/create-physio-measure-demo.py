@@ -1,7 +1,7 @@
 
 import numpy as np
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 from pynwb import NWBHDF5IO
 from pynwb.file import ProcessingModule
 from pathlib import Path
@@ -13,7 +13,7 @@ from ndx_wearables import WearableDevice, WearableTimeSeries, WearableEvents, Ph
 nwbfile = NdxEventsNWBFile(
     session_description="Example wearables study session",
     identifier='TEST_WEARABLES',
-    session_start_time=datetime.now(pytz.timezone('America/Chicago')),
+    session_start_time=datetime.now(ZoneInfo('America/Chicago')),
 )
 
 # generate fake wearables data

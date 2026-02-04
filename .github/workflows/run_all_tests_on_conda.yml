@@ -7,6 +7,7 @@ on:
   pull_request:
     types:
       - opened
+      - synchronize
     branches:
       - main
   workflow_dispatch:
@@ -25,8 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: conda-linux-python3.8-minimum    , requirements: minimum    , python-ver: "3.8" , os: ubuntu-latest }
-          - { name: conda-linux-python3.8            , requirements: pinned     , python-ver: "3.8" , os: ubuntu-latest }
+          - { name: conda-linux-python3.9-minimum    , requirements: minimum    , python-ver: "3.9" , os: ubuntu-latest }
           - { name: conda-linux-python3.9            , requirements: pinned     , python-ver: "3.9" , os: ubuntu-latest }
           - { name: conda-linux-python3.10           , requirements: pinned     , python-ver: "3.10", os: ubuntu-latest }
           - { name: conda-linux-python3.11           , requirements: pinned     , python-ver: "3.11", os: ubuntu-latest }

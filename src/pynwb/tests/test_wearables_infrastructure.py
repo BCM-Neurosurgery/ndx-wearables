@@ -5,7 +5,7 @@ Note, tests expect to be run from the ndc-wearables root directory
 
 import numpy as np
 from datetime import datetime
-import pytz
+from zoneinfo import ZoneInfo
 from pynwb import NWBFile, NWBHDF5IO
 from pynwb.base import TimeSeries
 from pynwb.file import ProcessingModule
