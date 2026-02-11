@@ -1,5 +1,4 @@
-from networkx.utils.misc import groups
-from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBNamespaceBuilder, NWBAttributeSpec, RefSpec, LinkSpec
+from pynwb.spec import NWBGroupSpec, NWBDatasetSpec, NWBAttributeSpec, LinkSpec
 
 
 def make_wearables_infrastructure():
