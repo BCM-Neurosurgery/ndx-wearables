@@ -6,7 +6,6 @@ from pynwb.base import TimeSeries
 from ndx_events import EventsTable
 from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
 import numpy as np
-from enum import Enum
 from hdmf.common import DynamicTable
 
 from ndx_wearables.categorical_enums import ENUM_MAP
