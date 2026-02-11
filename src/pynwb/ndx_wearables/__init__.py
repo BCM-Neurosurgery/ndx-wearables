@@ -23,22 +23,6 @@ if not os.path.exists(__spec_path):
 # Load the namespace
 load_namespaces(str(__spec_path))
 
-# TODO: Define your classes here to make them accessible at the package level.
-# Safe fallback if the namespace was not found in original logic
-import pathlib
-if not os.path.exists(__spec_path):
-    print("Namespace not found in the default paths, trying fallback...")
-    
-    # Get the location of this file
-    fallback_path = pathlib.Path(__file__).parent / "ndx-wearables.namespace.yaml"
-
-    # Try to load from the fallback path
-    if os.path.exists(fallback_path):
-        print(f"Namespace found in fallback path: {fallback_path}")
-        load_namespaces(str(fallback_path))
-    else:
-        print(f"Namespace not found in fallback path: {fallback_path}")
-
 # Import the base classes
 from .wearables_classes import *
 
