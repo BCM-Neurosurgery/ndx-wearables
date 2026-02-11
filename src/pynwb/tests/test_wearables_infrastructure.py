@@ -137,11 +137,11 @@ def nwb_with_wearable_ts(wearables_nwbfile_device):
     return nwbfile
 
 @pytest.fixture
-def write_nwb_with_wearable_timeseries(tmp_path, nwb_with_wearable_ts):
-    with NWBHDF5IO(tmp_path, 'w') as io:
+def write_nwb_with_wearable_timeseries(nwb_file_path, nwb_with_wearable_ts):
+    with NWBHDF5IO(nwb_file_path, 'w') as io:
         io.write(nwb_with_wearable_ts)
 
-    return tmp_path
+    return nwb_file_path
 
 @pytest.fixture
 def nwb_with_wearable_events(wearables_nwbfile_device):
@@ -151,11 +151,11 @@ def nwb_with_wearable_events(wearables_nwbfile_device):
 
 
 @pytest.fixture
-def write_nwb_with_wearable_events(tmp_path, nwb_with_wearable_events):
-    with NWBHDF5IO(tmp_path, 'w') as io:
+def write_nwb_with_wearable_events(nwb_file_path, nwb_with_wearable_events):
+    with NWBHDF5IO(nwb_file_path, 'w') as io:
         io.write(nwb_with_wearable_events)
 
-    return tmp_path
+    return nwb_file_path
 
 @pytest.fixture
 def nwb_with_wearable_enum(wearables_nwbfile_device):
@@ -170,18 +170,18 @@ def nwb_with_physiological_measure(wearables_nwbfile_device):
     return nwbfile
 
 @pytest.fixture
-def write_nwb_with_wearable_enum(tmp_path, nwb_with_wearable_enum):
-    with NWBHDF5IO(tmp_path, 'w') as io:
+def write_nwb_with_wearable_enum(nwb_file_path, nwb_with_wearable_enum):
+    with NWBHDF5IO(nwb_file_path, 'w') as io:
         io.write(nwb_with_wearable_enum)
 
-    return tmp_path
+    return nwb_file_path
 
 @pytest.fixture
-def write_nwb_with_physiological_measure(tmp_path, nwb_with_physiological_measure):
-    with NWBHDF5IO(tmp_path, 'w') as io:
+def write_nwb_with_physiological_measure(nwb_file_path, nwb_with_physiological_measure):
+    with NWBHDF5IO(nwb_file_path, 'w') as io:
         io.write(nwb_with_physiological_measure)
 
-    return tmp_path
+    return nwb_file_path
 
 
 def test_wearables_timeseries(write_nwb_with_wearable_timeseries):

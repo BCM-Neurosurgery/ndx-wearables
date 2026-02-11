@@ -31,10 +31,9 @@ def add_wearables_device(nwbfile):
     nwbfile.add_device(device)
 
     return nwbfile, device
-@pytest.fixture(scope='session')
-def tmp_path():
-    return Path('./examples/test_nwb_file.nwb')
-    #return Path('./src/pynwb/tests/test_nwb_file.nwb')
+@pytest.fixture
+def nwb_file_path(tmp_path):
+    return tmp_path / 'test_nwb_file.nwb'
 
 @pytest.fixture(scope='session')
 def wearables_nwbfile():

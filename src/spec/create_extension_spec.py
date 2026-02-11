@@ -9,7 +9,7 @@ def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-wearables""",
-        version="""0.1.1""",
+        version="""0.2.1""",
         doc="""Store data from human wearable devices in NWB""",
         author=[
             "Tomasz M. Fraczek",
