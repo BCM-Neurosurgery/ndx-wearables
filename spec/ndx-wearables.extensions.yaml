@@ -21,7 +21,6 @@ groups:
     doc: Algorithm used to extract data from raw sensor readings
   datasets:
   - name: data
-    dtype: float64
     dims:
     - measurement_duration
     - data
