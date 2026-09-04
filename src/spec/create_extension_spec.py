@@ -9,7 +9,7 @@ def main():
     # these arguments were auto-generated from your cookiecutter inputs
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-wearables""",
-        version="""0.1.1""",
+        version="""0.2.2""",
         doc="""Store data from human wearable devices in NWB""",
         author=[
             "Tomasz M. Fraczek",
@@ -32,17 +32,14 @@ def main():
         ],
     )
     ns_builder.include_namespace("core")
-    ns_builder.include_namespace("ndx-events")
     wearables_infra_datastructures = make_wearables_infrastructure()
 
 
 # TODO: add all of your new data types to this list
-
     # Combine all series types
     new_data_types = [
         *wearables_infra_datastructures,
     ]
-
 
     # export the spec to yaml files in the spec folder
     output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "spec"))
