@@ -3,7 +3,6 @@ import copy
 from pynwb import register_class, get_class
 from pynwb.device import Device
 from pynwb.base import TimeSeries
-from ndx_events import EventsTable
 from hdmf.utils import docval, popargs, get_docval, getargs  # <-- added getargs
 import numpy as np
 from enum import Enum

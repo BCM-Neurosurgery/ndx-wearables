@@ -35,16 +35,17 @@ groups:
     doc: Link to WearableDevice used to record WearableTimeSeries
 - neurodata_type_def: PhysiologicalMeasure
   neurodata_type_inc: NWBDataInterface
-  doc: Data recorded from wearable sensor/device
+  doc: Group collecting multiple wearable device's concurrent estimates of a single
+    metric
   groups:
   - neurodata_type_inc: WearableTimeSeries
-    doc: Place your device-specific estimates of this modality here
+    doc: A single wearable device's time series data
     quantity: '*'
   - neurodata_type_inc: WearableEnumSeries
-    doc: Place your device-specific estimates of this modality here
+    doc: A single wearable device's categorical time series data
     quantity: '*'
   - neurodata_type_inc: WearableEvents
-    doc: Place your device-specific estimates of this modality here
+    doc: A single wearable device's collection of events with additional data columns
     quantity: '*'
 - neurodata_type_def: WearableEvents
   neurodata_type_inc: EventsTable
